@@ -1,0 +1,779 @@
+{
+  "lastUpdated": "2026-09-03T21:22:29.999Z",
+  "prices": {
+    "cpu-r5-7600": {
+      "pricePLN": 718,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%207600",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rx9070xt": {
+      "pricePLN": 3399,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%209070%20XT",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-a580": {
+      "pricePLN": 589,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Arc%20A580",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-9800x3d": {
+      "pricePLN": 1749,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%209800X3D",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r3-4100": {
+      "pricePLN": 240,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%203%204100",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r5-5500": {
+      "pricePLN": 329,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%205500",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r5-5600": {
+      "pricePLN": 585,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%205600",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r5-5600x": {
+      "pricePLN": 517,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%205600X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-5700x": {
+      "pricePLN": 656,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%205700X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-5700x3d": {
+      "pricePLN": 656,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%205700X3D",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-5800x3d": {
+      "pricePLN": 1599,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%205800X3D",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-5900x": {
+      "pricePLN": 1149,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%205900X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-5950x": {
+      "pricePLN": 1415,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%205950X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r5-7500f": {
+      "pricePLN": 679,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%207500F",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r5-7600x": {
+      "pricePLN": 679,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%207600X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-7700": {
+      "pricePLN": 656,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%207700",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-7700x": {
+      "pricePLN": 989,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%207700X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-7800x3d": {
+      "pricePLN": 1279,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%207800X3D",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-7900x": {
+      "pricePLN": 1149,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%207900X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-7900x3d": {
+      "pricePLN": 1149,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%207900X3D",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-7950x3d": {
+      "pricePLN": 1149,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%207950X3D",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r5-9600x": {
+      "pricePLN": 801,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%209600X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r7-9700x": {
+      "pricePLN": 1218,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%209700X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-9900x": {
+      "pricePLN": 1682,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%209900X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-9950x": {
+      "pricePLN": 2247,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%209950X",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r9-9950x3d": {
+      "pricePLN": 2632,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%209950X3D",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i3-12100f": {
+      "pricePLN": 382,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i3-12100F",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i5-12400f": {
+      "pricePLN": 589,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-12400F",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i5-13400f": {
+      "pricePLN": 714,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-13400F",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i5-13500": {
+      "pricePLN": 763,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-13500",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i5-13600k": {
+      "pricePLN": 1353,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-13600K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i5-14400f": {
+      "pricePLN": 782,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-14400F",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i5-14600k": {
+      "pricePLN": 1044,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-14600K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i7-13700k": {
+      "pricePLN": 1939,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i7-13700K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i7-14700k": {
+      "pricePLN": 1729,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i7-14700K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i9-13900k": {
+      "pricePLN": 2099,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i9-13900K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i9-14900k": {
+      "pricePLN": 2099,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i9-14900K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i9-14900ks": {
+      "pricePLN": 2099,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i9-14900KS",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-u5-245k": {
+      "pricePLN": 939,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%205%20245K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-u5-245kf": {
+      "pricePLN": 759,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%205%20245KF",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-u7-265k": {
+      "pricePLN": 1549,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%207%20265K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-u7-265kf": {
+      "pricePLN": 1159,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%207%20265KF",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-u9-285k": {
+      "pricePLN": 2499,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%209%20285K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-r5-4500": {
+      "pricePLN": 425,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%204500",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i3-13100f": {
+      "pricePLN": 382,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i3-13100F",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-x870e-hero": {
+      "pricePLN": 2807,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20ROG%20Crosshair%20X870E%20Hero",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-a520m-k": {
+      "pricePLN": 246,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20Prime%20A520M-K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b550m-ds3h": {
+      "pricePLN": 369,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B550M%20DS3H",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b550-tomahawk": {
+      "pricePLN": 748,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20B550%20TOMAHAWK",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b550i-aorus": {
+      "pricePLN": 649,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B550I%20AORUS%20PRO%20AX",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-a620m-e": {
+      "pricePLN": 329,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20PRO%20A620M-E",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b650m-k": {
+      "pricePLN": 559,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B650M%20K",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b650m-aorus-elite-ax": {
+      "pricePLN": 630,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B650M%20AORUS%20ELITE%20AX",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b650e-f-rog": {
+      "pricePLN": 630,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20ROG%20STRIX%20B650E-F%20GAMING%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b650i-edge": {
+      "pricePLN": 1019,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MPG%20B650I%20EDGE%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-x670e-tuf": {
+      "pricePLN": 1119,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20GAMING%20X670E-PLUS%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-x670e-aorus-master": {
+      "pricePLN": 2249,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20X670E%20AORUS%20MASTER",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-x870-tomahawk": {
+      "pricePLN": 1349,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20X870%20TOMAHAWK%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-x870e-aorus-pro": {
+      "pricePLN": 1649,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20X870E%20AORUS%20PRO",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-x870e-crosshair": {
+      "pricePLN": 2807,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20ROG%20CROSSHAIR%20X870E%20HERO",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-h610m-k": {
+      "pricePLN": 274,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20Prime%20H610M-K%20D4",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b760m-ds3h-d4": {
+      "pricePLN": 399,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B760M%20DS3H%20DDR4",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b760m-aorus-elite-ax": {
+      "pricePLN": 909,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B760M%20AORUS%20ELITE%20AX",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b760-tomahawk": {
+      "pricePLN": 748,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20B760%20TOMAHAWK%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-z790-p-wifi": {
+      "pricePLN": 891,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20PRIME%20Z790-P%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-z790-tomahawk": {
+      "pricePLN": 885,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20Z790%20TOMAHAWK%20MAX%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-z790i-edge": {
+      "pricePLN": 1795,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MPG%20Z790I%20EDGE%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-z890-pro-rs": {
+      "pricePLN": 883,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASRock%20Z890%20Pro%20RS%20WiFi",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-z890-tomahawk": {
+      "pricePLN": 1318,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20Z890%20TOMAHAWK%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-z890-aorus-elite": {
+      "pricePLN": 1259,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20Z890%20AORUS%20ELITE%20WIFI7",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-z890-rog-strix-f": {
+      "pricePLN": 1299,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20ROG%20STRIX%20Z890-F%20GAMING%20WIFI",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-b860m-aorus-elite": {
+      "pricePLN": 798,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B860M%20AORUS%20ELITE%20AX",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-ak400": {
+      "pricePLN": 159,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20AK400",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-ak620": {
+      "pricePLN": 279,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20AK620",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-ak620-digital": {
+      "pricePLN": 279,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20AK620%20DIGITAL",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-u12a": {
+      "pricePLN": 586,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Noctua%20NH-U12A",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-d15-g2": {
+      "pricePLN": 701,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Noctua%20NH-D15%20G2",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-dr4": {
+      "pricePLN": 319,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet!%20Dark%20Rock%204",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-drp5": {
+      "pricePLN": 319,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet!%20Dark%20Rock%20Pro%205",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-fuma3": {
+      "pricePLN": 235,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Scythe%20Fuma%203",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-se214xt": {
+      "pricePLN": 86,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ID-Cooling%20SE-214-XT",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-ak500": {
+      "pricePLN": 279,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20AK500",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-axp90-x47": {
+      "pricePLN": 159,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/183433561",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-lf3-240": {
+      "pricePLN": 355,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Arctic%20Liquid%20Freezer%20III%20240",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-lf3-360": {
+      "pricePLN": 379,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Arctic%20Liquid%20Freezer%20III%20360",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-ls520": {
+      "pricePLN": 390,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20LS520",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-ls720": {
+      "pricePLN": 516,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20LS720",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-kraken-240": {
+      "pricePLN": 695,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NZXT%20Kraken%20240",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-h100i": {
+      "pricePLN": 435,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Corsair%20iCUE%20H100i%20RGB%20ELITE",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-h150i": {
+      "pricePLN": 775,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Corsair%20iCUE%20H150i%20RGB%20ELITE",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-silent-loop2-360": {
+      "pricePLN": 619,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet!%20Silent%20Loop%202%20360",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "ram-gtz64g-3600": {
+      "pricePLN": 645,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=G.Skill%20Trident%20Z%20Neo%2064GB%20(2x32GB)%203600MHz",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "ram-cv32g-3600": {
+      "pricePLN": 479,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/45054759",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "ram-kfb96g-5600": {
+      "pricePLN": 1429,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Kingston%20FURY%20Beast%2096GB%20(2x48GB)%205600MHz",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rtx3060ti": {
+      "pricePLN": 1851,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20RTX%203060%20Ti",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-b580": {
+      "pricePLN": 1454,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Arc%20B580",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rtx4060ti-8g": {
+      "pricePLN": 2161,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/153098763",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rx7700xt": {
+      "pricePLN": 2269,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/158270665",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rx7900gre": {
+      "pricePLN": 2569,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/197094234",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rx7900xt": {
+      "pricePLN": 3662,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/145164665",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rtx5080": {
+      "pricePLN": 5999,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/179809857",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "gpu-rtx3050": {
+      "pricePLN": 819,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/179223324",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "ssd-fc530-2tb": {
+      "pricePLN": 610,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/Click/Offer/?e=cq6v-IBlcLtr7g_CwnfGiF4-77xPGCb2FdzOBtC5vDiNGuIzK72t0nlalFJ3-W00gdj551nxlAshVzzdlngeSULhzHHtUB3LjW5pYVTLKd42Jq5PGi9U7V-rTwbmTNIx7Lry-P8He4yPE04mSfueol8MsgQYck8dBWwvDRREyV3f3OPmHgNxgNcW2b8GQTzie6-qEmuKqaG2wqjZZ0sDMevNfJn9cJVRmMCHnQ61QQE-d_9sbGIgEzjmjN-x7cS3vRoPVRmjOJfAp80qYr5eG6VQTMJZBQ3dpVBMwlkFDd0O6vJt7IMfgIYd0DNH9mPAxNXRlXb_FGlJ4g9JxEs1pAdTQ05Y8hPpIf1QlpFZKznABvHUHCJALb7YaQZZ3dIHOAd02KhmEFRk9Xh8xhsU4g6rAFcYDvNzpJpUFH3-kSAkQUp5-vIatbFln_zZTfFcBGURF04XpncC1-ObhGFdGrabPL4UaoUf5rIBPhtKgmGvKH_ZiJQrV2dUGp6kmNbRJ8NXXxTukLiHbiqYfwvqAocqACaPFNNcSFxSdFqj7G22dMWsQMkHiJjuwk_QhS7yVoP4WuKlGoxm-HwNKu4cPtoGhcf_lGsjlnCcmTOHeJD1fkFFLsCN6OyGSkEhV6Bx&ctx=CgsI4s3qreSBxT8QBRIkODgwMTdhOTctYTdkOC0xMWYxLWFmOTgtOTQ5ZjNiNjkxZmRiGiQzNjVjYmE2NC1hN2Q5LTExZjEtYTRmYS1iMjRhNzY0MWVmODg=&a=2",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "ssd-990pro-4tb": {
+      "pricePLN": 849,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/142010677",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "hdd-barracuda-1tb": {
+      "pricePLN": 205,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/47522397",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-rm750e": {
+      "pricePLN": 445,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/180558407",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-focus-gx750": {
+      "pricePLN": 595,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/172399119",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-maga750gl": {
+      "pricePLN": 349,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/154353769",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-pp12m-850": {
+      "pricePLN": 617,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/184870070",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-rm850x": {
+      "pricePLN": 529,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/173283452",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-rm1000e": {
+      "pricePLN": 514,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/181013908",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-hx1000i": {
+      "pricePLN": 889,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/157823721",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-dpp13-1000": {
+      "pricePLN": 1438,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/147300135",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-prime-tx1000": {
+      "pricePLN": 1695,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/158398805",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-vertex-gx1200": {
+      "pricePLN": 882,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/141661564",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-rog-thor-1200": {
+      "pricePLN": 1730,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/185175246",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-hx1500i": {
+      "pricePLN": 1079,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/182068445",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-sp750": {
+      "pricePLN": 524,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/193193539",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-sp850": {
+      "pricePLN": 783,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/194801133",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-sf850": {
+      "pricePLN": 769,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/170914738",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-sf1000": {
+      "pricePLN": 884,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/170914722",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "case-cc560": {
+      "pricePLN": 169,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/162876801",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "mb-x570s-aorus": {
+      "pricePLN": 759,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20X570S%20AORUS%20ELITE%20AX",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "clr-hyper212-v2": {
+      "pricePLN": 124,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Cooler%20Master%20Hyper%20212%20Evo%20V2",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "psu-cv550": {
+      "pricePLN": 179,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/Click/Offer/?e=4wsZgKUSTg_fn6Xd2Vg8LlVyONZZ3RKcyB1UtCpfPtEO4eeDb8bdwp21I0ufab2lPnf_bGxiIBMVtJWLaedb2xH-9j9DCTwb_3u_wYh2vMGlUEzCWQUN3aVQTMJZBQ3dhYLaGBbbN70YsWwezUwT-0WQH4mIqktASPSlJlqUZ1jqoPX6Nyk_PYZvntC9C721BYVcTPR0hyQecaT8y0--B4xzc8h81c1jJKYMFFNHp083UXb2HcJ5LYpQ2OF-FPtuReRjsfCW-iAGKmbpfBdaP8fUXZs31VCdvzU_BDoti_hm5PVFFXehEwF464zppEVP-nbvQbdxDvBIXFJ0WqPsbQ7YhW9ck7BEjbbCn2zmca5Wg09bCw4hwJZcxlvk5o0jBF9Ivn_BviilUEzCWQUN3T_H4ZjbMHZt&ctx=CgsIiJas4OqBxT8QBRIkODgwMTdhOTctYTdkOC0xMWYxLWFmOTgtOTQ5ZjNiNjkxZmRi&a=2",
+      "updatedAt": "2026-09-03T20:54:03.640Z"
+    },
+    "cpu-i5-12600kf": {
+      "pricePLN": 749,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/119352415",
+      "updatedAt": "2026-09-03T21:22:29.999Z"
+    },
+    "cpu-i5-13600kf": {
+      "pricePLN": 1318,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/143819904",
+      "updatedAt": "2026-09-03T21:22:29.999Z"
+    },
+    "cpu-i5-14600kf": {
+      "pricePLN": 1019,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/158322063",
+      "updatedAt": "2026-09-03T21:22:29.999Z"
+    },
+    "cpu-u5-225f": {
+      "pricePLN": 563,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/181083577",
+      "updatedAt": "2026-09-03T21:22:29.999Z"
+    }
+  }
+}

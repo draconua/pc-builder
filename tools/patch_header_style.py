@@ -1,0 +1,445 @@
+﻿with open("css/style.css", "r", encoding="utf-8") as f:
+    css = f.read()
+
+# 1. Update dark mode variables to make dark theme brighter and more alive
+dark_theme_replacement = """[data-theme="dark"] {
+  --bg: #11151f;
+  --bg-subtle: #19202f;
+  --surface: #181f2d;
+  --surface-hover: #222a3d;
+  --surface-active: #2b354c;
+
+  --border: #2c3547;
+  --border-hover: #475569;
+  --border-focus: #f8fafc;
+  --border-subtle: #1e2638;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-muted: #64748b;
+
+  --accent: #f8fafc;
+  --accent-hover: #e2e8f0;
+  --accent-contrast: #0f172a;
+  --accent-subtle: #242e42;
+
+  --surface-glass: rgba(24, 31, 45, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --shadow-drawer: -12px 0 40px rgba(0, 0, 0, 0.9);
+}"""
+
+import re
+css = re.sub(r'\[data-theme="dark"\]\s*\{[^}]+\}', dark_theme_replacement, css)
+
+header_css = """
+/* =============================================================
+   MODERN UNIFIED HEADER & AUTO-BUILD POPOVER (2026)
+   ============================================================= */
+
+.app-header {
+  height: 56px;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Brand */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.brand-title {
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.brand-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.progress-inline-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 20px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.progress-inline-pill .progress-sub {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+/* Presets & Auto-Build */
+.header-presets {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.autobuild-container {
+  position: relative;
+}
+
+.auto-builder-pill {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.38rem 0.85rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(14, 165, 233, 0.15));
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s var(--ease);
+}
+
+.auto-builder-pill:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(14, 165, 233, 0.25));
+  border-color: #6366f1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+/* Floating Auto-Builder Popover Dropdown */
+.autobuild-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 320px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.06);
+  z-index: 100;
+  padding: 1rem 1.15rem;
+  animation: popoverIn 0.2s var(--ease);
+}
+
+[data-theme="dark"] .autobuild-popover {
+  background: #181f2d;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes popoverIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.5rem;
+}
+
+.popover-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.popover-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.popover-close-btn:hover {
+  color: var(--text-primary);
+}
+
+.popover-field {
+  margin-bottom: 0.85rem;
+}
+
+.popover-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.field-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.budget-tag {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+}
+
+.budget-slider {
+  width: 100%;
+  accent-color: #6366f1;
+  margin-bottom: 0.45rem;
+  cursor: pointer;
+}
+
+.quick-budgets {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.quick-budget-btn {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.3rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.quick-budget-btn.active, .quick-budget-btn:hover {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+}
+
+.res-chips {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.res-chip {
+  flex: 1;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.4rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.res-chip.active, .res-chip:hover {
+  background: #0ea5e9;
+  color: white;
+  border-color: #0ea5e9;
+}
+
+.popover-action-btn {
+  width: 100%;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-top: 0.25rem;
+}
+
+/* Segmented Presets */
+.presets-segmented {
+  display: flex;
+  background: var(--bg-subtle);
+  padding: 3px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+}
+
+.presets-segmented .preset-btn {
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.presets-segmented .preset-btn.active {
+  background: var(--surface);
+  color: var(--text-primary);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Actions Right */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.action-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-tool {
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.32rem 0.6rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s var(--ease);
+}
+
+.btn-tool:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.btn-share-accent {
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.32rem 0.75rem;
+  border-radius: 7px;
+  border: none;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  transition: all 0.15s var(--ease);
+}
+
+.btn-share-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.header-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.segmented-control {
+  display: flex;
+  background: var(--bg-subtle);
+  padding: 2px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+}
+
+.segmented-control button {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.45rem;
+  border-radius: 5px;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.segmented-control button.active {
+  background: var(--surface);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.theme-toggle-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--bg-subtle);
+  transform: rotate(15deg);
+}
+"""
+
+css = css + "\n" + header_css
+
+with open("css/style.css", "w", encoding="utf-8") as f:
+    f.write(css)
+
+print("Injected unified modern header CSS and popover dropdown styling!")

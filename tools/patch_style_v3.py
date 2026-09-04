@@ -1,0 +1,401 @@
+﻿with open("css/style.css", "r", encoding="utf-8") as f:
+    css = f.read()
+
+v3_design_css = """
+/* =============================================================
+   V3 REDESIGN: 2-TIER COMMAND HEADER, MULTI-RES FPS & PLATFORM CHIPS
+   ============================================================= */
+
+/* 1. Top Navigation Bar (58px) */
+.app-header-main {
+  height: 58px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+.header-inner {
+  max-width: 1720px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
+}
+
+.brand-title {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.brand-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.12rem 0.4rem;
+  border-radius: 5px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #6366f1;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.header-center-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-right-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* 2. Sub-Header Command Strip (48px) */
+.app-command-bar {
+  height: 48px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 58px;
+  z-index: 55;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .app-command-bar {
+  background: #141a27;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.command-bar-inner {
+  max-width: 1720px;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.progress-indicator-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.progress-ring-mini {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-text-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.progress-text-label strong {
+  color: var(--text-primary);
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.progress-text-label .progress-sub {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}
+
+.command-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.command-actions .btn-tool {
+  font-family: var(--font-sans);
+  font-size: 0.80rem;
+  font-weight: 600;
+  padding: 0.32rem 0.72rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s var(--ease);
+}
+
+.command-actions .btn-tool:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.command-actions .btn-share-accent {
+  font-family: var(--font-sans);
+  font-size: 0.80rem;
+  font-weight: 700;
+  padding: 0.34rem 0.85rem;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  transition: all 0.15s var(--ease);
+}
+
+.command-actions .btn-share-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* 3. Auto-Builder Platform Choice Chips */
+.choice-chips {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.choice-chip {
+  flex: 1;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.28rem 0.45rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.choice-chip.active, .choice-chip:hover {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+}
+
+/* 4. CPU & GPU Analogs Styling */
+.analogs-box {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-subtle);
+  border-radius: 8px;
+  border: 1px dashed var(--border);
+}
+
+.analogs-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.analogs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.analog-chip-btn {
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.15s var(--ease);
+}
+
+.analog-chip-btn strong {
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+.analog-chip-btn span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.analog-chip-btn:hover {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+.analog-chip-btn:hover strong, .analog-chip-btn:hover span {
+  color: white;
+}
+
+/* 5. All-Resolutions FPS Matrix Table */
+.fps-matrix-panel {
+  grid-column: span 3;
+}
+
+.fps-benchmark-note {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.fps-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.fps-matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.fps-matrix-table th {
+  padding: 0.85rem 1.2rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+}
+
+.fps-matrix-table th.col-game {
+  width: 40%;
+}
+
+.fps-matrix-table th.col-res {
+  text-align: center;
+  width: 20%;
+}
+
+.fps-matrix-table td {
+  padding: 0.85rem 1.2rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.fps-matrix-table tr:last-child td {
+  border-bottom: none;
+}
+
+.fps-matrix-table tr:hover td {
+  background: var(--bg-subtle);
+}
+
+.game-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.game-name {
+  font-size: 0.90rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.game-genre {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.cell-fps, .col-res {
+  text-align: center;
+}
+
+.fps-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.22rem 0.65rem;
+  border-radius: 7px;
+  min-width: 85px;
+  text-align: center;
+}
+
+.fps-tag-ultra {
+  background: rgba(16, 185, 129, 0.14);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.fps-tag-high {
+  background: rgba(14, 165, 233, 0.14);
+  color: #0ea5e9;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.fps-tag-medium {
+  background: rgba(245, 158, 11, 0.14);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.fps-tag-low {
+  background: rgba(239, 68, 68, 0.14);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+"""
+
+css = css + "\n" + v3_design_css
+
+with open("css/style.css", "w", encoding="utf-8") as f:
+    f.write(css)
+
+print("Injected V3 CSS for 2-tier header, multi-res FPS matrix, and platform choices!")

@@ -1,0 +1,34 @@
+﻿# Secrets & API Keys
+gemini_config.json
+.env
+.env.*
+*.key
+*.pem
+*.secret
+credentials.json
+
+# Dependencies
+node_modules/
+
+# Logs & Runtime
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Temporary tools & scratch test artifacts
+tools/*.png
+tools/snap_*.js
+tools/test_*.png
+tools/test_*.js
+tools/patch_*.py
+tools/debug_*.js
+tools/scan_*.py
+tools/check_*.py

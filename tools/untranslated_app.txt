@@ -1,0 +1,20 @@
+L443: <span class="retailer-jump-btn">Смотреть цены ↗</span>
+L461: { label: 'Все', key: 'all' },
+L468: { label: 'Все', key: 'all' },
+L475: { label: 'Все', key: 'all' },
+L483: { label: 'Все', key: 'all' },
+L490: { label: 'Все', key: 'all' },
+L491: { label: 'Воздушные', key: 'air' },
+L492: { label: 'СЖО (AIO)', key: 'aio' }
+L495: { label: 'Все', key: 'all' },
+L502: { label: 'Все', key: 'all' },
+L509: const chips = filterConfigs[category] || [{ label: 'Все', key: 'all' }];
+L713: compatLabel.textContent = hideIncompatible ? 'Совместимые: ВКЛ' : 'Все детали: ВКЛ';
+L1013: <button type="button" class="part-store-btn" data-part-id="${part.id}" title="Сравнить цены в 8 магазинах">🏪 Цены ↗</button>
+L1065: title: `⚡ Заменить на БП достаточной мощности (${targetWattage}W+):`,
+L1081: title: `⚡ Совместимые материнские платы под ${build.cpu.name} (${build.cpu.socket}):`,
+L1094: title: `⚡ Либо процессоры под сокет ${build.motherboard.socket}:`,
+L1110: title: `⚡ Подходящая оперативная память (${build.motherboard.ramType}):`,
+L1126: title: `⚡ Просторные корпуса под видеокарту (${build.gpu.length}мм):`,
+L1142: title: `⚡ Эффективное охлаждение под ${build.cpu.name}:`,
+L1187: buyLink.title = "Где купить: E-Katalog, Morele, x-kom, Rozetka, MediaExpert...";
