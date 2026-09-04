@@ -685,23 +685,234 @@ function setupEventListeners() {
       });
     }
   });
-  // Interactive 2D Schematic Click Handlers: clicking a component opens its drawer
-  document.querySelectorAll('#pc-svg .vis-component').forEach(comp => {
-    const category = comp.dataset.category;
+
+  // =============================================================
+  // INTERACTIVE 2D SCHEMATIC: BIDIRECTIONAL HIGHLIGHTS & TOOLBAR
+  // =============================================================
+  const SCHEMATIC_CATEGORY_COLORS = {
+    cpu: '#3b82f6',
+    motherboard: '#6366f1',
+    cooler: '#06b6d4',
+    ram: '#8b5cf6',
+    gpu: '#10b981',
+    ssd: '#f59e0b',
+    hdd: '#d97706',
+    psu: '#f97316',
+    case: '#64748b'
+  };
+
+  const SCHEMATIC_CATEGORY_ICONS = {
+    cpu: '⚙️',
+    motherboard: '🎛️',
+    cooler: '❄️',
+    ram: '⚡',
+    gpu: '🎮',
+    ssd: '💾',
+    hdd: '💿',
+    psu: '🔌',
+    case: '🖥️'
+  };
+
+  function showSchematicHud(category) {
+    const hud = document.getElementById('schematic-hud');
+    if (!hud) return;
+
+    const iconEl = document.getElementById('hud-cat-icon');
+    const nameEl = document.getElementById('hud-cat-name');
+    const statusBadge = document.getElementById('hud-status-badge');
+    const titleEl = document.getElementById('hud-title');
+    const specsEl = document.getElementById('hud-specs');
+    const priceEl = document.getElementById('hud-price');
+    const hintEl = document.getElementById('hud-hint');
+
+    hud.dataset.category = category;
+    const catName = t(`cat.${category}`) || category.toUpperCase();
+    const color = SCHEMATIC_CATEGORY_COLORS[category] || '#3b82f6';
+    const icon = SCHEMATIC_CATEGORY_ICONS[category] || '⚡';
+
+    if (iconEl) iconEl.textContent = icon;
+    if (nameEl) {
+      nameEl.textContent = catName;
+      nameEl.style.color = color;
+    }
+
+    const item = buildState[category];
+    if (item) {
+      if (statusBadge) {
+        statusBadge.textContent = t('schematic.installed') || 'Установлено';
+        statusBadge.className = 'hud-status-badge installed';
+      }
+      if (titleEl) titleEl.textContent = item.name;
+      if (specsEl) {
+        const specsArr = [
+          item.socket ? `Сокет: ${item.socket}` : null,
+          item.chipset ? `Чипсет: ${item.chipset}` : null,
+          item.vram ? `VRAM: ${item.vram}` : null,
+          item.capacity ? `Объем: ${item.capacity}` : null,
+          item.wattage ? `Мощность: ${item.wattage}W` : null,
+          item.tdp ? `TDP: ${item.tdp}W` : null,
+          item.type ? `Тип: ${item.type}` : null,
+          item.formFactor ? `Форм-фактор: ${item.formFactor}` : null
+        ].filter(Boolean);
+        specsEl.textContent = specsArr.slice(0, 3).join(' • ') || (item.brand || '');
+      }
+      if (priceEl) priceEl.textContent = formatCurrency(item.price);
+      if (hintEl) hintEl.textContent = 'Кликните, чтобы заменить ↗';
+    } else {
+      if (statusBadge) {
+        statusBadge.textContent = 'Слот свободен';
+        statusBadge.className = 'hud-status-badge';
+      }
+      if (titleEl) titleEl.textContent = `Слот: ${catName}`;
+      if (specsEl) specsEl.textContent = t('schematic.emptySlot') || 'Слот свободен — нажмите для выбора';
+      if (priceEl) priceEl.textContent = '';
+      if (hintEl) hintEl.textContent = 'Выбрать в каталоге ↗';
+    }
+
+    hud.classList.add('visible');
+  }
+
+  function hideSchematicHud() {
+    const hud = document.getElementById('schematic-hud');
+    if (hud) hud.classList.remove('visible');
+  }
+
+  // 1. Slot Card Hover -> Highlight in Schematic & Ghost Slots
+  document.querySelectorAll('.slot-card').forEach(card => {
+    const category = card.dataset.category;
     if (!category) return;
 
-    comp.addEventListener('click', (e) => {
+    card.addEventListener('mouseenter', () => {
+      const color = SCHEMATIC_CATEGORY_COLORS[category] || '#38bdf8';
+      const comp = document.getElementById(`vis-${category}`);
+      const ghost = document.getElementById(`ghost-${category}`);
+
+      if (comp && !comp.classList.contains('hidden')) {
+        comp.classList.add('highlight-from-card');
+        comp.style.setProperty('--comp-highlight-color', color);
+      } else if (ghost) {
+        ghost.classList.add('active');
+      }
+
+      showSchematicHud(category);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      const comp = document.getElementById(`vis-${category}`);
+      const ghost = document.getElementById(`ghost-${category}`);
+      if (comp) {
+        comp.classList.remove('highlight-from-card');
+      }
+      if (ghost) {
+        ghost.classList.remove('active');
+      }
+      hideSchematicHud();
+    });
+  });
+
+  // 2. Schematic SVG Component & Ghost Slot Hover -> Highlight Slot Card
+  const allVisTargets = document.querySelectorAll('#pc-svg .vis-component, #pc-svg .vis-ghost-target');
+  allVisTargets.forEach(target => {
+    const category = target.dataset.category;
+    if (!category) return;
+
+    target.addEventListener('mouseenter', () => {
+      const card = document.querySelector(`.slot-card[data-category="${category}"]`);
+      const color = SCHEMATIC_CATEGORY_COLORS[category] || '#3b82f6';
+      if (card) {
+        card.classList.add('highlight-from-schematic');
+        card.style.setProperty('--card-highlight-color', color);
+      }
+      showSchematicHud(category);
+    });
+
+    target.addEventListener('mouseleave', () => {
+      const card = document.querySelector(`.slot-card[data-category="${category}"]`);
+      if (card) {
+        card.classList.remove('highlight-from-schematic');
+      }
+      hideSchematicHud();
+    });
+
+    target.addEventListener('click', (e) => {
       e.stopPropagation();
       openDrawer(category);
     });
 
-    comp.addEventListener('keydown', (e) => {
+    target.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         openDrawer(category);
       }
     });
   });
+
+  // 3. Schematic Toolbar Actions
+  const airflowBtn = document.getElementById('tool-schematic-airflow');
+  const airflowLayer = document.getElementById('vis-airflow-layer');
+  if (airflowBtn && airflowLayer) {
+    airflowBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = airflowLayer.classList.toggle('hidden');
+      airflowBtn.classList.toggle('active', !isHidden);
+      showToast(
+        !isHidden ? '💨 Симуляция воздушных потоков включена' : '💨 Симуляция воздушных потоков выключена',
+        'info'
+      );
+    });
+  }
+
+  const xrayBtn = document.getElementById('tool-schematic-xray');
+  const schematicPanel = document.querySelector('.center-schematic');
+  if (xrayBtn && schematicPanel) {
+    xrayBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isActive = schematicPanel.classList.toggle('xray-mode');
+      xrayBtn.classList.toggle('active', isActive);
+      showToast(
+        isActive ? '⚡ Режим слотов (X-Ray): отображение всех посадочных мест' : '⚡ Режим X-Ray выключен',
+        'info'
+      );
+    });
+  }
+
+  const rgbBtn = document.getElementById('tool-schematic-rgb');
+  if (rgbBtn && schematicPanel) {
+    rgbBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isRgb = schematicPanel.classList.toggle('rgb-active');
+      rgbBtn.classList.toggle('active', isRgb);
+      showToast(
+        isRgb ? '🌈 Анимированная RGB-подсветка активирована' : '🌈 RGB-подсветка выключена',
+        'info'
+      );
+    });
+  }
+
+  const scaleBtn = document.getElementById('tool-schematic-scale');
+  if (scaleBtn && schematicPanel) {
+    scaleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = schematicPanel.classList.toggle('is-expanded');
+      scaleBtn.classList.toggle('active', isExpanded);
+      showToast(
+        isExpanded ? '🔍 Масштаб схемы увеличен' : '🔍 Стандартный масштаб схемы',
+        'info'
+      );
+    });
+  }
+
+  // 4. Clicking the Floating HUD directly opens the drawer
+  const hudElement = document.getElementById('schematic-hud');
+  if (hudElement) {
+    hudElement.style.pointerEvents = 'all';
+    hudElement.style.cursor = 'pointer';
+    hudElement.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cat = hudElement.dataset.category;
+      if (cat) openDrawer(cat);
+    });
+  }
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'z') {
       undo();
@@ -1833,6 +2044,27 @@ function updateSvgVisualizer() {
     }
   });
 
+  // Ghost slot targets synchronization
+  const ghostMap = {
+    motherboard: 'ghost-motherboard',
+    cpu: 'ghost-cpu',
+    ram: 'ghost-ram',
+    cooler: 'ghost-cooler',
+    gpu: 'ghost-gpu',
+    ssd: 'ghost-ssd',
+    hdd: 'ghost-hdd',
+    psu: 'ghost-psu'
+  };
+  Object.entries(ghostMap).forEach(([category, ghostId]) => {
+    const ghostEl = document.getElementById(ghostId);
+    if (!ghostEl) return;
+    if (buildState[category]) {
+      ghostEl.style.display = 'none';
+    } else {
+      ghostEl.style.display = '';
+    }
+  });
+
   // 1. Dynamic Model Sub-labels in Schematic
   const mbNameEl = document.getElementById('vis-mb-name');
   if (mbNameEl) {
@@ -1864,15 +2096,20 @@ function updateSvgVisualizer() {
     psuNameEl.textContent = buildState.psu ? `${buildState.psu.wattage}W` : '';
   }
 
+  const caseNameEl = document.getElementById('vis-case-name');
+  if (caseNameEl) {
+    caseNameEl.textContent = buildState.case ? buildState.case.name.slice(0, 24) : '';
+  }
+
   // 2. Case chassis outline interactive stroke & fill
   const caseFrame = document.getElementById('vis-case-frame');
   if (caseFrame) {
     if (buildState.case) {
       caseFrame.style.stroke = 'var(--text-primary)';
-      caseFrame.style.strokeWidth = '2px';
+      caseFrame.style.strokeWidth = '2.2px';
       caseFrame.style.strokeDasharray = 'none';
       caseFrame.style.fill = 'var(--surface)';
-      caseFrame.style.fillOpacity = '0.5';
+      caseFrame.style.fillOpacity = '0.6';
     } else {
       caseFrame.style.stroke = 'var(--border)';
       caseFrame.style.strokeWidth = '1.4px';
@@ -1889,6 +2126,12 @@ function updateSvgVisualizer() {
     const aioEl = document.getElementById('vis-cooler-aio');
     if (airEl) airEl.classList.toggle('hidden', isAio);
     if (aioEl) aioEl.classList.toggle('hidden', !isAio);
+  }
+
+  // 4. Refresh HUD if open
+  const hud = document.getElementById('schematic-hud');
+  if (hud && hud.classList.contains('visible') && hud.dataset.category) {
+    showSchematicHud(hud.dataset.category);
   }
 }
 

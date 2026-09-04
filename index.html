@@ -344,10 +344,49 @@
         <!-- Center Schematic / Blueprint -->
         <div class="stage-panel center-schematic">
           <div class="schematic-header">
-            <span class="schematic-title">Схема сборки (Интерактивная)</span>
-            <span class="status-badge" id="chassis-status" data-i18n="status.waiting">Waiting</span>
+            <div class="schematic-header-left">
+              <span class="schematic-title" data-i18n="dash.visualizer.title">Схема сборки (Интерактивная)</span>
+              <span class="status-badge" id="chassis-status" data-i18n="status.waiting">Waiting</span>
+            </div>
+            <div class="schematic-toolbar" role="toolbar" aria-label="Инструменты схемы сборки">
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-airflow" title="Симуляция воздушного потока">
+                <span class="tool-icon">💨</span>
+                <span class="tool-label" data-i18n="schematic.airflow">Поток воздуха</span>
+              </button>
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-xray" title="Показать посадочные места и слоты">
+                <span class="tool-icon">⚡</span>
+                <span class="tool-label" data-i18n="schematic.xray">Слоты</span>
+              </button>
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-rgb" title="RGB подсветка">
+                <span class="tool-icon">🌈</span>
+                <span class="tool-label" data-i18n="schematic.rgb">RGB</span>
+              </button>
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-scale" title="Увеличить масштаб схемы">
+                <span class="tool-icon">🔍</span>
+                <span class="tool-label" data-i18n="schematic.zoom">Масштаб</span>
+              </button>
+            </div>
           </div>
           <div class="svg-container">
+            <!-- Floating Schematic HUD Inspector -->
+            <div class="schematic-hud" id="schematic-hud" aria-live="polite">
+              <div class="hud-top">
+                <div class="hud-cat-pill">
+                  <span class="hud-cat-icon" id="hud-cat-icon">⚡</span>
+                  <span class="hud-cat-name" id="hud-cat-name">Компонент</span>
+                </div>
+                <span class="hud-status-badge" id="hud-status-badge">Слот свободен</span>
+              </div>
+              <div class="hud-content">
+                <div class="hud-title" id="hud-title">Наведите на деталь</div>
+                <div class="hud-specs" id="hud-specs">Кликните по компоненту для выбора из каталога</div>
+              </div>
+              <div class="hud-action-row">
+                <span class="hud-price" id="hud-price"></span>
+                <span class="hud-hint" id="hud-hint">Нажмите для выбора ↗</span>
+              </div>
+            </div>
+
             <svg id="pc-svg" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <!-- Grid background pattern for blueprint look -->
@@ -387,8 +426,77 @@
               <!-- Chassis interior background grid -->
               <rect x="15" y="15" width="290" height="370" rx="14" fill="url(#blueprint-grid)" />
 
-              <!-- Chassis outer frame -->
-              <rect id="vis-case-frame" class="vis-case-outer" x="15" y="15" width="290" height="370" rx="14" fill="var(--bg-subtle)" stroke="var(--border)" stroke-width="1.6" />
+              <!-- Chassis outer frame & interactive case component -->
+              <g id="vis-case" class="vis-component" data-category="case" role="button" tabindex="0">
+                <rect id="vis-case-frame" class="vis-case-outer comp-shape" x="15" y="15" width="290" height="370" rx="14" fill="var(--bg-subtle)" stroke="var(--border)" stroke-width="1.8" />
+                <rect class="case-shroud-plate" x="134" y="338" width="66" height="26" rx="3" fill="var(--surface)" fill-opacity="0.85" stroke="var(--border)" stroke-width="0.8" />
+                <text id="vis-case-badge" x="167" y="348" text-anchor="middle" dominant-baseline="middle" class="vis-label case-badge-text" font-size="6" fill="var(--text-tertiary)" font-weight="800">КОРПУС</text>
+                <text id="vis-case-name" x="167" y="358" text-anchor="middle" dominant-baseline="middle" class="vis-sublabel" font-size="5.8" fill="var(--text-secondary)" font-weight="600"></text>
+              </g>
+
+              <!-- Ghost Slot Targets for unselected parts / X-Ray mode -->
+              <g id="vis-ghost-slots" class="vis-ghost-layer">
+                <g id="ghost-motherboard" class="vis-ghost-target" data-category="motherboard">
+                  <rect x="38" y="44" width="224" height="268" rx="8" fill="rgba(99, 102, 241, 0.03)" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="4,4" />
+                  <text x="150" y="160" class="ghost-label" text-anchor="middle" fill="#6366f1" font-size="8">СЛОТ МАТЕРИНСКОЙ ПЛАТЫ</text>
+                </g>
+                <g id="ghost-cpu" class="vis-ghost-target" data-category="cpu">
+                  <rect x="94" y="80" width="60" height="60" rx="5" fill="rgba(59, 130, 246, 0.04)" stroke="#3b82f6" stroke-width="1.2" stroke-dasharray="3,3" />
+                  <text x="124" y="112" class="ghost-label" text-anchor="middle" fill="#3b82f6" font-size="7.5">СОКЕТ CPU</text>
+                </g>
+                <g id="ghost-cooler" class="vis-ghost-target" data-category="cooler">
+                  <circle cx="124" cy="109" r="30" fill="rgba(6, 182, 212, 0.04)" stroke="#06b6d4" stroke-width="1.2" stroke-dasharray="3,3" />
+                  <text x="124" y="112" class="ghost-label" text-anchor="middle" fill="#06b6d4" font-size="7">КУЛЕР CPU</text>
+                </g>
+                <g id="ghost-ram" class="vis-ghost-target" data-category="ram">
+                  <rect x="166" y="70" width="19" height="82" rx="2" fill="rgba(139, 92, 246, 0.04)" stroke="#8b5cf6" stroke-width="1.2" stroke-dasharray="3,3" />
+                  <text x="175" y="115" class="ghost-label" text-anchor="middle" fill="#8b5cf6" font-size="6.5" transform="rotate(-90 175 115)">DDR5 RAM</text>
+                </g>
+                <g id="ghost-gpu" class="vis-ghost-target" data-category="gpu">
+                  <rect x="28" y="196" width="248" height="58" rx="6" fill="rgba(16, 185, 129, 0.04)" stroke="#10b981" stroke-width="1.4" stroke-dasharray="4,3" />
+                  <text x="152" y="228" class="ghost-label" text-anchor="middle" fill="#10b981" font-size="8">СЛОТ PCIe 5.0 (GPU)</text>
+                </g>
+                <g id="ghost-ssd" class="vis-ghost-target" data-category="ssd">
+                  <rect x="136" y="172" width="60" height="15" rx="2.5" fill="rgba(245, 158, 11, 0.04)" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="3,2" />
+                  <text x="166" y="182" class="ghost-label" text-anchor="middle" fill="#f59e0b" font-size="6">M.2 NVMe</text>
+                </g>
+                <g id="ghost-hdd" class="vis-ghost-target" data-category="hdd">
+                  <rect x="206" y="332" width="76" height="38" rx="4" fill="rgba(217, 119, 6, 0.04)" stroke="#d97706" stroke-width="1.2" stroke-dasharray="3,3" />
+                  <text x="244" y="354" class="ghost-label" text-anchor="middle" fill="#d97706" font-size="7">3.5" HDD BAY</text>
+                </g>
+                <g id="ghost-psu" class="vis-ghost-target" data-category="psu">
+                  <rect x="28" y="330" width="98" height="42" rx="4" fill="rgba(249, 115, 22, 0.04)" stroke="#f97316" stroke-width="1.2" stroke-dasharray="3,3" />
+                  <text x="77" y="354" class="ghost-label" text-anchor="middle" fill="#f97316" font-size="7">ОТСЕК БП (PSU)</text>
+                </g>
+              </g>
+
+              <!-- Airflow Simulation Streamlines Layer -->
+              <g id="vis-airflow-layer" class="vis-airflow-layer hidden">
+                <defs>
+                  <linearGradient id="airflow-intake-grad" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85" />
+                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.15" />
+                  </linearGradient>
+                  <linearGradient id="airflow-exhaust-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#fb7185" stop-opacity="0.2" />
+                    <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.9" />
+                  </linearGradient>
+                </defs>
+                <!-- Cold Intake air streams (Front to Rear/CPU) -->
+                <path class="airflow-line intake" d="M 290 85 C 230 85, 180 88, 150 90" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 155 C 220 155, 175 145, 135 145" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 225 C 240 225, 190 225, 150 225" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 350 C 220 350, 170 350, 130 350" stroke="url(#airflow-intake-grad)" stroke-width="2" stroke-linecap="round" fill="none" />
+
+                <!-- Warm Exhaust air streams (CPU/Cooler out rear and top) -->
+                <path class="airflow-line exhaust" d="M 115 90 C 75 90, 45 110, 25 110" stroke="url(#airflow-exhaust-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 124 65 C 124 45, 100 25, 65 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 160 65 C 160 45, 185 25, 220 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 60 215 C 40 215, 30 205, 20 205" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+
+                <text x="248" y="52" class="airflow-label cold" font-size="6.5" fill="#38bdf8" font-weight="700">IN: ХОЛОДНЫЙ</text>
+                <text x="20" y="86" class="airflow-label warm" font-size="6.5" fill="#f43f5e" font-weight="700">OUT: ВЫХЛОП</text>
+              </g>
 
               <!-- Rear I/O Panel cutout notch -->
               <rect x="15" y="52" width="6" height="58" rx="2" fill="var(--border)" fill-opacity="0.4" />
@@ -435,9 +543,9 @@
                 <line x1="52" y1="199.5" x2="188" y2="199.5" stroke="#6366f1" stroke-width="0.6" stroke-dasharray="2,2" />
                 <!-- PCIe x16 Slot Secondary -->
                 <rect class="pcie-slot" x="48" y="270" width="120" height="6" rx="1.5" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-width="0.8" />
-                <!-- Motherboard Label & Model Tag -->
-                <text x="50" y="300" class="vis-label mb-label" text-anchor="start">MOTHERBOARD</text>
-                <text id="vis-mb-name" x="50" y="308" class="vis-sublabel" text-anchor="start"></text>
+                <!-- Motherboard Label & Model Tag — inside top-left of PCB -->
+                <text x="150" y="56" class="vis-label mb-label" text-anchor="middle">МАТЕРИНСКАЯ ПЛАТА</text>
+                <text id="vis-mb-name" x="150" y="65" class="vis-sublabel" text-anchor="middle"></text>
               </g>
 
               <!-- 2. CPU -->
@@ -450,9 +558,9 @@
                 <polygon points="99,85 107,85 99,93" fill="#3b82f6" />
                 <!-- Circuit lines on IHS -->
                 <rect x="109" y="95" width="30" height="30" rx="2" fill="none" stroke="#3b82f6" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.7" />
-                <!-- CPU Core Label -->
-                <text x="124" y="108" class="vis-label cpu-label">CPU</text>
-                <text id="vis-cpu-name" x="124" y="118" class="vis-sublabel"></text>
+                <!-- CPU Core Label — centered in IHS -->
+                <text x="124" y="107" class="vis-label cpu-label" text-anchor="middle" dominant-baseline="middle" font-size="7.5">CPU</text>
+                <text id="vis-cpu-name" x="124" y="119" class="vis-sublabel" text-anchor="middle" dominant-baseline="middle"></text>
               </g>
 
               <!-- 3. RAM (DIMM Slots) -->
@@ -468,8 +576,8 @@
                 <!-- Heatspreader notched accent -->
                 <line x1="169.75" y1="78" x2="169.75" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
                 <line x1="181.75" y1="78" x2="181.75" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
-                <!-- RAM Label -->
-                <text x="176" y="162" class="vis-label ram-label">RAM</text>
+                <!-- RAM Label — below sticks -->
+                <text x="176" y="158" class="vis-label ram-label" text-anchor="middle" dominant-baseline="middle" font-size="6.5">ОЗУ</text>
               </g>
 
               <!-- 4. CPU COOLER -->
@@ -495,7 +603,7 @@
                   <circle cx="114" cy="71" r="2" fill="#d97706" />
                   <circle cx="134" cy="71" r="2" fill="#d97706" />
                   <circle cx="154" cy="71" r="2" fill="#d97706" />
-                  <text x="124" y="112" class="vis-label cooler-label" font-size="7.5">AIR COOLER</text>
+                  <text x="124" y="142" class="vis-label cooler-label" text-anchor="middle" dominant-baseline="middle" font-size="7">БАШЕННЫЙ КУЛЕР</text>
                 </g>
 
                 <!-- 4B. AIO Liquid Cooler Option -->
@@ -503,11 +611,11 @@
                   <!-- Top-Mounted Radiator Stack (240mm/360mm) -->
                   <rect class="comp-shape aio-rad" x="42" y="18" width="220" height="22" rx="4" fill="#06b6d4" fill-opacity="0.18" stroke="#06b6d4" stroke-width="1.6" />
                   <line x1="42" y1="29" x2="262" y2="29" stroke="#06b6d4" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
-                  <text x="152" y="27" class="vis-label" font-size="6" fill="#06b6d4">LIQUID RADIATOR</text>
+                  <text x="152" y="29" class="vis-label" text-anchor="middle" dominant-baseline="middle" font-size="6" fill="#06b6d4">РАДИАТОР СЖО</text>
                   <!-- CPU Pump Block with Infinity Mirror Ring -->
                   <circle class="comp-shape aio-pump" cx="124" cy="110" r="20" fill="var(--surface)" stroke="#06b6d4" stroke-width="2" />
                   <circle cx="124" cy="110" r="14" fill="#06b6d4" fill-opacity="0.2" stroke="#06b6d4" stroke-width="1" />
-                  <text x="124" y="112" class="vis-label" font-size="6.5">AIO PUMP</text>
+                  <text x="124" y="110" class="vis-label" text-anchor="middle" dominant-baseline="middle" font-size="6">СЖО</text>
                   <!-- Flexible Braided Liquid Tubes -->
                   <path d="M 116 94 C 108 55, 80 44, 74 40" fill="none" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" />
                   <path d="M 132 94 C 142 55, 175 44, 185 40" fill="none" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" />
@@ -531,9 +639,9 @@
                 <circle cx="205" cy="225" r="6" fill="#10b981" fill-opacity="0.4" />
                 <!-- 12V-2x6 / 8-Pin Power Header Plug -->
                 <rect x="246" y="190" width="16" height="7" rx="1.5" fill="#10b981" stroke="#10b981" stroke-width="0.8" />
-                <!-- GPU Labels -->
-                <text x="145" y="248" class="vis-label gpu-label">GRAPHICS CARD (GPU)</text>
-                <text id="vis-gpu-name" x="145" y="210" class="vis-sublabel"></text>
+                <!-- GPU Labels — model name in upper backplate, category label below fans -->
+                <text x="145" y="205" class="vis-label gpu-label" text-anchor="middle" dominant-baseline="middle" font-size="7.5">ВИДЕОКАРТА</text>
+                <text id="vis-gpu-name" x="145" y="247" class="vis-sublabel" text-anchor="middle" dominant-baseline="middle"></text>
               </g>
 
               <!-- 6. SSD (M.2 NVMe with Heatsink) -->
@@ -548,8 +656,8 @@
                 <!-- Controller chip & Gold retention notch -->
                 <rect x="138" y="174" width="8" height="11" rx="1" fill="#f59e0b" fill-opacity="0.5" />
                 <circle cx="193" cy="179.5" r="1.5" fill="#d97706" />
-                <!-- SSD Label -->
-                <text x="166" y="182" class="vis-label ssd-label" font-size="6.5">NVMe M.2 SSD</text>
+                <!-- SSD Label — centered on stick -->
+                <text x="166" y="179.5" class="vis-label ssd-label" text-anchor="middle" dominant-baseline="middle" font-size="6">M.2 SSD</text>
               </g>
 
               <!-- 7. HDD (3.5" Drive Bay in Shroud) -->
@@ -559,8 +667,8 @@
                 <!-- Platter spindle cutout -->
                 <circle cx="236" cy="351" r="11" fill="none" stroke="#a855f7" stroke-width="0.9" stroke-dasharray="2,2" />
                 <circle cx="236" cy="351" r="3" fill="#a855f7" fill-opacity="0.5" />
-                <!-- HDD Label -->
-                <text x="256" y="354" class="vis-label hdd-label" font-size="7">3.5" HDD</text>
+                <!-- HDD Label — right of spindle -->
+                <text x="258" y="351" class="vis-label hdd-label" text-anchor="middle" dominant-baseline="middle" font-size="6.5">HDD</text>
               </g>
 
               <!-- 8. PSU (Power Supply in Shroud) -->
@@ -572,9 +680,9 @@
                 <circle cx="74" cy="351" r="5" fill="#0ea5e9" fill-opacity="0.4" />
                 <!-- Modular Cable Connectors Outlines -->
                 <line x1="126" y1="336" x2="126" y2="366" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" />
-                <!-- PSU Label & Wattage -->
-                <text x="74" y="353" class="vis-label psu-label" font-size="7.5">PSU</text>
-                <text id="vis-psu-name" x="74" y="367" class="vis-sublabel" font-size="6.5"></text>
+                <!-- PSU Label & Wattage — centered in fan -->
+                <text x="74" y="349" class="vis-label psu-label" text-anchor="middle" dominant-baseline="middle" font-size="7">БП</text>
+                <text id="vis-psu-name" x="74" y="362" class="vis-sublabel" text-anchor="middle" dominant-baseline="middle" font-size="6.5"></text>
               </g>
             </svg>
           </div>

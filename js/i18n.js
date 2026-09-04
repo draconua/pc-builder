@@ -627,7 +627,13 @@ const HARD_FALLBACKS = {
   'store.modal.hint': { ru: 'Прямые ссылки для поиска цен и покупки в ведущих магазинах:', en: 'Direct search links to top electronics retailers:', pl: 'Bezpośrednie linki do wyszukiwania cen w czołowych sklepach:', ua: 'Прямі посилання для пошуку цін у провідних магазинах:' },
   'store.jump': { ru: 'Смотреть цены ↗', en: 'Check prices ↗', pl: 'Sprawdź ceny ↗', ua: 'Дивитися ціни ↗' },
   'drawer.filter.all': { ru: 'Все', en: 'All', pl: 'Wszystkie', ua: 'Усі' },
-  'drawer.sort.popular': { ru: '⚡ Топ продаж', en: '⚡ Popular', pl: '⚡ Bestsellery', ua: '⚡ Топ продажів' }
+  'drawer.sort.popular': { ru: '⚡ Топ продаж', en: '⚡ Popular', pl: '⚡ Bestsellery', ua: '⚡ Топ продажів' },
+  'schematic.airflow': { ru: 'Поток воздуха', en: 'Airflow', pl: 'Przepływ powietrza', ua: 'Потік повітря' },
+  'schematic.xray': { ru: 'Слоты', en: 'Slots X-Ray', pl: 'Gniazda', ua: 'Слоти' },
+  'schematic.rgb': { ru: 'RGB', en: 'RGB', pl: 'RGB', ua: 'RGB' },
+  'schematic.zoom': { ru: 'Масштаб', en: 'Scale', pl: 'Skala', ua: 'Масштаб' },
+  'schematic.emptySlot': { ru: 'Слот свободен — нажмите для выбора', en: 'Empty slot — click to choose', pl: 'Wolne gniazdo — kliknij, aby wybrać', ua: 'Вільний слот — натисніть для вибору' },
+  'schematic.installed': { ru: 'Установлено', en: 'Installed', pl: 'Zainstalowano', ua: 'Встановлено' }
 };
 
 export function t(key) {
