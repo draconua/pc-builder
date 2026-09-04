@@ -2735,7 +2735,7 @@ function initProChat() {
     try {
       chatHistory.push({ role: 'user', content: text });
 
-      const response = await fetch('/api/ai-chat', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2774,12 +2774,12 @@ function initProChat() {
         appendMessage('ai', aiData.reply, appliedSummary);
       } else {
         appendMessage('ai', res.error?.includes('GEMINI_API_KEY') 
-          ? 'Для работы PRO-консультанта вставьте ваш API-ключ в файл `gemini_config.json` в корневой папке проекта.'
+          ? 'Для работы PRO-консультанта настройте переменную окружения `GEMINI_API_KEY` в панели Vercel (Project Settings -> Environment Variables) или в файле `gemini_config.json` локально.'
           : `Ошибка связи с Gemini Pro: ${res.error || 'Не удалось получить ответ'}`);
       }
     } catch (err) {
       removeLoadingBubble(loadingId);
-      appendMessage('ai', 'Ошибка сети при обращении к локальному AI-серверу.');
+      appendMessage('ai', 'Ошибка сети при обращении к AI-консультанту.');
     } finally {
       proSendBtn.disabled = false;
     }

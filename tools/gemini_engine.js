@@ -1,4 +1,4 @@
-﻿// tools/gemini_engine.js — Core Google Gemini AI Engine
+// tools/gemini_engine.js — Core Google Gemini AI Engine
 // Handles:
 // 1. AI Smart Auto-Build (Free tier background generation)
 // 2. AI Hardware Synergy & Bottleneck analysis (Live hardware analysis)
@@ -8,7 +8,10 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const ROOT_DIR = path.join(__dirname, '..');
+const ROOT_DIR = fs.existsSync(path.join(__dirname, '..', 'js', 'data.js'))
+  ? path.join(__dirname, '..')
+  : (fs.existsSync(path.join(process.cwd(), 'js', 'data.js')) ? process.cwd() : path.join(__dirname, '..'));
+
 const CONFIG_PATH = path.join(ROOT_DIR, 'gemini_config.json');
 const PRICES_PATH = path.join(ROOT_DIR, 'data', 'prices_pl.json');
 const DATA_JS_PATH = path.join(ROOT_DIR, 'js', 'data.js');
@@ -179,18 +182,62 @@ function executeGeminiRequest(contents, systemInstruction, responseSchema, model
 
 // In-memory cached parts database from js/data.js
 let cachedDb = null;
+
+function parsePartsFromText(content) {
+  const partsByCategory = {};
+  const categories = ['cpu', 'gpu', 'motherboard', 'ram', 'cooler', 'ssd', 'hdd', 'psu', 'case', 'monitor'];
+  categories.forEach(cat => {
+    partsByCategory[cat] = [];
+    const catRegex = new RegExp(`${cat}:\\s*\\[([\\s\\S]*?)\\]\\s*,`, 'i');
+    const catMatch = content.match(catRegex);
+    if (catMatch) {
+      const block = catMatch[1];
+      const itemRegex = /{\s*id:\s*'([^']+)',\s*name:\s*'([^']+)'(?:[^}]*?price:\s*([0-9.]+))?(?:[^}]*?socket:\s*'([^']+)')?(?:[^}]*?ramType:\s*'([^']+)')?(?:[^}]*?vram:\s*([0-9]+))?(?:[^}]*?capacity:\s*'([^']+)')?(?:[^}]*?wattage:\s*([0-9]+))?(?:[^}]*?type:\s*'([^']+)')?/g;
+      let m;
+      while ((m = itemRegex.exec(block)) !== null) {
+        partsByCategory[cat].push({
+          id: m[1],
+          name: m[2],
+          price: m[3] ? parseFloat(m[3]) : 100,
+          socket: m[4] || '',
+          ramType: m[5] || '',
+          vram: m[6] ? parseInt(m[6], 10) : undefined,
+          capacity: m[7] || '',
+          wattage: m[8] ? parseInt(m[8], 10) : undefined,
+          type: m[9] || '',
+          category: cat
+        });
+      }
+    }
+  });
+  return partsByCategory;
+}
+
 async function loadPartsDatabase() {
   if (cachedDb) return cachedDb;
   try {
     const url = require('url');
     const fileUrl = url.pathToFileURL(DATA_JS_PATH).href;
     const mod = await import(fileUrl);
-    cachedDb = mod.PARTS_DATABASE || {};
-    return cachedDb;
+    if (mod && mod.PARTS_DATABASE && Object.keys(mod.PARTS_DATABASE).length > 0) {
+      cachedDb = mod.PARTS_DATABASE;
+      return cachedDb;
+    }
   } catch (e) {
-    console.error('[Gemini Engine] Failed to load PARTS_DATABASE:', e);
-    return {};
+    // Dynamic import fallback
   }
+
+  try {
+    if (fs.existsSync(DATA_JS_PATH)) {
+      const content = fs.readFileSync(DATA_JS_PATH, 'utf-8');
+      cachedDb = parsePartsFromText(content);
+      return cachedDb;
+    }
+  } catch (err) {
+    console.warn('[Gemini Engine] Failed to parse data.js via fallback:', err.message);
+  }
+
+  return {};
 }
 
 async function getCompactCatalog() {

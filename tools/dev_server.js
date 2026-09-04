@@ -1,4 +1,4 @@
-﻿// tools/dev_server.js — Integrated Static + Scraper API + Gemini AI Dev Server on port 3000
+// tools/dev_server.js — Integrated Static + Scraper API + Gemini AI Dev Server on port 3000
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -131,7 +131,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   // 3. AI Interactive Chat Assistant (Pro tier conversational builder)
-  if (pathname === '/api/ai-chat' && req.method === 'POST') {
+  if ((pathname === '/api/chat' || pathname === '/api/ai-chat') && req.method === 'POST') {
     try {
       const payload = await parseJsonBody(req);
       const result = await processAiChat(payload);
@@ -141,6 +141,20 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
       res.end(JSON.stringify({ ok: false, error: err.message }));
     }
+    return;
+  }
+
+  if (pathname === '/api/chat' && req.method === 'GET') {
+    const key = getApiKey();
+    const hasKey = !!key;
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify({
+      ok: true,
+      service: 'PC Builder AI Consultant',
+      endpoint: '/api/chat',
+      configured: hasKey,
+      message: hasKey ? 'Gemini AI подключен' : 'Ключ не настроен'
+    }));
     return;
   }
 
