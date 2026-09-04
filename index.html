@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260903_v3">
+  <link rel="stylesheet" href="css/style.css?v=20260904_v5">
 </head>
 <body>
   <div class="app">
@@ -41,7 +41,7 @@
             <div class="autobuild-popover hidden" id="autobuild-popover">
               <div class="popover-header">
                 <span class="popover-title">✨ Параметры авто-подбора ПК</span>
-                <button id="autobuild-popover-close" class="popover-close-btn" type="button" aria-label="Закрыть">×</button>
+                <button id="autobuild-popover-close" class="popover-close-btn app-close-btn" type="button" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
               </div>
               <div class="popover-body">
                 <!-- Budget -->
@@ -1037,7 +1037,7 @@
           <h2 id="drawer-title" data-i18n="drawer.title">Select Component</h2>
           <span class="drawer-count-badge" id="drawer-parts-count">0 доступно</span>
         </div>
-        <button id="drawer-close" class="drawer-close-btn" aria-label="Close drawer">×</button>
+        <button id="drawer-close" class="drawer-close-btn app-close-btn" aria-label="Close drawer" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
       <div class="drawer-controls geek-drawer-controls">
         <div class="search-input-wrapper geek-search-wrapper">
@@ -1088,7 +1088,7 @@
               <div id="retailer-modal-specs"></div>
             </div>
           </div>
-          <button type="button" class="retailer-modal-close-btn" id="retailers-modal-close" aria-label="Закрыть" title="Закрыть">×</button>
+          <button type="button" class="retailer-modal-close-btn app-close-btn" id="retailers-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body retailer-modal-body">
           <p class="retailer-sub-hint" data-i18n="store.modal.hint">Выберите страну и магазин для перехода к актуальным ценам:</p>
@@ -1114,7 +1114,7 @@
       <div class="modal-dialog">
         <div class="modal-header">
           <h3 data-i18n="modal.save.title">Сохранить сборку</h3>
-          <button type="button" class="modal-close" id="save-modal-close" aria-label="Закрыть">×</button>
+          <button type="button" class="modal-close app-close-btn" id="save-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body">
           <label for="save-build-name" class="modal-label" data-i18n="modal.save.label">Название конфигурации:</label>
@@ -1132,7 +1132,7 @@
       <div class="modal-dialog">
         <div class="modal-header">
           <h3 data-i18n="modal.export.title">Экспорт конфигурации</h3>
-          <button type="button" class="modal-close" id="export-modal-close" aria-label="Закрыть">×</button>
+          <button type="button" class="modal-close app-close-btn" id="export-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body">
           <textarea id="export-text" class="modal-textarea" readonly></textarea>
@@ -1149,7 +1149,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-header">
           <h3 data-i18n="modal.compare.title">Сравнение конфигураций</h3>
-          <button type="button" class="modal-close" id="comparison-modal-close" aria-label="Закрыть">×</button>
+          <button type="button" class="modal-close app-close-btn" id="comparison-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body">
           <div id="comparison-content" class="comparison-container"></div>
@@ -1158,7 +1158,7 @@
     </div>
   </div>
 
-  <script type="module" src="js/app.js?v=20260903_v6"></script>
+  <script type="module" src="js/app.js?v=20260904_v5"></script>
 
     <!-- DEV CABINET: LIVE PRICE PARSER MODAL -->
     <div id="dev-prices-modal" class="modal-overlay hidden">
@@ -1169,7 +1169,7 @@
             <span class="dev-badge">DEV TOOL</span>
             <h2>Актуализация цен в Польше (Morele & Ceneo)</h2>
           </div>
-          <button id="dev-modal-close" class="modal-close-btn" aria-label="Close">×</button>
+          <button id="dev-modal-close" class="modal-close-btn app-close-btn" aria-label="Close" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
 
         <div class="dev-modal-body">
@@ -1285,7 +1285,7 @@
             <div class="pro-ai-status" id="pro-ai-status-indicator">● Интерактивный подбор железа</div>
           </div>
         </div>
-        <button type="button" class="pro-chat-close-btn" id="pro-chat-close" aria-label="Закрыть" title="Закрыть">×</button>
+        <button type="button" class="pro-chat-close-btn app-close-btn" id="pro-chat-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
 
       <!-- Chat Messages Container -->
@@ -1333,7 +1333,7 @@
             <p class="guide-modal-subtitle">Понятное руководство простыми словами для новичков и полезная шпаргалка по выбору идеального баланса</p>
           </div>
         </div>
-        <button id="hardware-guide-close" class="modal-close-btn" aria-label="Close guide">×</button>
+        <button id="hardware-guide-close" class="modal-close-btn app-close-btn" aria-label="Close guide" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
 
       <div class="guide-modal-body">

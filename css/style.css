@@ -1443,6 +1443,7 @@ input, textarea, select, button {
 }
 
 /* Universal Close Buttons: unified size, layout, typography, transitions, hover, active, focus */
+.app-close-btn,
 .modal-close,
 .modal-close-btn,
 .drawer-close-btn,
@@ -1473,7 +1474,7 @@ input, textarea, select, button {
   margin: 0 !important;
   background: transparent !important;
   border: 1px solid var(--border) !important;
-  border-radius: var(--radius-sm) !important;
+  border-radius: 8px !important;
   color: var(--text-secondary) !important;
   font-family: var(--font-sans) !important;
   font-size: 1.25rem !important;
@@ -1482,16 +1483,36 @@ input, textarea, select, button {
   user-select: none !important;
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-  transition: background-color var(--duration-fast) var(--ease),
-              border-color var(--duration-fast) var(--ease),
-              color var(--duration-fast) var(--ease),
-              transform var(--duration-fast) var(--ease),
-              box-shadow var(--duration-fast) var(--ease) !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+.app-close-btn svg,
+.modal-close svg,
+.modal-close-btn svg,
+.drawer-close-btn svg,
+.retailer-modal-close-btn svg,
+.pro-chat-close svg,
+.pro-chat-close-btn svg,
+.popover-close-btn svg,
+.toast-close svg,
+#drawer-close svg,
+#save-modal-close svg,
+#export-modal-close svg,
+#comparison-modal-close svg,
+#dev-modal-close svg,
+#hardware-guide-close svg,
+#autobuild-popover-close svg,
+#retailers-modal-close svg,
+#pro-chat-close svg {
+  display: block !important;
+  pointer-events: none !important;
+  flex-shrink: 0 !important;
+}
+
+.app-close-btn:hover,
 .modal-close:hover,
 .modal-close-btn:hover,
 .drawer-close-btn:hover,
@@ -1513,8 +1534,11 @@ input, textarea, select, button {
   background-color: var(--bg-subtle) !important;
   border-color: var(--border-hover) !important;
   color: var(--text-primary) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
 }
 
+.app-close-btn:active,
 .modal-close:active,
 .modal-close-btn:active,
 .drawer-close-btn:active,
@@ -1535,8 +1559,10 @@ input, textarea, select, button {
 #pro-chat-close:active {
   transform: scale(0.92) !important;
   background-color: var(--surface-active) !important;
+  box-shadow: none !important;
 }
 
+.app-close-btn:focus-visible,
 .modal-close:focus-visible,
 .modal-close-btn:focus-visible,
 .drawer-close-btn:focus-visible,
