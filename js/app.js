@@ -2553,7 +2553,35 @@ function initDevCabinet() {
           return;
         }
 
-        // Start polling
+        // If serverless response returned live results directly
+        if (data.liveResults && data.liveResults.length > 0) {
+          const ratePLN = EXCHANGE_RATES['PLN'] || 4.05;
+          data.liveResults.forEach(r => {
+            const list = PARTS_DATABASE[category] || [];
+            const part = list.find(p => p.id === r.id);
+            if (part) {
+              part.pricePLN = r.pricePLN;
+              part.price = Math.round(r.pricePLN / ratePLN);
+              if (r.url) {
+                if (!part.buyLinks) part.buyLinks = {};
+                part.buyLinks.ceneo = r.url;
+              }
+            }
+          });
+          updateUI();
+          showToast({
+            title: '⚡ Цены синхронизированы',
+            message: data.message || 'Актуальные цены применены к конфигуратору.',
+            type: 'success',
+            duration: 5000
+          });
+          btnStart.classList.remove('hidden');
+          if (btnStop) btnStop.classList.add('hidden');
+          checkDevSyncStatus();
+          return;
+        }
+
+        // Start polling for background scraper
         startDevPolling();
       } catch (err) {
         console.error('Failed to start sync:', err);
@@ -2676,9 +2704,24 @@ async function checkDevSyncStatus() {
 
 async function loadAndApplyCachedPrices(showNotification = false) {
   try {
-    const res = await fetch('/api/cached-prices');
-    if (!res.ok) return;
-    const data = await res.json();
+    let data = null;
+    try {
+      const res = await fetch('/api/cached-prices');
+      if (res.ok) {
+        data = await res.json();
+      }
+    } catch (e) {}
+
+    // Fallback: load static /data/prices_pl.json directly
+    if (!data || !data.prices) {
+      try {
+        const staticRes = await fetch('/data/prices_pl.json');
+        if (staticRes.ok) {
+          data = await staticRes.json();
+        }
+      } catch (e) {}
+    }
+
     if (!data || !data.prices) return;
 
     let appliedCount = 0;
@@ -2693,9 +2736,9 @@ async function loadAndApplyCachedPrices(showNotification = false) {
           // Convert PLN back to base USD price so multi-currency works
           part.price = Math.round(cached.pricePLN / ratePLN);
           part.pricePLN = cached.pricePLN;
-          if (cached.ceneoUrl) {
+          if (cached.ceneoUrl || cached.url) {
             if (!part.buyLinks) part.buyLinks = {};
-            part.buyLinks.ceneo = cached.ceneoUrl;
+            part.buyLinks.ceneo = cached.ceneoUrl || cached.url;
           }
           appliedCount++;
         }
@@ -2703,7 +2746,7 @@ async function loadAndApplyCachedPrices(showNotification = false) {
     });
 
     if (appliedCount > 0) {
-      console.log(`[Dev] Применено ${appliedCount} актуальных цен из кэша Ceneo.`);
+      console.log(`[Price Engine] Применено ${appliedCount} актуальных цен Morele и Ceneo.`);
       updateUI();
       if (showNotification) {
         showToast({
