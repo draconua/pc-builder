@@ -756,7 +756,7 @@ function setupEventListeners() {
         ].filter(Boolean);
         specsEl.textContent = specsArr.slice(0, 3).join(' • ') || (item.brand || '');
       }
-      if (priceEl) priceEl.textContent = formatCurrency(item.price);
+      if (priceEl) priceEl.textContent = formatPrice(item.price);
       if (hintEl) hintEl.textContent = 'Кликните, чтобы заменить ↗';
     } else {
       if (statusBadge) {
@@ -786,6 +786,7 @@ function setupEventListeners() {
       const color = SCHEMATIC_CATEGORY_COLORS[category] || '#38bdf8';
       const comp = document.getElementById(`vis-${category}`);
       const ghost = document.getElementById(`ghost-${category}`);
+      const caseBadge = document.getElementById('vis-case-badge-group');
 
       if (comp && !comp.classList.contains('hidden')) {
         comp.classList.add('highlight-from-card');
@@ -794,44 +795,116 @@ function setupEventListeners() {
         ghost.classList.add('active');
       }
 
+      if (category === 'case' && caseBadge) {
+        caseBadge.classList.add('highlight-from-card');
+        caseBadge.style.setProperty('--comp-highlight-color', color);
+      }
+
       showSchematicHud(category);
     });
 
     card.addEventListener('mouseleave', () => {
       const comp = document.getElementById(`vis-${category}`);
       const ghost = document.getElementById(`ghost-${category}`);
+      const caseBadge = document.getElementById('vis-case-badge-group');
       if (comp) {
         comp.classList.remove('highlight-from-card');
       }
       if (ghost) {
         ghost.classList.remove('active');
       }
+      if (caseBadge) {
+        caseBadge.classList.remove('highlight-from-card');
+      }
       hideSchematicHud();
     });
   });
 
-  // 2. Schematic SVG Component & Ghost Slot Hover -> Highlight Slot Card
-  const allVisTargets = document.querySelectorAll('#pc-svg .vis-component, #pc-svg .vis-ghost-target');
+  // 2. Schematic SVG Component & Ghost Slot Hover -> Highlight Slot Card (Delegated & Direct)
+  const pcSvg = document.getElementById('pc-svg');
+  let currentHoveredCategory = null;
+
+  function highlightSlotCard(category) {
+    if (!category) return;
+    const card = document.querySelector(`.slot-card[data-category="${category}"]`);
+    const color = SCHEMATIC_CATEGORY_COLORS[category] || '#3b82f6';
+    if (card) {
+      card.classList.add('highlight-from-schematic');
+      card.style.setProperty('--card-highlight-color', color);
+    }
+    showSchematicHud(category);
+  }
+
+  function unhighlightSlotCard(category) {
+    if (!category) return;
+    const card = document.querySelector(`.slot-card[data-category="${category}"]`);
+    if (card) {
+      card.classList.remove('highlight-from-schematic');
+    }
+    hideSchematicHud();
+  }
+
+  if (pcSvg) {
+    pcSvg.addEventListener('mouseover', (e) => {
+      const target = e.target.closest('.vis-component, .vis-ghost-target');
+      if (!target) return;
+      const category = target.dataset.category;
+      if (!category) return;
+
+      if (category !== currentHoveredCategory) {
+        if (currentHoveredCategory) {
+          unhighlightSlotCard(currentHoveredCategory);
+        }
+        currentHoveredCategory = category;
+        highlightSlotCard(category);
+      }
+    });
+
+    pcSvg.addEventListener('mouseout', (e) => {
+      const related = e.relatedTarget ? (e.relatedTarget.closest ? e.relatedTarget.closest('.vis-component, .vis-ghost-target') : null) : null;
+      const relatedCategory = related ? related.dataset.category : null;
+
+      if (relatedCategory === currentHoveredCategory) {
+        return; // Still inside the same component
+      }
+
+      if (currentHoveredCategory) {
+        unhighlightSlotCard(currentHoveredCategory);
+        currentHoveredCategory = null;
+      }
+    });
+
+    pcSvg.addEventListener('click', (e) => {
+      const target = e.target.closest('.vis-component, .vis-ghost-target');
+      if (target && target.dataset.category) {
+        e.stopPropagation();
+        openDrawer(target.dataset.category);
+      }
+    });
+
+    pcSvg.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const target = e.target.closest('.vis-component, .vis-ghost-target');
+        if (target && target.dataset.category) {
+          e.preventDefault();
+          openDrawer(target.dataset.category);
+        }
+      }
+    });
+  }
+
+  // Also bind direct listeners for accessibility and synthetic dispatch
+  const allVisTargets = document.querySelectorAll('#pc-svg .vis-component, #pc-svg .vis-ghost-target, #vis-case-badge-group');
   allVisTargets.forEach(target => {
     const category = target.dataset.category;
     if (!category) return;
 
     target.addEventListener('mouseenter', () => {
-      const card = document.querySelector(`.slot-card[data-category="${category}"]`);
-      const color = SCHEMATIC_CATEGORY_COLORS[category] || '#3b82f6';
-      if (card) {
-        card.classList.add('highlight-from-schematic');
-        card.style.setProperty('--card-highlight-color', color);
-      }
-      showSchematicHud(category);
+      highlightSlotCard(category);
     });
 
     target.addEventListener('mouseleave', () => {
-      const card = document.querySelector(`.slot-card[data-category="${category}"]`);
-      if (card) {
-        card.classList.remove('highlight-from-schematic');
-      }
-      hideSchematicHud();
+      unhighlightSlotCard(category);
     });
 
     target.addEventListener('click', (e) => {
@@ -889,6 +962,23 @@ function setupEventListeners() {
     });
   }
 
+  const clearanceBtn = document.getElementById('tool-schematic-clearance');
+  const clearanceLayer = document.getElementById('vis-clearance-layer');
+  const clearanceBar = document.getElementById('schematic-clearance-bar');
+  if (clearanceBtn && clearanceLayer) {
+    clearanceBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = clearanceLayer.classList.toggle('hidden');
+      if (clearanceBar) clearanceBar.classList.toggle('hidden', isHidden);
+      clearanceBtn.classList.toggle('active', !isHidden);
+      if (!isHidden) updateClearanceOverlay();
+      showToast(
+        !isHidden ? '📏 Режим проверки габаритов и клиренса включен' : '📏 Режим клиренса выключен',
+        'info'
+      );
+    });
+  }
+
   const scaleBtn = document.getElementById('tool-schematic-scale');
   if (scaleBtn && schematicPanel) {
     scaleBtn.addEventListener('click', (e) => {
@@ -902,16 +992,10 @@ function setupEventListeners() {
     });
   }
 
-  // 4. Clicking the Floating HUD directly opens the drawer
+  // 4. Floating HUD Inspector Readout
   const hudElement = document.getElementById('schematic-hud');
   if (hudElement) {
-    hudElement.style.pointerEvents = 'all';
-    hudElement.style.cursor = 'pointer';
-    hudElement.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const cat = hudElement.dataset.category;
-      if (cat) openDrawer(cat);
-    });
+    hudElement.style.pointerEvents = 'none';
   }
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'z') {
@@ -2046,6 +2130,7 @@ function updateSvgVisualizer() {
 
   // Ghost slot targets synchronization
   const ghostMap = {
+    case: 'ghost-case',
     motherboard: 'ghost-motherboard',
     cpu: 'ghost-cpu',
     ram: 'ghost-ram',
@@ -2071,13 +2156,33 @@ function updateSvgVisualizer() {
     mbNameEl.textContent = buildState.motherboard ? (buildState.motherboard.formFactor || 'ATX') + ' • ' + (buildState.motherboard.chipset || buildState.motherboard.socket || '') : '';
   }
 
+  const cpuTitleEl = document.getElementById('vis-cpu-title');
   const cpuNameEl = document.getElementById('vis-cpu-name');
-  if (cpuNameEl) {
+  if (buildState.cooler) {
+    // When cooler is physically installed on the CPU, hide the CPU socket text to prevent visual clash
+    if (cpuTitleEl) cpuTitleEl.style.display = 'none';
+    if (cpuNameEl) cpuNameEl.style.display = 'none';
+  } else {
+    if (cpuTitleEl) cpuTitleEl.style.display = '';
+    if (cpuNameEl) {
+      cpuNameEl.style.display = '';
+      if (buildState.cpu) {
+        const shortCpu = buildState.cpu.name.replace('AMD Ryzen ', 'R').replace('Intel Core ', 'i').replace('Intel Core Ultra ', 'U');
+        cpuNameEl.textContent = shortCpu;
+      } else {
+        cpuNameEl.textContent = '';
+      }
+    }
+  }
+
+  // AIO Pump Display
+  const aioTemp = document.getElementById('vis-aio-temp');
+  if (aioTemp) {
     if (buildState.cpu) {
       const shortCpu = buildState.cpu.name.replace('AMD Ryzen ', 'R').replace('Intel Core ', 'i').replace('Intel Core Ultra ', 'U');
-      cpuNameEl.textContent = shortCpu;
+      aioTemp.textContent = shortCpu;
     } else {
-      cpuNameEl.textContent = '';
+      aioTemp.textContent = 'AIO';
     }
   }
 
@@ -2128,10 +2233,91 @@ function updateSvgVisualizer() {
     if (aioEl) aioEl.classList.toggle('hidden', !isAio);
   }
 
-  // 4. Refresh HUD if open
+  // 4. Update Clearance Overlay if active
+  updateClearanceOverlay();
+
+  // 5. Refresh HUD if open
   const hud = document.getElementById('schematic-hud');
   if (hud && hud.classList.contains('visible') && hud.dataset.category) {
     showSchematicHud(hud.dataset.category);
+  }
+}
+
+function updateClearanceOverlay() {
+  const layer = document.getElementById('vis-clearance-layer');
+  if (!layer || layer.classList.contains('hidden')) return;
+
+  const gpu = buildState.gpu;
+  const pcCase = buildState.case;
+  const cooler = buildState.cooler;
+
+  const mmUnit = t('schematic.clearance.mm') || 'мм';
+  const marginLabel = t('schematic.clearance.margin') || 'Запас';
+  const exceedLabel = t('schematic.clearance.exceed') || 'Превышение';
+  const maxWord = t('schematic.clearance.max') || 'макс';
+  const coolerWord = t('schematic.clearance.cooler') || 'Кулер';
+  const aioWord = t('schematic.clearance.aio') || 'СЖО';
+  const maxGpuWord = t('schematic.clearance.max_gpu') || 'Макс GPU';
+
+  // 1. GPU clearance
+  const dimGpuText = document.getElementById('dim-gpu-text');
+  const dimGpuLine = document.getElementById('dim-gpu-line');
+  if (dimGpuText) {
+    const gpuLen = (gpu && gpu.length) ? gpu.length : 304;
+    const maxLen = (pcCase && pcCase.maxGpuLength) ? pcCase.maxGpuLength : 360;
+    const diff = maxLen - gpuLen;
+    if (diff >= 0) {
+      dimGpuText.textContent = `GPU: ${gpuLen} ${mmUnit} • ${marginLabel} +${diff} ${mmUnit} ✓`;
+      dimGpuText.setAttribute('fill', '#10b981');
+      if (dimGpuLine) dimGpuLine.setAttribute('stroke', '#10b981');
+    } else {
+      dimGpuText.textContent = `GPU: ${gpuLen} ${mmUnit} ⚠️ ${exceedLabel} ${Math.abs(diff)} ${mmUnit}!`;
+      dimGpuText.setAttribute('fill', '#ef4444');
+      if (dimGpuLine) dimGpuLine.setAttribute('stroke', '#ef4444');
+    }
+  }
+
+  // 2. Cooler clearance
+  const dimCoolerText = document.getElementById('dim-cooler-text');
+  if (dimCoolerText) {
+    if (cooler) {
+      const isAio = String(cooler.type).toLowerCase() === 'aio';
+      if (isAio) {
+        const rad = cooler.radiatorSize || 240;
+        const maxRad = (pcCase && pcCase.maxRadiatorSize !== undefined) ? pcCase.maxRadiatorSize : 360;
+        dimCoolerText.textContent = `${aioWord}: ${rad} ${mmUnit} (${maxWord} ${maxRad} ${mmUnit}) ${rad <= maxRad ? '✓' : '⚠️'}`;
+      } else {
+        const h = cooler.height || 157;
+        const maxH = (pcCase && pcCase.maxCoolerHeight) ? pcCase.maxCoolerHeight : 170;
+        dimCoolerText.textContent = `${coolerWord}: ${h} ${mmUnit} (${maxWord} ${maxH} ${mmUnit}) ${h <= maxH ? '✓' : '⚠️'}`;
+      }
+    } else {
+      dimCoolerText.textContent = pcCase ? `${coolerWord}: ${maxWord} ${pcCase.maxCoolerHeight || 170} ${mmUnit} • ${aioWord}: ${pcCase.maxRadiatorSize || 360} ${mmUnit}` : `${coolerWord}: ${maxWord} 170 ${mmUnit}`;
+    }
+  }
+
+  // 3. Case description
+  const dimCaseText = document.getElementById('dim-case-text');
+  if (dimCaseText) {
+    if (pcCase) {
+      dimCaseText.textContent = `${pcCase.name.slice(0, 24)} • ${maxGpuWord}: ${pcCase.maxGpuLength || 360} ${mmUnit}`;
+    } else {
+      dimCaseText.textContent = `Mid-Tower ATX • ${maxGpuWord}: 360 ${mmUnit}`;
+    }
+  }
+
+  // 4. Clearance summary bar
+  const summaryEl = document.getElementById('clearance-summary-text');
+  if (summaryEl) {
+    const gpuLen = (gpu && gpu.length) ? gpu.length : 304;
+    const maxLen = (pcCase && pcCase.maxGpuLength) ? pcCase.maxGpuLength : 360;
+    if (gpuLen > maxLen) {
+      summaryEl.textContent = `⚠️ Длина видеокарты (${gpuLen} мм) превышает лимит корпуса (${maxLen} мм)!`;
+      summaryEl.style.color = '#ef4444';
+    } else {
+      summaryEl.textContent = t('schematic.fit_all') || 'Все комплектующие идеально помещаются в корпус с запасом';
+      summaryEl.style.color = '';
+    }
   }
 }
 

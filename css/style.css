@@ -822,12 +822,9 @@ input, textarea, select, button {
 
 .vis-label {
   font-family: var(--font-sans);
-  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   fill: var(--text-tertiary);
-  text-anchor: middle;
-  dominant-baseline: middle;
   pointer-events: none;
   user-select: none;
   transition: fill 0.25s var(--ease);
@@ -835,11 +832,8 @@ input, textarea, select, button {
 
 .vis-sublabel {
   font-family: var(--font-mono);
-  font-size: 6.5px;
   font-weight: 600;
   fill: var(--text-secondary);
-  text-anchor: middle;
-  dominant-baseline: middle;
   pointer-events: none;
   user-select: none;
   transition: fill 0.25s var(--ease);
@@ -2244,7 +2238,7 @@ input, textarea, select, button {
 /* Clean Studio Schematic Box */
 /* Clean Studio Schematic Box — Enhanced & Enlarged */
 .center-schematic {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   background: var(--surface);
@@ -2336,15 +2330,16 @@ input, textarea, select, button {
 }
 
 .center-schematic .svg-container {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   width: 100%;
   background: var(--bg-subtle);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1rem 0.75rem;
+  padding: 0.85rem 0.75rem;
   position: relative;
   overflow: hidden;
 }
@@ -2356,7 +2351,7 @@ input, textarea, select, button {
 
 #pc-svg {
   width: 100%;
-  max-width: 440px;
+  max-width: 530px;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -2364,13 +2359,64 @@ input, textarea, select, button {
   transition: transform 0.3s var(--ease), filter 0.3s var(--ease), max-width 0.3s var(--ease);
 }
 
+@media (min-width: 1600px) {
+  #pc-svg {
+    max-width: 600px;
+  }
+}
+
 .center-schematic.is-expanded #pc-svg {
-  max-width: 520px;
+  max-width: 660px;
   transform: none;
 }
 
 [data-theme="dark"] #pc-svg {
   filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.45));
+}
+
+/* Clearance & Dimensions CAD Layer */
+.vis-clearance-layer {
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+}
+
+.vis-clearance-layer.hidden {
+  display: none !important;
+}
+
+.schematic-clearance-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.45rem 0.85rem;
+  margin-top: 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .schematic-clearance-bar {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.schematic-clearance-bar.hidden {
+  display: none !important;
+}
+
+.vis-case-badge-group {
+  cursor: pointer;
+}
+
+.vis-case-badge-group:hover .case-shroud-plate {
+  stroke: var(--accent);
+  stroke-width: 1.5px;
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.3));
 }
 
 /* Schematic Components: Interactive, Pulse & Glow effects */
@@ -2507,15 +2553,23 @@ input, textarea, select, button {
   flex-direction: column;
   gap: 0.3rem;
   z-index: 10;
-  pointer-events: none;
+  pointer-events: none !important;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
 }
 
+.schematic-hud * {
+  pointer-events: none !important;
+}
+
 .schematic-hud.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.svg-container:has(.schematic-clearance-bar:not(.hidden)) .schematic-hud {
+  bottom: 50px;
 }
 
 [data-theme="light"] .schematic-hud {
