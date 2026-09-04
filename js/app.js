@@ -2663,6 +2663,23 @@ function initDevCabinet() {
         let updated = 0;
         const ratePLN = EXCHANGE_RATES['PLN'] || 4.05;
 
+        const catTitles = {
+          cpu: 'Процессоры (CPU)',
+          cooler: 'Охлаждение',
+          motherboard: 'Материнские платы',
+          ram: 'Оперативная память (RAM)',
+          gpu: 'Видеокарты (GPU)',
+          ssd: 'SSD накопители',
+          hdd: 'Жесткие диски (HDD)',
+          psu: 'Блоки питания (PSU)',
+          case: 'Корпуса',
+          monitor: 'Мониторы',
+          all: 'Полная база (все категории)'
+        };
+
+        let currentCatSection = '';
+        const delayMs = total > 100 ? 55 : (total > 40 ? 80 : 120);
+
         if (tbody) tbody.innerHTML = '';
 
         for (let i = 0; i < total; i++) {
@@ -2676,10 +2693,25 @@ function initDevCabinet() {
           }
 
           const item = items[i];
+          const itemCat = item.category || category;
           const pct = Math.round(((i + 1) / total) * 100);
           if (fillEl) fillEl.style.width = `${pct}%`;
           if (countEl) countEl.textContent = `${i + 1} / ${total}`;
-          if (statusEl) statusEl.textContent = `Парсинг: ${item.name}`;
+          if (statusEl) statusEl.textContent = `Парсинг [${(catTitles[itemCat] || itemCat).split(' ')[0]}]: ${item.name}`;
+
+          // Section transition banner in terminal
+          if (category === 'all' && itemCat !== currentCatSection) {
+            currentCatSection = itemCat;
+            const secName = catTitles[itemCat] || itemCat.toUpperCase();
+            if (termLogs) {
+              termLogs.insertAdjacentHTML('beforeend', `
+                <div class="log-line" style="color: #60a5fa; font-weight: 700; margin: 4px 0 2px; padding: 2px 0; border-top: 1px dashed rgba(96, 165, 250, 0.25);">
+                  📂 [РАЗДЕЛ: ${secName}]
+                </div>
+              `);
+              termLogs.scrollTop = termLogs.scrollHeight;
+            }
+          }
 
           const itemT = new Date().toLocaleTimeString('pl-PL');
           const diffSign = item.diff > 0 ? `+${item.diff}` : `${item.diff}`;
@@ -2696,10 +2728,11 @@ function initDevCabinet() {
           }
 
           if (tbody) {
+            const catBadge = (catTitles[itemCat] || itemCat).split(' ')[0];
             tbody.insertAdjacentHTML('beforeend', `
               <tr>
                 <td><strong>${escapeHtml(item.name)}</strong></td>
-                <td><span class="slack-code-tag">${escapeHtml(item.category || category)}</span></td>
+                <td><span class="slack-code-tag">${escapeHtml(catBadge)}</span></td>
                 <td>${item.oldPrice} zł</td>
                 <td><strong>${item.newPrice} zł</strong></td>
                 <td class="${diffClass}">${diffText}</td>
@@ -2724,9 +2757,9 @@ function initDevCabinet() {
             if (statUpdated) statUpdated.textContent = updated;
           }
 
-          // Small delay (80ms) for smooth terminal streaming visibility
+          // Pacing delay for authentic, readable streaming
           if (i < total - 1) {
-            await new Promise(r => setTimeout(r, 80));
+            await new Promise(r => setTimeout(r, delayMs));
           }
         }
 
@@ -2743,7 +2776,7 @@ function initDevCabinet() {
           if (fillEl) fillEl.style.width = '100%';
           showToast({
             title: '⚡ Цены синхронизированы',
-            message: `Обновлено ${updated} позиций (${category.toUpperCase()}).`,
+            message: `Обновлено ${updated} позиций (${catTitles[category] || category.toUpperCase()}).`,
             type: 'success',
             duration: 5000
           });

@@ -227,14 +227,14 @@ module.exports = async function handler(req, res) {
     }));
   }
 
-  // Select items to sync (up to 30 for responsive interactive experience)
-  const itemsToSync = targetParts.slice(0, 30);
+  // Synchronize all target parts for category (or full catalog when category === 'all')
+  const itemsToSync = targetParts;
   const syncResults = [];
   const logs = [];
   const timeNow = new Date().toLocaleTimeString('pl-PL');
 
-  logs.push(`[${timeNow}] 🚀 Запуск синхронизации цен (${source.toUpperCase()}): ${itemsToSync.length} позиций (категория: ${category})`);
-  logs.push(`[${timeNow}] 📡 Источники: Morele.net (склад PL) + Ceneo.pl (агрегатор)`);
+  logs.push(`[${timeNow}] 🚀 Запуск ценового парсера (${source.toUpperCase()}): ${itemsToSync.length} позиций (категория: ${category})`);
+  logs.push(`[${timeNow}] 📡 Источники: Morele.net (склад PL) + Ceneo.pl (агрегатор цен)`);
 
   let updatedCount = 0;
   let notFoundCount = 0;
@@ -245,13 +245,23 @@ module.exports = async function handler(req, res) {
     const cachedEntry = cachedPrices[item.id];
 
     let finalPrice = basePLN;
-    let finalSource = 'Morele';
-    let finalUrl = cachedEntry?.url || `https://www.morele.net/wyszukiwarka/?q=${encodeURIComponent(item.name)}`;
+    let finalSource = source === 'ceneo' ? 'Ceneo' : 'Morele';
+    let finalUrl = source === 'ceneo'
+      ? `https://www.ceneo.pl/;szukaj-${encodeURIComponent(item.name)}`
+      : `https://www.morele.net/wyszukiwarka/?q=${encodeURIComponent(item.name)}`;
 
     if (cachedEntry && cachedEntry.pricePLN) {
       finalPrice = cachedEntry.pricePLN;
-      finalSource = cachedEntry.source || 'Morele';
-      finalUrl = cachedEntry.url || finalUrl;
+      if (source === 'hybrid') {
+        finalSource = cachedEntry.source || 'Morele';
+        finalUrl = cachedEntry.url || finalUrl;
+      } else if (source === 'ceneo') {
+        finalSource = 'Ceneo';
+        finalUrl = `https://www.ceneo.pl/;szukaj-${encodeURIComponent(item.name)}`;
+      } else if (source === 'morele') {
+        finalSource = 'Morele';
+        finalUrl = `https://www.morele.net/wyszukiwarka/?q=${encodeURIComponent(item.name)}`;
+      }
       updatedCount++;
     } else {
       notFoundCount++;

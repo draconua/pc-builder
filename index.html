@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260904_v5">
+  <link rel="stylesheet" href="css/style.css?v=20260904_v7">
 </head>
 <body>
   <div class="app">
@@ -119,9 +119,9 @@
             <button class="lang-btn" data-lang="ua">UA</button>
           </div>
           <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">☀</button>
-          <button id="dev-modal-btn" class="btn-dev-trigger" title="Dev-кабинет: Актуализация цен (Ctrl+Shift+D)">
+          <button id="dev-modal-btn" class="btn-dev-trigger" title="Ценовой парсер: Обновление цен в Польше (Ctrl+Shift+D)">
             <span class="dev-btn-icon">⚡</span>
-            <span class="dev-btn-text">Цены Ceneo</span>
+            <span class="dev-btn-text">Обновление цен</span>
           </button>
         </div>
       </div>
@@ -1158,7 +1158,7 @@
     </div>
   </div>
 
-  <script type="module" src="js/app.js?v=20260904_v5"></script>
+  <script type="module" src="js/app.js?v=20260904_v7"></script>
 
     <!-- DEV CABINET: LIVE PRICE PARSER MODAL -->
     <div id="dev-prices-modal" class="modal-overlay hidden">
@@ -1166,8 +1166,11 @@
       <div class="modal-dialog modal-dev-dialog">
         <div class="modal-header dev-modal-header">
           <div class="dev-header-left">
-            <span class="dev-badge">DEV TOOL</span>
-            <h2>Актуализация цен в Польше (Morele & Ceneo)</h2>
+            <span class="dev-badge">PRICE ENGINE</span>
+            <div>
+              <h2>Ценовой парсер: Актуализация цен (Morele & Ceneo)</h2>
+              <p class="text-secondary" style="font-size: 0.8rem; margin: 2px 0 0 0;">Сравнение цен в польском ритейле и синхронизация всего каталога комплектующих</p>
+            </div>
           </div>
           <button id="dev-modal-close" class="modal-close-btn app-close-btn" aria-label="Close" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
@@ -1181,16 +1184,17 @@
                 <option value="hybrid" selected>Morele + Ceneo (Умный гибрид ⭐)</option>
                 <option value="morele">Morele.net (Прямой ритейлер)</option>
                 <option value="ceneo">Ceneo.pl (Агрегатор 50+ магазинов)</option>
+                <option value="playwright">Playwright Headless (Локальный глубокий краулер)</option>
               </select>
             </div>
             <div class="dev-control-field">
               <label for="dev-category-select">Категория комплектующих:</label>
               <select id="dev-category-select" class="dev-select">
-                <option value="cpu">Процессоры CPU (44 шт., ~45 сек)</option>
-                <option value="gpu">Видеокарты GPU (29 шт., ~30 сек)</option>
-                <option value="all">Вся база (275 шт., ~5-6 мин)</option>
-                <option value="motherboard">Материнские платы (30 шт.)</option>
-                <option value="cooler">Охлаждение (20 шт.)</option>
+                <option value="all" selected>Вся база (251 шт., все 10 категорий ⭐)</option>
+                <option value="cpu">Процессоры CPU (51 шт.)</option>
+                <option value="gpu">Видеокарты GPU (35 шт.)</option>
+                <option value="motherboard">Материнские платы (34 шт.)</option>
+                <option value="cooler">Охлаждение (25 шт.)</option>
                 <option value="ram">Оперативная память (17 шт.)</option>
                 <option value="ssd">SSD накопители (19 шт.)</option>
                 <option value="hdd">Жесткие диски (12 шт.)</option>
@@ -1254,9 +1258,9 @@
                     <th>Товар</th>
                     <th>Категория</th>
                     <th>Было (PLN)</th>
-                    <th>Стало (Ceneo)</th>
+                    <th>Актуально</th>
                     <th>Разница</th>
-                    <th>Магазин</th>
+                    <th>Источник</th>
                     <th>Ссылка</th>
                   </tr>
                 </thead>
