@@ -86,6 +86,7 @@ const translations = {
     'dash.benchmarks.subtitle': 'Ультра настройки • Без генерации кадров',
     'dash.fps': 'Оценка FPS',
     'dash.fps.select': 'Выберите CPU и GPU для оценки',
+    'dash.fps.swipeHint': 'Свайп по таблице для 1080p, 1440p, 4K',
     'dash.bottleneck': 'Баланс связки',
     'dash.bottleneck.balanced': 'Сбалансированная связка',
     'dash.bottleneck.cpu': 'Узкое место — процессор',
@@ -276,6 +277,7 @@ const translations = {
     'dash.benchmarks.subtitle': 'Ultra Settings • No Frame Generation',
     'dash.fps': 'Estimated FPS',
     'dash.fps.select': 'Select CPU and GPU to estimate',
+    'dash.fps.swipeHint': 'Swipe table for 1080p, 1440p, 4K',
     'dash.bottleneck': 'Balance Analysis',
     'dash.bottleneck.balanced': 'Balanced configuration',
     'dash.bottleneck.cpu': 'CPU bottleneck',
@@ -466,6 +468,7 @@ const translations = {
     'dash.benchmarks.subtitle': 'Ustawienia Ultra • Bez generatora klatek',
     'dash.fps': 'Szacowany FPS',
     'dash.fps.select': 'Wybierz CPU i GPU do obliczenia FPS',
+    'dash.fps.swipeHint': 'Przesuń tabelę dla 1080p, 1440p, 4K',
     'dash.bottleneck': 'Balans zestawu',
     'dash.bottleneck.balanced': 'Zrównoważony zestaw',
     'dash.bottleneck.cpu': 'Wąskie gardło — procesor',
@@ -656,6 +659,7 @@ const translations = {
     'dash.benchmarks.subtitle': 'Ультра налаштування • Без генерації кадрів',
     'dash.fps': 'Оцінка FPS',
     'dash.fps.select': 'Оберіть CPU та GPU для розрахунку',
+    'dash.fps.swipeHint': 'Свайп по таблиці для 1080p, 1440p, 4K',
     'dash.bottleneck': 'Баланс системи',
     'dash.bottleneck.balanced': 'Збалансована система',
     'dash.bottleneck.cpu': 'Вузьке місце — процесор',
@@ -812,7 +816,9 @@ const HARD_FALLBACKS = {
   'schematic.clearance.mm': { ru: 'мм', en: 'mm', pl: 'mm', ua: 'мм' },
   'schematic.clearance.cooler': { ru: 'Кулер', en: 'Cooler', pl: 'Chłodzenie', ua: 'Кулер' },
   'schematic.clearance.aio': { ru: 'СЖО', en: 'AIO', pl: 'AIO', ua: 'СРО' },
-  'schematic.clearance.max_gpu': { ru: 'Макс GPU', en: 'Max GPU', pl: 'Maks GPU', ua: 'Макс GPU' }
+  'schematic.clearance.max_gpu': { ru: 'Макс GPU', en: 'Max GPU', pl: 'Maks GPU', ua: 'Макс GPU' },
+  'schematic.mobile_show': { ru: 'Показать интерактивную схему сборки', en: 'Show interactive PC schematic', pl: 'Pokaż interaktywny schemat PC', ua: 'Показати інтерактивну схему збірки' },
+  'schematic.mobile_hide': { ru: 'Скрыть интерактивную схему сборки', en: 'Hide interactive PC schematic', pl: 'Ukryj interaktywny schemat PC', ua: 'Приховати інтерактивну схему збірки' }
 };
 
 export function t(key) {

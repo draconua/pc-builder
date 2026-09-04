@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260904_v15">
+  <link rel="stylesheet" href="css/style.css?v=20260904_v16">
 </head>
 <body>
   <div class="app">
@@ -339,6 +339,17 @@
             </div>
             <span class="power-sub" id="power-limit-text">БП не выбран</span>
           </div>
+        </div>
+
+        <!-- Mobile Interactive Schematic Toggle Button (Visible on mobile/tablet) -->
+        <div class="mobile-schematic-toggle-wrap">
+          <button type="button" id="btn-toggle-mobile-schematic" class="btn-toggle-mobile-schematic" aria-expanded="false">
+            <span class="toggle-btn-left">
+              <span class="schematic-toggle-icon">🖥️</span>
+              <span class="schematic-toggle-text" id="schematic-toggle-text" data-i18n="schematic.mobile_show">Показать интерактивную схему сборки</span>
+            </span>
+            <span class="schematic-toggle-arrow" id="schematic-toggle-arrow">▾</span>
+          </button>
         </div>
 
         <!-- Center Schematic / Blueprint -->
@@ -1001,6 +1012,10 @@
             <h3 data-i18n="dash.fps">ОЦЕНКА FPS В ИГРАХ (ВСЕ РАЗРЕШЕНИЯ)</h3>
             <span class="fps-benchmark-note" data-i18n="dash.benchmarks.subtitle">Ультра настройки • Без генерации кадров</span>
           </div>
+          <div class="fps-scroll-hint">
+            <span class="scroll-hint-icon">⇄</span>
+            <span data-i18n="dash.fps.swipeHint">Свайп по таблице для 1080p, 1440p, 4K</span>
+          </div>
           <div id="fps-placeholder" class="placeholder-text" data-i18n="dash.fps.select">Выберите процессор и видеокарту для расчета FPS</div>
           <div id="fps-table-container" class="fps-table-container hidden">
             <table class="fps-matrix-table">
@@ -1257,9 +1272,34 @@
     </footer>
 
 
+    <!-- STICKY BOTTOM SUMMARY BAR (Mobile & Tablet) -->
+    <div id="mobile-summary-bar" class="mobile-summary-bar" aria-label="Итоги сборки">
+      <div class="mobile-summary-inner">
+        <div class="mobile-summary-info">
+          <div class="mobile-summary-price-box">
+            <span class="mobile-summary-label">Итого:</span>
+            <span class="mobile-summary-price" id="mobile-total-price">0 zł</span>
+          </div>
+          <div class="mobile-summary-sub">
+            <span id="mobile-power-val" class="mobile-summary-power">0W</span>
+            <span class="mobile-summary-dot">•</span>
+            <span id="mobile-progress-val" class="mobile-summary-progress">0 / 8</span>
+          </div>
+        </div>
+        <div class="mobile-summary-actions">
+          <button type="button" id="btn-mobile-view-schematic" class="btn-mobile-action" title="Показать схему сборки">
+            <span class="mobile-btn-icon">🖥️</span>
+            <span class="mobile-btn-text">Схема ПК</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- DRAWER FOR COMPONENT SELECTION -->
+    <div class="autobuild-backdrop hidden" id="autobuild-backdrop"></div>
     <div id="drawer-overlay" class="drawer-overlay"></div>
     <aside id="drawer" class="drawer">
+      <div class="drawer-drag-handle" aria-hidden="true"></div>
       <div class="drawer-header">
         <div class="drawer-header-left">
           <h2 id="drawer-title" data-i18n="drawer.title">Select Component</h2>
@@ -1386,7 +1426,7 @@
     </div>
   </div>
 
-  <script type="module" src="js/app.js?v=20260904_v15"></script>
+  <script type="module" src="js/app.js?v=20260904_v16"></script>
 
     <!-- DEV CABINET: LIVE PRICE PARSER MODAL -->
     <div id="dev-prices-modal" class="modal-overlay hidden">

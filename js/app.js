@@ -158,16 +158,38 @@ const elements = {
   const quickBudgetBtns = document.querySelectorAll('.quick-budget-btn');
   const resChips = document.querySelectorAll('.res-chip');
 
+  const autobuildBackdrop = document.getElementById('autobuild-backdrop');
+
+  function openAutobuildPopover() {
+    if (autobuildPopover) autobuildPopover.classList.remove('hidden');
+    if (autobuildBackdrop) autobuildBackdrop.classList.remove('hidden');
+  }
+
+  function closeAutobuildPopover() {
+    if (autobuildPopover) autobuildPopover.classList.add('hidden');
+    if (autobuildBackdrop) autobuildBackdrop.classList.add('hidden');
+  }
+
   if (btnAutoBuilder && autobuildPopover) {
     btnAutoBuilder.addEventListener('click', (e) => {
       e.stopPropagation();
-      autobuildPopover.classList.toggle('hidden');
+      if (autobuildPopover.classList.contains('hidden')) {
+        openAutobuildPopover();
+      } else {
+        closeAutobuildPopover();
+      }
     });
 
     if (popoverCloseBtn) {
       popoverCloseBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        autobuildPopover.classList.add('hidden');
+        closeAutobuildPopover();
+      });
+    }
+
+    if (autobuildBackdrop) {
+      autobuildBackdrop.addEventListener('click', () => {
+        closeAutobuildPopover();
       });
     }
 
@@ -271,15 +293,15 @@ const elements = {
         
         pushHistory();
         generateAutoBuild(budgetUSD, selectedTargetRes, selectedCpuBrand, selectedGpuBrand);
-        autobuildPopover.classList.add('hidden');
+        closeAutobuildPopover();
       });
     }
 
 
     // Close when clicking outside
     document.addEventListener('click', (e) => {
-      if (!autobuildPopover.contains(e.target) && e.target !== btnAutoBuilder) {
-        autobuildPopover.classList.add('hidden');
+      if (!autobuildPopover.contains(e.target) && !btnAutoBuilder.contains(e.target)) {
+        closeAutobuildPopover();
       }
     });
   }
@@ -618,6 +640,71 @@ function setupEventListeners() {
     btnScrollTop.addEventListener('click', (e) => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // Mobile Interactive Schematic Toggle Logic
+  const btnToggleSchematic = document.getElementById('btn-toggle-mobile-schematic');
+  const centerSchematic = document.querySelector('.center-schematic');
+  const centerBottleneck = document.getElementById('bottleneck-panel');
+  const schematicToggleText = document.getElementById('schematic-toggle-text');
+  const schematicToggleArrow = document.getElementById('schematic-toggle-arrow');
+
+  function toggleMobileSchematic(forceState) {
+    if (!centerSchematic) return;
+    const isCurrentlyOpen = centerSchematic.classList.contains('is-mobile-open');
+    const shouldOpen = forceState !== undefined ? forceState : !isCurrentlyOpen;
+    centerSchematic.classList.toggle('is-mobile-open', shouldOpen);
+    if (centerBottleneck) {
+      centerBottleneck.classList.toggle('is-mobile-open', shouldOpen);
+    }
+    if (btnToggleSchematic) {
+      btnToggleSchematic.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+      btnToggleSchematic.classList.toggle('active', shouldOpen);
+    }
+    if (schematicToggleText) {
+      schematicToggleText.textContent = shouldOpen ? t('schematic.mobile_hide') : t('schematic.mobile_show');
+    }
+    if (schematicToggleArrow) {
+      schematicToggleArrow.textContent = shouldOpen ? '▴' : '▾';
+    }
+  }
+
+  if (btnToggleSchematic) {
+    btnToggleSchematic.addEventListener('click', () => {
+      toggleMobileSchematic();
+    });
+  }
+
+  const btnMobileViewSchematic = document.getElementById('btn-mobile-view-schematic');
+  if (btnMobileViewSchematic) {
+    btnMobileViewSchematic.addEventListener('click', () => {
+      toggleMobileSchematic(true);
+      const target = document.querySelector('.mobile-schematic-toggle-wrap') || centerSchematic;
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  // Mobile Bottom-Sheet Touch Drag-Down to close
+  const drawerDragHandle = document.querySelector('.drawer-drag-handle');
+  if (drawerDragHandle) {
+    let startY = 0;
+    let currentY = 0;
+    drawerDragHandle.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+      currentY = startY;
+    }, { passive: true });
+
+    drawerDragHandle.addEventListener('touchmove', (e) => {
+      currentY = e.touches[0].clientY;
+    }, { passive: true });
+
+    drawerDragHandle.addEventListener('touchend', () => {
+      if (currentY - startY > 40) {
+        closeDrawer();
+      }
     });
   }
 
@@ -1981,6 +2068,20 @@ function updateUI() {
   if (buildState.gpu) estTdp += buildState.gpu.tdp;
 
   elements.powerValue.textContent = `${estTdp}W`;
+
+  // Sync mobile sticky summary bar
+  const mobileTotalPrice = document.getElementById('mobile-total-price');
+  if (mobileTotalPrice) {
+    mobileTotalPrice.textContent = formatPrice(totalPrice);
+  }
+  const mobilePowerVal = document.getElementById('mobile-power-val');
+  if (mobilePowerVal) {
+    mobilePowerVal.textContent = `${estTdp}W`;
+  }
+  const mobileProgressVal = document.getElementById('mobile-progress-val');
+  if (mobileProgressVal) {
+    mobileProgressVal.textContent = `${essentialCount} / 8`;
+  }
   if (buildState.psu) {
     const limit = buildState.psu.wattage;
     elements.powerLimitText.textContent = `${t('dash.psu.label')}: ${limit}W`;
