@@ -1133,23 +1133,6 @@ input, textarea, select, button {
   border: 1px solid var(--border);
 }
 
-.btn-close {
-  background: transparent;
-  border: none;
-  font-size: 1.35rem;
-  color: var(--text-secondary); /* Contrast fix */
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-xs);
-  transition: all var(--duration-fast) var(--ease);
-  line-height: 1;
-}
-
-.btn-close:hover {
-  background-color: var(--bg-subtle);
-  color: var(--text-primary);
-}
-
 .drawer-toolbar {
   padding: 0.85rem 1.25rem;
   border-bottom: 1px solid var(--border);
@@ -1428,34 +1411,54 @@ input, textarea, select, button {
   background-color: var(--bg);
 }
 
-/* Universal Close Buttons: cursor, transitions, hover, active, focus */
+/* Universal Close Buttons: unified size, layout, typography, transitions, hover, active, focus */
 .modal-close,
 .modal-close-btn,
 .drawer-close-btn,
 .retailer-modal-close-btn,
 .search-clear-btn,
 .pro-chat-close,
+.pro-chat-close-btn,
+.popover-close-btn,
+.toast-close,
 #drawer-close,
 #save-modal-close,
 #export-modal-close,
 #comparison-modal-close,
 #dev-modal-close,
-#hardware-guide-close {
+#hardware-guide-close,
+#autobuild-popover-close,
+#retailers-modal-close,
+#pro-chat-close {
   cursor: pointer !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-size: 1.25rem;
-  line-height: 1;
-  padding: 0.25rem 0.5rem;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-secondary) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 1.25rem !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  user-select: none !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
   transition: background-color var(--duration-fast) var(--ease),
+              border-color var(--duration-fast) var(--ease),
               color var(--duration-fast) var(--ease),
               transform var(--duration-fast) var(--ease),
-              box-shadow var(--duration-fast) var(--ease);
+              box-shadow var(--duration-fast) var(--ease) !important;
 }
 
 .modal-close:hover,
@@ -1464,14 +1467,21 @@ input, textarea, select, button {
 .retailer-modal-close-btn:hover,
 .search-clear-btn:hover,
 .pro-chat-close:hover,
+.pro-chat-close-btn:hover,
+.popover-close-btn:hover,
+.toast-close:hover,
 #drawer-close:hover,
 #save-modal-close:hover,
 #export-modal-close:hover,
 #comparison-modal-close:hover,
 #dev-modal-close:hover,
-#hardware-guide-close:hover {
-  background-color: var(--bg-subtle);
-  color: var(--text-primary);
+#hardware-guide-close:hover,
+#autobuild-popover-close:hover,
+#retailers-modal-close:hover,
+#pro-chat-close:hover {
+  background-color: var(--bg-subtle) !important;
+  border-color: var(--border-hover) !important;
+  color: var(--text-primary) !important;
 }
 
 .modal-close:active,
@@ -1480,13 +1490,20 @@ input, textarea, select, button {
 .retailer-modal-close-btn:active,
 .search-clear-btn:active,
 .pro-chat-close:active,
+.pro-chat-close-btn:active,
+.popover-close-btn:active,
+.toast-close:active,
 #drawer-close:active,
 #save-modal-close:active,
 #export-modal-close:active,
 #comparison-modal-close:active,
 #dev-modal-close:active,
-#hardware-guide-close:active {
-  transform: scale(0.92);
+#hardware-guide-close:active,
+#autobuild-popover-close:active,
+#retailers-modal-close:active,
+#pro-chat-close:active {
+  transform: scale(0.92) !important;
+  background-color: var(--surface-active) !important;
 }
 
 .modal-close:focus-visible,
@@ -1495,14 +1512,20 @@ input, textarea, select, button {
 .retailer-modal-close-btn:focus-visible,
 .search-clear-btn:focus-visible,
 .pro-chat-close:focus-visible,
+.pro-chat-close-btn:focus-visible,
+.popover-close-btn:focus-visible,
+.toast-close:focus-visible,
 #drawer-close:focus-visible,
 #save-modal-close:focus-visible,
 #export-modal-close:focus-visible,
 #comparison-modal-close:focus-visible,
 #dev-modal-close:focus-visible,
-#hardware-guide-close:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 1px;
+#hardware-guide-close:focus-visible,
+#autobuild-popover-close:focus-visible,
+#retailers-modal-close:focus-visible,
+#pro-chat-close:focus-visible {
+  outline: 2px solid var(--border-focus) !important;
+  outline-offset: 1px !important;
 }
 
 /* Modal Form Controls: Input & Textarea */
@@ -3580,50 +3603,6 @@ html, body {
    RETAILER STORE AGGREGATOR DECK PANEL & CONTROLS
    ============================================================= */
 
-/* 1. Large Expressive Close Button */
-.retailer-modal-close-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  font-size: 1.35rem;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer !important;
-  user-select: none !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
-  outline: none;
-}
-
-.retailer-modal-close-btn:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: #ef4444;
-  color: #ef4444;
-  transform: scale(1.08);
-  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
-}
-
-.retailer-modal-close-btn:active {
-  transform: scale(0.96);
-}
-
-[data-theme="dark"] .retailer-modal-close-btn {
-  background: var(--surface);
-  border-color: #2b3850;
-  color: #94a3b8;
-}
-
-[data-theme="dark"] .retailer-modal-close-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: #f87171;
-  color: #f87171;
-}
 
 /* 2. Top Badges Row */
 .retailer-badge-row {
@@ -4037,19 +4016,6 @@ body {
 .popover-title {
   font-size: 0.82rem;
   font-weight: 800;
-  color: var(--text-primary);
-}
-
-.popover-close-btn {
-  background: none;
-  border: none;
-  font-size: 1.1rem;
-  color: var(--text-secondary); /* Contrast fix */
-  cursor: pointer;
-  line-height: 1;
-}
-
-.popover-close-btn:hover {
   color: var(--text-primary);
 }
 
@@ -5173,21 +5139,6 @@ body {
   word-break: break-word;
 }
 
-.toast-close {
-  background: transparent;
-  border: none;
-  color: var(--text-tertiary);
-  font-size: 1.1rem;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0 4px;
-  transition: color 0.15s;
-}
-
-.toast-close:hover {
-  color: var(--text-primary);
-}
-
 /* ============================================================= */
 /* PRO AI CHAT CONSULTANT STYLES                                 */
 /* ============================================================= */
@@ -5303,26 +5254,6 @@ body {
 .pro-ai-status {
   font-size: 0.72rem;
   color: #10b981;
-}
-
-.pro-chat-close-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 1.3rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-}
-
-.pro-chat-close-btn:hover {
-  background: var(--bg-subtle);
-  color: var(--text-primary);
 }
 
 /* Chat Messages */
