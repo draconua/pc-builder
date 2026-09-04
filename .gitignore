@@ -1,34 +1,86 @@
-﻿# Secrets & API Keys
-gemini_config.json
+# =============================================================
+# PC BUILDER 2026 — Git Isolation & Security Rules
+# =============================================================
+
+# 1. Environment & Secret Configuration Files
 .env
 .env.*
+*.env
+config.local.js
+config.local.json
+*.local.js
+*.local.json
+gemini_config.json
+credentials.json
 *.key
 *.pem
 *.secret
-credentials.json
 
-# Dependencies
+# 2. System, Editor & Agent Directories
+.agents/
+.idea/
+.vscode/
+.gemini/
+.antigravity/
+.system_generated/
 node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# Logs & Runtime
+# 3. Dumps, Backups & Runtime Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+dump/
+dumps/
+*.dump
+*.sql
+*.tar.gz
+*.zip
 
-# OS & Editor
-.DS_Store
-Thumbs.db
-desktop.ini
-.vscode/
-.idea/
-
-# Temporary tools & scratch test artifacts
+# 4. Temporary Scratch Scripts & Development Artifacts
 tools/*.png
 tools/snap_*.js
+tools/snap.js
 tools/test_*.png
-tools/test_*.js
-tools/patch_*.py
-tools/debug_*.js
-tools/scan_*.py
-tools/check_*.py
+tools/test_*.*
+tools/patch_*.*
+tools/debug_*.*
+tools/scan_*.*
+tools/check_*.*
+tools/update_*.*
+tools/fix_*.*
+tools/clean_*.*
+tools/find_*.*
+tools/get_*.*
+tools/inspect_*.*
+tools/polish_*.*
+tools/restore_*.*
+tools/rewrite_*.*
+tools/sanitize_*.*
+tools/purge_*.*
+tools/validate_*.*
+tools/verify_*.*
+tools/generate_*.*
+tools/inject_*.*
+tools/add_*.*
+tools/audit_*.*
+tools/build_*.*
+tools/count_*.*
+tools/dump_*.*
+tools/list_*.*
+tools/move_*.*
+tools/print_*.*
+tools/review_*.*
+tools/setup_*.*
+tools/untrack_*.*
+tools/layout.py
+tools/mojibake_report.txt
+tools/untranslated_*.txt
+tools/PROJECT_AUDIT.md
+tools/svg_backup.html
+tools/icons.json
+tools/price_scraper_run.js
+tools/full_goal_audit.js

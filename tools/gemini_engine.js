@@ -16,22 +16,80 @@ const DATA_JS_PATH = path.join(ROOT_DIR, 'js', 'data.js');
 // In-memory cache for synergy verdicts to ensure instant 0ms responses for repeated combos
 const synergyCache = new Map();
 
-// Helper to read the developer API key
+// Lightweight zero-dependency .env reader
+function loadEnv() {
+  const envPath = path.join(ROOT_DIR, '.env');
+  if (fs.existsSync(envPath)) {
+    try {
+      const lines = fs.readFileSync(envPath, 'utf-8').split(/\r?\n/);
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx !== -1) {
+          const k = trimmed.slice(0, eqIdx).trim();
+          let v = trimmed.slice(eqIdx + 1).trim();
+          if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.slice(1, -1);
+          }
+          if (!process.env[k]) {
+            process.env[k] = v;
+          }
+        }
+      }
+    } catch (e) {
+      // Ignore .env read errors
+    }
+  }
+}
+loadEnv();
+
+function isPlaceholder(val) {
+  if (!val || typeof val !== 'string') return true;
+  const upper = val.toUpperCase();
+  return upper.includes('YOUR_') || upper.includes('ТВОЙ_') || upper.includes('PLACEHOLDER') || upper.includes('DUMMY') || val.length < 15;
+}
+
+// Secure multi-tier API key loader:
+// 1. process.env.GEMINI_API_KEY (from environment or .env file)
+// 2. gemini_config.json (local untracked configuration file)
+// 3. config.local.json (alternative local config)
 function getApiKey() {
+  // 1. Process environment (or loaded from .env)
+  if (process.env.GEMINI_API_KEY && !isPlaceholder(process.env.GEMINI_API_KEY)) {
+    return process.env.GEMINI_API_KEY.trim();
+  }
+
+  // 2. Local uncommitted gemini_config.json
   if (fs.existsSync(CONFIG_PATH)) {
     try {
       let raw = fs.readFileSync(CONFIG_PATH, 'utf-8');
-      // Strip UTF-8 BOM if present
       raw = raw.replace(/^\uFEFF/, '').trim();
       const cfg = JSON.parse(raw);
-      if (cfg && cfg.GEMINI_API_KEY && cfg.GEMINI_API_KEY.trim() && !cfg.GEMINI_API_KEY.includes('ТВОЙ_КЛЮЧ')) {
+      if (cfg && cfg.GEMINI_API_KEY && !isPlaceholder(cfg.GEMINI_API_KEY)) {
         return cfg.GEMINI_API_KEY.trim();
       }
     } catch (e) {
-      console.error('[Gemini Engine] Error reading config:', e.message);
+      console.error('[Gemini Engine] Error reading gemini_config.json:', e.message);
     }
   }
-  return process.env.GEMINI_API_KEY || null;
+
+  // 3. Local uncommitted config.local.json
+  const altPath = path.join(ROOT_DIR, 'config.local.json');
+  if (fs.existsSync(altPath)) {
+    try {
+      let raw = fs.readFileSync(altPath, 'utf-8');
+      raw = raw.replace(/^\uFEFF/, '').trim();
+      const cfg = JSON.parse(raw);
+      if (cfg && cfg.GEMINI_API_KEY && !isPlaceholder(cfg.GEMINI_API_KEY)) {
+        return cfg.GEMINI_API_KEY.trim();
+      }
+    } catch (e) {
+      console.error('[Gemini Engine] Error reading config.local.json:', e.message);
+    }
+  }
+
+  return null;
 }
 
 // Low-level HTTPS request to Google Generative AI REST API
