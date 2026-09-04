@@ -4,7 +4,7 @@
 
 import { PARTS_DATABASE, PRESETS as _RAW_PRESETS, CATEGORIES, COUNTRIES, RETAILERS_BY_COUNTRY } from './data.js?v=20260903_v6';
 import { checkCompatibility } from './compatibility.js?v=20260903_v6';
-import { t, setLanguage, getCurrentLanguage, initI18n } from './i18n.js?v=20260903_v6';
+import { t, setLanguage, getCurrentLanguage, initI18n } from './i18n.js?v=20260904_v15';
 import { saveBuild, loadBuilds, deleteBuild } from './storage.js?v=20260903_v6';
 import { estimateAllFPS, estimateFPS, analyzeBottleneck } from './performance.js?v=20260903_v6';
 import { buildFromCurated, CURATED_BASELINES } from './autobuild.js?v=20260903_v7';
@@ -964,8 +964,9 @@ function setupEventListeners() {
       e.stopPropagation();
       const isActive = schematicPanel.classList.toggle('xray-mode');
       xrayBtn.classList.toggle('active', isActive);
+      updateSvgVisualizer();
       showToast(
-        isActive ? '⚡ Режим слотов (X-Ray): отображение всех посадочных мест' : '⚡ Режим X-Ray выключен',
+        isActive ? '⚡ Режим слотов (X-Ray): подсветка всех посадочных мест' : '⚡ Режим X-Ray выключен',
         'info'
       );
     });
@@ -2174,10 +2175,11 @@ function updateSvgVisualizer() {
     hdd: 'ghost-hdd',
     psu: 'ghost-psu'
   };
+  const isXray = document.querySelector('.center-schematic')?.classList.contains('xray-mode');
   Object.entries(ghostMap).forEach(([category, ghostId]) => {
     const ghostEl = document.getElementById(ghostId);
     if (!ghostEl) return;
-    if (buildState[category]) {
+    if (buildState[category] && !isXray) {
       ghostEl.style.display = 'none';
     } else {
       ghostEl.style.display = '';
