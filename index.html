@@ -345,13 +345,13 @@
         <div class="stage-panel center-schematic">
           <div class="schematic-header">
             <div class="schematic-header-left">
-              <span class="schematic-title" data-i18n="dash.visualizer.title">Схема сборки (Интерактивная)</span>
+              <span class="schematic-title" data-i18n="dash.visualizer.title">Схема сборки</span>
               <span class="status-badge" id="chassis-status" data-i18n="status.waiting">Waiting</span>
             </div>
             <div class="schematic-toolbar" role="toolbar" aria-label="Инструменты схемы сборки">
               <button type="button" class="btn-schematic-tool" id="tool-schematic-airflow" title="Симуляция воздушного потока">
                 <span class="tool-icon">💨</span>
-                <span class="tool-label" data-i18n="schematic.airflow">Поток воздуха</span>
+                <span class="tool-label" data-i18n="schematic.airflow">Обдув</span>
               </button>
               <button type="button" class="btn-schematic-tool" id="tool-schematic-xray" title="Показать посадочные места и слоты">
                 <span class="tool-icon">⚡</span>
@@ -367,7 +367,7 @@
               </button>
               <button type="button" class="btn-schematic-tool" id="tool-schematic-scale" title="Увеличить масштаб схемы">
                 <span class="tool-icon">🔍</span>
-                <span class="tool-label" data-i18n="schematic.zoom">Масштаб</span>
+                <span class="tool-label" data-i18n="schematic.zoom">Зум</span>
               </button>
             </div>
           </div>
@@ -393,28 +393,28 @@
 
             <svg id="pc-svg" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <!-- Grid background pattern for blueprint look -->
+                <!-- Grid background pattern for CAD blueprint look -->
                 <pattern id="blueprint-grid" width="16" height="16" patternUnits="userSpaceOnUse">
-                  <path d="M 16 0 L 0 0 0 16" fill="none" stroke="var(--border)" stroke-width="0.5" stroke-opacity="0.35" />
+                  <path d="M 16 0 L 0 0 0 16" fill="none" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.12" />
                 </pattern>
 
-                <!-- Motherboard subtle gradient -->
+                <!-- Motherboard tech gradient -->
                 <linearGradient id="mb-grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.14" />
-                  <stop offset="100%" stop-color="#312e81" stop-opacity="0.04" />
+                  <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.25" />
+                  <stop offset="100%" stop-color="#0f172a" stop-opacity="0.4" />
                 </linearGradient>
 
-                <!-- GPU Gradient -->
+                <!-- GPU sleek metallic gradient -->
                 <linearGradient id="gpu-grad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#059669" stop-opacity="0.18" />
-                  <stop offset="70%" stop-color="#10b981" stop-opacity="0.28" />
-                  <stop offset="100%" stop-color="#34d399" stop-opacity="0.16" />
+                  <stop offset="0%" stop-color="#064e3b" stop-opacity="0.4" />
+                  <stop offset="50%" stop-color="#065f46" stop-opacity="0.6" />
+                  <stop offset="100%" stop-color="#047857" stop-opacity="0.35" />
                 </linearGradient>
 
-                <!-- CPU Cooler Metallic / Gradient -->
+                <!-- CPU Cooler metallic gradient -->
                 <linearGradient id="cooler-grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#0284c7" stop-opacity="0.22" />
-                  <stop offset="100%" stop-color="#0369a1" stop-opacity="0.08" />
+                  <stop offset="0%" stop-color="#0284c7" stop-opacity="0.28" />
+                  <stop offset="100%" stop-color="#0369a1" stop-opacity="0.1" />
                 </linearGradient>
 
                 <!-- Glow filter for selected active components -->
@@ -427,142 +427,151 @@
                 </filter>
               </defs>
 
-              <!-- Chassis interior background grid -->
-              <rect x="15" y="15" width="290" height="370" rx="14" fill="url(#blueprint-grid)" />
+              <!-- Passive Interior Canvas (POINTER EVENTS NONE: never intercepts component clicks) -->
+              <rect class="chassis-canvas-bg" x="15" y="15" width="290" height="370" rx="14" fill="var(--bg-subtle)" pointer-events="none" />
+              <rect class="chassis-canvas-grid" x="15" y="15" width="290" height="370" rx="14" fill="url(#blueprint-grid)" pointer-events="none" />
 
-              <!-- Chassis outer frame & interactive case component -->
+              <!-- Motherboard tray cable grommets (Passive) -->
+              <g class="vis-cable-grommets" pointer-events="none">
+                <rect x="264" y="78" width="7" height="42" rx="3.5" fill="var(--border)" fill-opacity="0.5" />
+                <line x1="267.5" y1="82" x2="267.5" y2="116" stroke="var(--bg)" stroke-width="1.2" stroke-linecap="round" />
+                <rect x="264" y="156" width="7" height="52" rx="3.5" fill="var(--border)" fill-opacity="0.5" />
+                <line x1="267.5" y1="160" x2="267.5" y2="204" stroke="var(--bg)" stroke-width="1.2" stroke-linecap="round" />
+                <rect x="180" y="24" width="36" height="7" rx="3.5" fill="var(--border)" fill-opacity="0.5" />
+              </g>
+
+              <!-- Chassis outer frame & rim (pointer-events: stroke only) -->
               <g id="vis-case" class="vis-component" data-category="case" role="button" tabindex="0">
-                <rect id="vis-case-frame" class="vis-case-outer comp-shape" x="15" y="15" width="290" height="370" rx="14" fill="var(--bg-subtle)" stroke="var(--border)" stroke-width="1.8" />
+                <rect id="vis-case-frame" class="vis-case-outer comp-shape" x="15" y="15" width="290" height="370" rx="14" fill="none" stroke="var(--border)" stroke-width="2.5" pointer-events="stroke" />
+                <!-- Corner knurled glass thumb screws -->
+                <circle cx="23" cy="23" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="23" cy="23" r="1.2" fill="var(--text-tertiary)" />
+                <circle cx="297" cy="23" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="297" cy="23" r="1.2" fill="var(--text-tertiary)" />
+                <circle cx="23" cy="377" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="23" cy="377" r="1.2" fill="var(--text-tertiary)" />
+                <circle cx="297" cy="377" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="297" cy="377" r="1.2" fill="var(--text-tertiary)" />
               </g>
 
-              <!-- Ghost Slot Targets for unselected parts / X-Ray mode -->
+              <!-- Ghost Blueprint Slots (Visible when unselected, directly clickable) -->
               <g id="vis-ghost-slots" class="vis-ghost-layer">
-                <g id="ghost-case" class="vis-ghost-target" data-category="case">
-                  <rect x="15" y="15" width="290" height="370" rx="14" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="6,4" />
+                <!-- Ghost Motherboard -->
+                <g id="ghost-motherboard" class="vis-ghost-target" data-category="motherboard" role="button" tabindex="0">
+                  <rect x="36" y="44" width="224" height="268" rx="8" fill="rgba(99, 102, 241, 0.04)" stroke="#6366f1" stroke-width="1.3" stroke-dasharray="5,4" />
+                  <rect class="ghost-pill-mb" x="46" y="278" width="136" height="22" rx="11" fill="var(--surface)" fill-opacity="0.95" stroke="#6366f1" stroke-width="0.9" />
+                  <text x="114" y="289" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#6366f1" font-size="6.8" font-weight="700" data-i18n="schematic.slot_mb">+ МАТЕРИНСКАЯ ПЛАТА</text>
                 </g>
-                <g id="ghost-motherboard" class="vis-ghost-target" data-category="motherboard">
-                  <rect x="38" y="44" width="224" height="268" rx="8" fill="rgba(99, 102, 241, 0.03)" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="4,4" />
-                  <rect x="90" y="150" width="120" height="18" rx="3" fill="var(--surface)" fill-opacity="0.85" stroke="#6366f1" stroke-width="0.7" />
-                  <text x="150" y="159" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#6366f1" font-size="7" font-weight="700" data-i18n="schematic.slot_mb">+ СЛОТ ПЛАТЫ</text>
+
+                <!-- Ghost CPU -->
+                <g id="ghost-cpu" class="vis-ghost-target" data-category="cpu" role="button" tabindex="0">
+                  <rect x="94" y="80" width="60" height="60" rx="6" fill="rgba(59, 130, 246, 0.06)" stroke="#3b82f6" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <rect x="98" y="102" width="52" height="16" rx="8" fill="var(--surface)" fill-opacity="0.95" stroke="#3b82f6" stroke-width="0.8" />
+                  <text x="124" y="110" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#3b82f6" font-size="6.2" font-weight="700" data-i18n="schematic.slot_cpu">+ ПРОЦЕССОР</text>
                 </g>
-                <g id="ghost-cpu" class="vis-ghost-target" data-category="cpu">
-                  <rect x="94" y="80" width="60" height="60" rx="5" fill="rgba(59, 130, 246, 0.04)" stroke="#3b82f6" stroke-width="1.2" stroke-dasharray="3,3" />
-                  <rect x="100" y="103" width="48" height="15" rx="2.5" fill="var(--surface)" fill-opacity="0.85" stroke="#3b82f6" stroke-width="0.7" />
-                  <text x="124" y="110.5" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#3b82f6" font-size="6.5" font-weight="700" data-i18n="schematic.slot_cpu">+ СОКЕТ CPU</text>
+
+                <!-- Ghost Cooler (Top Cooling / Radiator Mount) -->
+                <g id="ghost-cooler" class="vis-ghost-target" data-category="cooler" role="button" tabindex="0">
+                  <rect x="42" y="18" width="220" height="22" rx="4" fill="rgba(6, 182, 212, 0.06)" stroke="#06b6d4" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <rect x="94" y="21" width="116" height="16" rx="8" fill="var(--surface)" fill-opacity="0.95" stroke="#06b6d4" stroke-width="0.8" />
+                  <text x="152" y="29" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#06b6d4" font-size="6.5" font-weight="700" data-i18n="schematic.slot_cooler">+ ОХЛАЖДЕНИЕ</text>
                 </g>
-                <g id="ghost-cooler" class="vis-ghost-target" data-category="cooler">
-                  <circle cx="124" cy="109" r="30" fill="rgba(6, 182, 212, 0.04)" stroke="#06b6d4" stroke-width="1.2" stroke-dasharray="3,3" />
-                  <rect x="98" y="103" width="52" height="15" rx="2.5" fill="var(--surface)" fill-opacity="0.85" stroke="#06b6d4" stroke-width="0.7" />
-                  <text x="124" y="110.5" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#06b6d4" font-size="6.5" font-weight="700" data-i18n="schematic.slot_cooler">+ КУЛЕР CPU</text>
+
+                <!-- Ghost RAM -->
+                <g id="ghost-ram" class="vis-ghost-target" data-category="ram" role="button" tabindex="0">
+                  <rect x="166" y="68" width="22" height="84" rx="3" fill="rgba(139, 92, 246, 0.06)" stroke="#8b5cf6" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <text x="177" y="110" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#8b5cf6" font-size="6.2" font-weight="700" transform="rotate(-90 177 110)" data-i18n="schematic.slot_ram">+ DDR5 ОЗУ</text>
                 </g>
-                <g id="ghost-ram" class="vis-ghost-target" data-category="ram">
-                  <rect x="166" y="70" width="19" height="82" rx="2" fill="rgba(139, 92, 246, 0.04)" stroke="#8b5cf6" stroke-width="1.2" stroke-dasharray="3,3" />
-                  <text x="175" y="115" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#8b5cf6" font-size="6" font-weight="700" transform="rotate(-90 175 115)" data-i18n="schematic.slot_ram">+ DDR5 RAM</text>
+
+                <!-- Ghost GPU -->
+                <g id="ghost-gpu" class="vis-ghost-target" data-category="gpu" role="button" tabindex="0">
+                  <rect x="28" y="196" width="248" height="58" rx="6" fill="rgba(16, 185, 129, 0.05)" stroke="#10b981" stroke-width="1.4" stroke-dasharray="5,4" />
+                  <rect x="92" y="217" width="120" height="20" rx="10" fill="var(--surface)" fill-opacity="0.95" stroke="#10b981" stroke-width="0.9" />
+                  <text x="152" y="227" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#10b981" font-size="6.8" font-weight="700" data-i18n="schematic.slot_gpu">+ ВИДЕОКАРТА</text>
                 </g>
-                <g id="ghost-gpu" class="vis-ghost-target" data-category="gpu">
-                  <rect x="28" y="196" width="248" height="58" rx="6" fill="rgba(16, 185, 129, 0.04)" stroke="#10b981" stroke-width="1.4" stroke-dasharray="4,3" />
-                  <rect x="95" y="217" width="114" height="18" rx="3" fill="var(--surface)" fill-opacity="0.85" stroke="#10b981" stroke-width="0.7" />
-                  <text x="152" y="226" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#10b981" font-size="7" font-weight="700" data-i18n="schematic.slot_gpu">+ PCIe 5.0 (GPU)</text>
+
+                <!-- Ghost SSD -->
+                <g id="ghost-ssd" class="vis-ghost-target" data-category="ssd" role="button" tabindex="0">
+                  <rect x="132" y="171" width="66" height="16" rx="2.5" fill="rgba(245, 158, 11, 0.06)" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="3,2" />
+                  <text x="165" y="179" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#f59e0b" font-size="5.8" font-weight="700" data-i18n="schematic.slot_ssd">+ M.2 NVMe</text>
                 </g>
-                <g id="ghost-ssd" class="vis-ghost-target" data-category="ssd">
-                  <rect x="136" y="172" width="60" height="15" rx="2.5" fill="rgba(245, 158, 11, 0.04)" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="3,2" />
-                  <text x="166" y="179.5" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#f59e0b" font-size="6" font-weight="700" data-i18n="schematic.slot_ssd">+ M.2 NVMe</text>
-                </g>
-                <g id="ghost-hdd" class="vis-ghost-target" data-category="hdd">
-                  <rect x="206" y="332" width="76" height="38" rx="4" fill="rgba(217, 119, 6, 0.04)" stroke="#d97706" stroke-width="1.2" stroke-dasharray="3,3" />
-                  <text x="244" y="351" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#d97706" font-size="6.5" font-weight="700" data-i18n="schematic.slot_hdd">+ 3.5" HDD</text>
-                </g>
-                <g id="ghost-psu" class="vis-ghost-target" data-category="psu">
-                  <rect x="28" y="330" width="98" height="42" rx="4" fill="rgba(249, 115, 22, 0.04)" stroke="#f97316" stroke-width="1.2" stroke-dasharray="3,3" />
-                  <text x="77" y="351" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#f97316" font-size="6.5" font-weight="700" data-i18n="schematic.slot_psu">+ ОТСЕК БП</text>
+
+                <!-- Ghost PSU -->
+                <g id="ghost-psu" class="vis-ghost-target" data-category="psu" role="button" tabindex="0">
+                  <rect x="28" y="330" width="98" height="42" rx="4" fill="rgba(14, 165, 233, 0.06)" stroke="#0ea5e9" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <text x="77" y="351" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#0ea5e9" font-size="6.5" font-weight="700" data-i18n="schematic.slot_psu">+ БЛОК ПИТАНИЯ</text>
                 </g>
               </g>
 
-              <!-- Airflow Simulation Streamlines Layer -->
-              <g id="vis-airflow-layer" class="vis-airflow-layer hidden">
-                <defs>
-                  <linearGradient id="airflow-intake-grad" x1="1" y1="0" x2="0" y2="0">
-                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85" />
-                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.15" />
-                  </linearGradient>
-                  <linearGradient id="airflow-exhaust-grad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#fb7185" stop-opacity="0.2" />
-                    <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.9" />
-                  </linearGradient>
-                </defs>
-                <!-- Cold Intake air streams (Front to Rear/CPU) -->
-                <path class="airflow-line intake" d="M 290 85 C 230 85, 180 88, 150 90" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-                <path class="airflow-line intake" d="M 290 155 C 220 155, 175 145, 135 145" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-                <path class="airflow-line intake" d="M 290 225 C 240 225, 190 225, 150 225" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-                <path class="airflow-line intake" d="M 290 350 C 220 350, 170 350, 130 350" stroke="url(#airflow-intake-grad)" stroke-width="2" stroke-linecap="round" fill="none" />
-
-                <!-- Warm Exhaust air streams (CPU/Cooler out rear and top) -->
-                <path class="airflow-line exhaust" d="M 115 90 C 75 90, 45 110, 25 110" stroke="url(#airflow-exhaust-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-                <path class="airflow-line exhaust" d="M 124 65 C 124 45, 100 25, 65 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-                <path class="airflow-line exhaust" d="M 160 65 C 160 45, 185 25, 220 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-                <path class="airflow-line exhaust" d="M 60 215 C 40 215, 30 205, 20 205" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-
-                <text x="248" y="52" class="airflow-label cold" font-size="6.5" fill="#38bdf8" font-weight="700" data-i18n="schematic.airflow_in">IN: ВДУВ</text>
-                <text x="20" y="86" class="airflow-label warm" font-size="6.5" fill="#f43f5e" font-weight="700" data-i18n="schematic.airflow_out">OUT: ВЫДУВ</text>
+              <!-- Chassis Fans (Passive) -->
+              <!-- Rear Exhaust Fan -->
+              <g class="vis-chassis-fan rear-fan" pointer-events="none">
+                <rect x="18" y="90" width="11" height="56" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="23.5" y1="94" x2="23.5" y2="142" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
               </g>
-
-              <!-- Rear I/O Panel cutout notch -->
-              <rect x="15" y="52" width="6" height="58" rx="2" fill="var(--border)" fill-opacity="0.4" />
+              <!-- Front Intake Fans -->
+              <g class="vis-chassis-fan front-fans" pointer-events="none">
+                <rect x="291" y="56" width="11" height="60" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="296.5" y1="60" x2="296.5" y2="112" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+                <rect x="291" y="126" width="11" height="60" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="296.5" y1="130" x2="296.5" y2="182" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+                <rect x="291" y="196" width="11" height="60" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="296.5" y1="200" x2="296.5" y2="252" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+              </g>
 
               <!-- PSU Shroud Area / Bottom Chamber -->
               <rect class="vis-psu-shroud" x="22" y="324" width="276" height="54" rx="4" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
-              <!-- PSU ventilation perforations -->
-              <line x1="135" y1="335" x2="285" y2="335" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
-              <line x1="135" y1="344" x2="285" y2="344" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
-              <line x1="135" y1="353" x2="285" y2="353" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
-              <line x1="135" y1="362" x2="285" y2="362" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+              <line x1="216" y1="335" x2="286" y2="335" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+              <line x1="216" y1="344" x2="286" y2="344" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+              <line x1="216" y1="353" x2="286" y2="353" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+              <line x1="216" y1="362" x2="286" y2="362" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
 
-              <!-- Interactive Case Badge on PSU Shroud (In front of shroud, 100% visible) -->
+              <!-- Interactive Case Badge on PSU Shroud -->
               <g id="vis-case-badge-group" class="vis-component" data-category="case" role="button" tabindex="0">
-                <rect class="case-shroud-plate comp-shape" x="132" y="333" width="70" height="36" rx="4" fill="var(--surface)" fill-opacity="0.94" stroke="var(--border)" stroke-width="1" />
-                <text id="vis-case-badge" x="167" y="344" text-anchor="middle" dominant-baseline="middle" class="vis-label case-badge-text" font-size="6.5" font-weight="800" data-i18n="schematic.case">КОРПУС</text>
-                <text id="vis-case-name" x="167" y="357" text-anchor="middle" dominant-baseline="middle" class="vis-sublabel" font-size="5.8" fill="var(--text-secondary)" font-weight="600"></text>
-              </g>
-
-              <!-- Chassis Cooling Fan Slots -->
-              <!-- Exhaust Fan (Rear) -->
-              <g class="vis-chassis-fan rear-fan">
-                <rect x="18" y="92" width="10" height="54" rx="3" fill="var(--bg-subtle)" stroke="var(--border)" stroke-width="1" />
-                <line x1="23" y1="96" x2="23" y2="142" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.7" />
-              </g>
-
-              <!-- Intake Fans (Front) -->
-              <g class="vis-chassis-fan front-fans">
-                <rect x="292" y="60" width="10" height="56" rx="3" fill="var(--bg-subtle)" stroke="var(--border)" stroke-width="1" />
-                <line x1="297" y1="64" x2="297" y2="112" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.7" />
-                <rect x="292" y="130" width="10" height="56" rx="3" fill="var(--bg-subtle)" stroke="var(--border)" stroke-width="1" />
-                <line x1="297" y1="134" x2="297" y2="182" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.7" />
-                <rect x="292" y="200" width="10" height="56" rx="3" fill="var(--bg-subtle)" stroke="var(--border)" stroke-width="1" />
-                <line x1="297" y1="204" x2="297" y2="252" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.7" />
+                <rect class="case-shroud-plate comp-shape" x="132" y="333" width="76" height="36" rx="4" fill="var(--surface)" fill-opacity="0.96" stroke="var(--border)" stroke-width="1.2" />
+                <text id="vis-case-badge" x="170" y="344" text-anchor="middle" dominant-baseline="middle" class="vis-label case-badge-text" font-size="6.8" font-weight="800" data-i18n="schematic.case">КОРПУС</text>
+                <text id="vis-case-name" x="170" y="357" text-anchor="middle" dominant-baseline="middle" class="vis-sublabel" font-size="5.8" fill="var(--text-secondary)" font-weight="600"></text>
               </g>
 
               <!-- 1. MOTHERBOARD -->
               <g id="vis-motherboard" class="vis-component hidden" data-category="motherboard" role="button" tabindex="0">
                 <!-- PCB Main Body -->
-                <rect class="comp-shape mb-pcb" x="38" y="44" width="224" height="268" rx="8" fill="url(#mb-grad)" stroke="#6366f1" stroke-width="1.8" />
+                <rect class="comp-shape mb-pcb" x="36" y="42" width="226" height="270" rx="8" fill="url(#mb-grad)" stroke="#6366f1" stroke-width="1.8" />
+                <!-- Corner brass standoffs -->
+                <circle cx="44" cy="50" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="44" cy="50" r="1" fill="#78350f" />
+                <circle cx="254" cy="50" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="254" cy="50" r="1" fill="#78350f" />
+                <circle cx="44" cy="304" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="44" cy="304" r="1" fill="#78350f" />
+                <circle cx="254" cy="304" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="254" cy="304" r="1" fill="#78350f" />
                 <!-- VRM Heatsinks -->
-                <rect class="mb-heatsink" x="46" y="52" width="24" height="74" rx="3" fill="#6366f1" fill-opacity="0.16" stroke="#6366f1" stroke-width="1" />
-                <rect class="mb-heatsink" x="74" y="52" width="68" height="18" rx="3" fill="#6366f1" fill-opacity="0.16" stroke="#6366f1" stroke-width="1" />
-                <!-- Chipset Heatsink -->
-                <rect class="mb-chipset" x="186" y="222" width="58" height="42" rx="4" fill="#6366f1" fill-opacity="0.14" stroke="#6366f1" stroke-width="1" />
+                <rect class="mb-heatsink" x="46" y="50" width="24" height="74" rx="3" fill="#6366f1" fill-opacity="0.22" stroke="#6366f1" stroke-width="1" />
+                <line x1="50" y1="58" x2="66" y2="58" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="68" x2="66" y2="68" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="78" x2="66" y2="78" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="88" x2="66" y2="88" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="98" x2="66" y2="98" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="108" x2="66" y2="108" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <rect class="mb-heatsink" x="74" y="50" width="68" height="18" rx="3" fill="#6366f1" fill-opacity="0.22" stroke="#6366f1" stroke-width="1" />
+                <line x1="82" y1="56" x2="134" y2="56" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="82" y1="62" x2="134" y2="62" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <!-- Chipset Heatsink with stylized armor -->
+                <rect class="mb-chipset" x="186" y="222" width="58" height="42" rx="4" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-width="1" />
                 <line x1="192" y1="234" x2="238" y2="234" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.5" />
                 <line x1="192" y1="244" x2="238" y2="244" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.5" />
                 <line x1="192" y1="254" x2="238" y2="254" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.5" />
-                <!-- PCIe x16 Slot Primary -->
-                <rect class="pcie-slot" x="48" y="196" width="144" height="7" rx="1.5" fill="#6366f1" fill-opacity="0.25" stroke="#6366f1" stroke-width="0.9" />
-                <line x1="52" y1="199.5" x2="188" y2="199.5" stroke="#6366f1" stroke-width="0.6" stroke-dasharray="2,2" />
+                <!-- Reinforced PCIe x16 Armor Slot -->
+                <rect class="pcie-slot" x="46" y="195" width="148" height="8" rx="1.5" fill="#cbd5e1" fill-opacity="0.35" stroke="#94a3b8" stroke-width="1" />
+                <line x1="50" y1="199" x2="190" y2="199" stroke="#6366f1" stroke-width="0.6" stroke-dasharray="2,2" />
                 <!-- PCIe x16 Slot Secondary -->
-                <rect class="pcie-slot" x="48" y="270" width="120" height="6" rx="1.5" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-width="0.8" />
+                <rect class="pcie-slot" x="46" y="270" width="124" height="6" rx="1.5" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-width="0.8" />
                 <!-- Motherboard Silkscreen Badge on lower PCB -->
                 <g class="mb-brand-plate">
-                  <rect x="48" y="280" width="126" height="25" rx="3.5" fill="var(--surface)" fill-opacity="0.9" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
-                  <text x="56" y="289" class="vis-label mb-label" text-anchor="start" dominant-baseline="middle" font-size="6.5" font-weight="700" data-i18n="schematic.motherboard">МАТЕРИНСКАЯ ПЛАТА</text>
-                  <text id="vis-mb-name" x="56" y="298" class="vis-sublabel" text-anchor="start" dominant-baseline="middle" font-size="6"></text>
+                  <rect x="46" y="280" width="130" height="25" rx="3.5" fill="var(--surface)" fill-opacity="0.92" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                  <text x="54" y="289" class="vis-label mb-label" text-anchor="start" dominant-baseline="middle" font-size="6.5" font-weight="700" data-i18n="schematic.motherboard">МАТЕРИНСКАЯ ПЛАТА</text>
+                  <text id="vis-mb-name" x="54" y="298" class="vis-sublabel" text-anchor="start" dominant-baseline="middle" font-size="6"></text>
                 </g>
               </g>
 
@@ -571,7 +580,7 @@
                 <!-- Socket Retention Frame -->
                 <rect x="94" y="80" width="60" height="60" rx="5" fill="var(--surface)" stroke="#3b82f6" stroke-width="1.2" />
                 <!-- Integrated Heat Spreader (IHS) -->
-                <rect class="comp-shape cpu-ihs" x="99" y="85" width="50" height="50" rx="3.5" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-width="1.8" />
+                <rect class="comp-shape cpu-ihs" x="99" y="85" width="50" height="50" rx="3.5" fill="#3b82f6" fill-opacity="0.22" stroke="#3b82f6" stroke-width="1.8" />
                 <!-- Corner Pin 1 Indicator -->
                 <polygon points="99,85 107,85 99,93" fill="#3b82f6" />
                 <!-- Circuit lines on IHS -->
@@ -584,16 +593,17 @@
               <!-- 3. RAM (DIMM Slots) -->
               <g id="vis-ram" class="vis-component hidden" data-category="ram" role="button" tabindex="0">
                 <!-- DIMM Slot 1 -->
-                <rect x="166" y="70" width="7.5" height="82" rx="2" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-width="0.8" />
-                <!-- DIMM Stick 1 -->
-                <rect class="comp-shape ram-stick" x="167" y="71" width="5.5" height="80" rx="1.5" fill="#8b5cf6" fill-opacity="0.4" stroke="#8b5cf6" stroke-width="1.2" />
+                <rect x="166" y="70" width="8" height="82" rx="2" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="0.8" />
+                <rect class="comp-shape ram-stick" x="167" y="71" width="6" height="80" rx="1.5" fill="#8b5cf6" fill-opacity="0.45" stroke="#8b5cf6" stroke-width="1.2" />
                 <!-- DIMM Slot 2 -->
-                <rect x="178" y="70" width="7.5" height="82" rx="2" fill="#8b5cf6" fill-opacity="0.12" stroke="#8b5cf6" stroke-width="0.8" />
-                <!-- DIMM Stick 2 -->
-                <rect class="comp-shape ram-stick" x="179" y="71" width="5.5" height="80" rx="1.5" fill="#8b5cf6" fill-opacity="0.4" stroke="#8b5cf6" stroke-width="1.2" />
-                <!-- Heatspreader notched accent -->
-                <line x1="169.75" y1="78" x2="169.75" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
-                <line x1="181.75" y1="78" x2="181.75" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
+                <rect x="178" y="70" width="8" height="82" rx="2" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="0.8" />
+                <rect class="comp-shape ram-stick" x="179" y="71" width="6" height="80" rx="1.5" fill="#8b5cf6" fill-opacity="0.45" stroke="#8b5cf6" stroke-width="1.2" />
+                <!-- Heatspreader brushed metallic line -->
+                <line x1="170" y1="78" x2="170" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
+                <line x1="182" y1="78" x2="182" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
+                <!-- Top RGB Diffuser Strip -->
+                <rect x="167" y="71" width="6" height="6" rx="1" fill="#c084fc" fill-opacity="0.8" />
+                <rect x="179" y="71" width="6" height="6" rx="1" fill="#c084fc" fill-opacity="0.8" />
                 <!-- RAM Label — below sticks with badge -->
                 <rect x="164" y="153" width="24" height="11" rx="2" fill="var(--surface)" fill-opacity="0.85" stroke="#8b5cf6" stroke-width="0.6" />
                 <text x="176" y="158.5" class="vis-label ram-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.ram">ОЗУ</text>
@@ -628,68 +638,76 @@
                 <!-- 4B. AIO Liquid Cooler Option -->
                 <g id="vis-cooler-aio" class="hidden">
                   <!-- Top-Mounted Radiator Stack (240mm/360mm) -->
-                  <rect class="comp-shape aio-rad" x="42" y="18" width="220" height="22" rx="4" fill="#06b6d4" fill-opacity="0.18" stroke="#06b6d4" stroke-width="1.6" />
+                  <rect class="comp-shape aio-rad" x="42" y="18" width="220" height="22" rx="4" fill="#06b6d4" fill-opacity="0.22" stroke="#06b6d4" stroke-width="1.6" />
                   <line x1="42" y1="29" x2="262" y2="29" stroke="#06b6d4" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
-                  <rect x="105" y="23" width="94" height="12" rx="2" fill="var(--surface)" fill-opacity="0.85" stroke="#06b6d4" stroke-width="0.6" />
+                  <rect x="105" y="23" width="94" height="12" rx="2" fill="var(--surface)" fill-opacity="0.9" stroke="#06b6d4" stroke-width="0.6" />
                   <text x="152" y="29" class="vis-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" fill="#06b6d4" data-i18n="schematic.cooler_rad">РАДИАТОР СЖО</text>
+                  <!-- Dual radiator fan silhouettes -->
+                  <circle cx="90" cy="29" r="8" fill="none" stroke="#06b6d4" stroke-width="0.8" stroke-dasharray="2,2" />
+                  <circle cx="214" cy="29" r="8" fill="none" stroke="#06b6d4" stroke-width="0.8" stroke-dasharray="2,2" />
+                  <!-- Flexible Braided Sleeved Tubes with smooth natural curves -->
+                  <path d="M 115 95 C 96 76, 82 54, 90 40" fill="none" stroke="#06b6d4" stroke-width="2.8" stroke-linecap="round" />
+                  <path d="M 133 95 C 152 76, 172 54, 164 40" fill="none" stroke="#06b6d4" stroke-width="2.8" stroke-linecap="round" />
                   <!-- CPU Pump Block with Infinity Mirror Ring -->
                   <circle class="comp-shape aio-pump" cx="124" cy="110" r="20" fill="var(--surface)" stroke="#06b6d4" stroke-width="2" />
-                  <circle cx="124" cy="110" r="14" fill="#06b6d4" fill-opacity="0.2" stroke="#06b6d4" stroke-width="1" />
+                  <circle cx="124" cy="110" r="14" fill="#06b6d4" fill-opacity="0.25" stroke="#06b6d4" stroke-width="1" />
                   <text x="124" y="105" class="vis-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="800" fill="#06b6d4" data-i18n="schematic.cooler_aio">СЖО</text>
                   <text id="vis-aio-temp" x="124" y="116" class="vis-sublabel" text-anchor="middle" dominant-baseline="middle" font-size="5.5" font-weight="700" fill="#38bdf8"></text>
-                  <!-- Flexible Braided Liquid Tubes -->
-                  <path d="M 116 94 C 108 55, 80 44, 74 40" fill="none" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" />
-                  <path d="M 132 94 C 142 55, 175 44, 185 40" fill="none" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" />
                 </g>
               </g>
 
               <!-- 5. GPU (Graphics Card) -->
               <g id="vis-gpu" class="vis-component hidden" data-category="gpu" role="button" tabindex="0">
                 <!-- Backplate & Main Body -->
-                <rect class="comp-shape gpu-body" x="28" y="196" width="248" height="58" rx="6" fill="url(#gpu-grad)" stroke="#10b981" stroke-width="2" />
-                <!-- PCI Bracket on Rear I/O -->
-                <rect x="23" y="193" width="6" height="64" rx="2" fill="#10b981" fill-opacity="0.3" stroke="#10b981" stroke-width="1" />
-                <!-- Center Divider Line / Accent Line -->
-                <line x1="28" y1="225" x2="276" y2="225" stroke="#10b981" stroke-width="0.9" stroke-dasharray="4,2" stroke-opacity="0.6" />
-                <!-- Dual/Triple Fan Rings -->
-                <circle cx="85" cy="225" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
-                <circle cx="85" cy="225" r="6" fill="#10b981" fill-opacity="0.4" />
-                <circle cx="145" cy="225" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
-                <circle cx="145" cy="225" r="6" fill="#10b981" fill-opacity="0.4" />
-                <circle cx="205" cy="225" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
-                <circle cx="205" cy="225" r="6" fill="#10b981" fill-opacity="0.4" />
-                <!-- 12V-2x6 / 8-Pin Power Header Plug -->
+                <rect class="comp-shape gpu-body" x="26" y="196" width="250" height="58" rx="6" fill="url(#gpu-grad)" stroke="#10b981" stroke-width="2" />
+                <!-- PCI Bracket on Rear I/O with display ports -->
+                <rect x="20" y="193" width="7" height="64" rx="2" fill="#10b981" fill-opacity="0.35" stroke="#10b981" stroke-width="1" />
+                <rect x="22" y="202" width="3" height="7" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <rect x="22" y="215" width="3" height="7" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <rect x="22" y="228" width="3" height="7" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <rect x="22" y="241" width="3" height="6" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <!-- Geometric airflow cutouts on right side of backplate -->
+                <rect x="238" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <rect x="246" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <rect x="254" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <rect x="262" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <!-- Triple Axial-Tech Cooling Fans -->
+                <circle cx="82" cy="226" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
+                <circle cx="82" cy="226" r="6" fill="#10b981" fill-opacity="0.5" />
+                <circle cx="140" cy="226" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
+                <circle cx="140" cy="226" r="6" fill="#10b981" fill-opacity="0.5" />
+                <circle cx="198" cy="226" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
+                <circle cx="198" cy="226" r="6" fill="#10b981" fill-opacity="0.5" />
+                <!-- 12V-2x6 / 8-Pin Power Header Plug & Cable -->
                 <rect x="246" y="190" width="16" height="7" rx="1.5" fill="#10b981" stroke="#10b981" stroke-width="0.8" />
+                <path d="M 254 197 C 254 205, 260 215, 260 225" fill="none" stroke="#10b981" stroke-width="1.2" stroke-opacity="0.5" stroke-dasharray="2,2" />
                 <!-- GPU Illuminated Edge Plate / Banner -->
-                <rect class="gpu-edge-plate" x="38" y="198" width="144" height="12" rx="2.5" fill="var(--surface)" fill-opacity="0.92" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.7" />
-                <text x="44" y="204.5" class="vis-label gpu-label" text-anchor="start" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.gpu">ВИДЕОКАРТА</text>
+                <rect class="gpu-edge-plate" x="34" y="198" width="148" height="12" rx="2.5" fill="var(--surface)" fill-opacity="0.94" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.7" />
+                <text x="40" y="204.5" class="vis-label gpu-label" text-anchor="start" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.gpu">ВИДЕОКАРТА</text>
                 <text id="vis-gpu-name" x="176" y="204.5" class="vis-sublabel" text-anchor="end" dominant-baseline="middle" font-size="5.8" font-weight="700"></text>
               </g>
 
               <!-- 6. SSD (M.2 NVMe with Heatsink) -->
               <g id="vis-ssd" class="vis-component hidden" data-category="ssd" role="button" tabindex="0">
                 <!-- M.2 2280 PCB Stick -->
-                <rect class="comp-shape ssd-stick" x="136" y="172" width="60" height="15" rx="2.5" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.2" />
+                <rect class="comp-shape ssd-stick" x="132" y="171" width="66" height="16" rx="2.5" fill="#f59e0b" fill-opacity="0.25" stroke="#f59e0b" stroke-width="1.2" />
                 <!-- Heatsink Thermal Pad grooving -->
-                <line x1="148" y1="172" x2="148" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
-                <line x1="160" y1="172" x2="160" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
-                <line x1="172" y1="172" x2="172" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
-                <line x1="184" y1="172" x2="184" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
-                <rect x="138" y="174" width="8" height="11" rx="1" fill="#f59e0b" fill-opacity="0.5" />
-                <circle cx="193" cy="179.5" r="1.5" fill="#d97706" />
+                <line x1="144" y1="171" x2="144" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <line x1="156" y1="171" x2="156" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <line x1="168" y1="171" x2="168" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <line x1="180" y1="171" x2="180" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <circle cx="192" cy="179" r="1.5" fill="#d97706" />
                 <!-- SSD Badge -->
-                <rect x="148" y="174" width="36" height="11" rx="2" fill="var(--surface)" fill-opacity="0.85" stroke="#f59e0b" stroke-width="0.6" />
-                <text x="166" y="179.5" class="vis-label ssd-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.ssd">M.2 SSD</text>
+                <rect x="144" y="173" width="38" height="12" rx="2" fill="var(--surface)" fill-opacity="0.9" stroke="#f59e0b" stroke-width="0.6" />
+                <text x="163" y="179" class="vis-label ssd-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.ssd">M.2 SSD</text>
               </g>
 
               <!-- 7. HDD (3.5" Drive Bay in Shroud) -->
               <g id="vis-hdd" class="vis-component hidden" data-category="hdd" role="button" tabindex="0">
                 <!-- Drive Caddy -->
                 <rect class="comp-shape hdd-body" x="206" y="332" width="76" height="38" rx="4" fill="#a855f7" fill-opacity="0.16" stroke="#a855f7" stroke-width="1.3" />
-                <!-- Platter spindle cutout -->
                 <circle cx="236" cy="351" r="11" fill="none" stroke="#a855f7" stroke-width="0.9" stroke-dasharray="2,2" />
                 <circle cx="236" cy="351" r="3" fill="#a855f7" fill-opacity="0.5" />
-                <!-- HDD Label Badge -->
                 <rect x="249" y="345" width="28" height="12" rx="2" fill="var(--surface)" fill-opacity="0.85" stroke="#a855f7" stroke-width="0.6" />
                 <text x="263" y="351" class="vis-label hdd-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.hdd">HDD</text>
               </g>
@@ -703,13 +721,41 @@
                 <circle cx="74" cy="351" r="5" fill="#0ea5e9" fill-opacity="0.4" />
                 <!-- Modular Cable Connectors Outlines -->
                 <line x1="126" y1="336" x2="126" y2="366" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" />
-                <!-- PSU Label & Wattage — centered in fan -->
+                <!-- PSU Label & Wattage -->
                 <text x="74" y="347" class="vis-label psu-label" text-anchor="middle" dominant-baseline="middle" font-size="7" font-weight="800" data-i18n="schematic.psu">БП</text>
                 <text id="vis-psu-name" x="74" y="360" class="vis-sublabel" text-anchor="middle" dominant-baseline="middle" font-size="6.5"></text>
               </g>
 
-              <!-- Clearance CAD Dimension Layer (Toggleable with Clearance tool) -->
-              <g id="vis-clearance-layer" class="vis-clearance-layer hidden">
+              <!-- Airflow Simulation Streamlines Layer (pointer-events: none) -->
+              <g id="vis-airflow-layer" class="vis-airflow-layer hidden" pointer-events="none">
+                <defs>
+                  <linearGradient id="airflow-intake-grad" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85" />
+                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.15" />
+                  </linearGradient>
+                  <linearGradient id="airflow-exhaust-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#fb7185" stop-opacity="0.2" />
+                    <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.9" />
+                  </linearGradient>
+                </defs>
+                <!-- Cold Intake air streams (Front to Rear/CPU) -->
+                <path class="airflow-line intake" d="M 290 85 C 230 85, 180 88, 150 90" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 155 C 220 155, 175 145, 135 145" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 225 C 240 225, 190 225, 150 225" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 350 C 220 350, 170 350, 130 350" stroke="url(#airflow-intake-grad)" stroke-width="2" stroke-linecap="round" fill="none" />
+
+                <!-- Warm Exhaust air streams (CPU/Cooler out rear and top) -->
+                <path class="airflow-line exhaust" d="M 115 90 C 75 90, 45 110, 25 110" stroke="url(#airflow-exhaust-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 124 65 C 124 45, 100 25, 65 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 160 65 C 160 45, 185 25, 220 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 60 215 C 40 215, 30 205, 20 205" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+
+                <text x="248" y="52" class="airflow-label cold" font-size="6.5" fill="#38bdf8" font-weight="700" data-i18n="schematic.airflow_in">IN: ВДУВ</text>
+                <text x="20" y="86" class="airflow-label warm" font-size="6.5" fill="#f43f5e" font-weight="700" data-i18n="schematic.airflow_out">OUT: ВЫДУВ</text>
+              </g>
+
+              <!-- Clearance CAD Dimension Layer (pointer-events: none) -->
+              <g id="vis-clearance-layer" class="vis-clearance-layer hidden" pointer-events="none">
                 <defs>
                   <marker id="dim-arrow-start" viewBox="0 0 6 6" refX="1" refY="3" markerWidth="4" markerHeight="4" orient="auto">
                     <path d="M 5 0 L 0 3 L 5 6 Z" fill="#10b981" />

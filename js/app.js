@@ -823,9 +823,29 @@ function setupEventListeners() {
   // 2. Schematic SVG Component & Ghost Slot Hover -> Highlight Slot Card (Delegated & Direct)
   const pcSvg = document.getElementById('pc-svg');
   let currentHoveredCategory = null;
+  let hudHideTimer = null;
+
+  function scheduleHideHud() {
+    if (hudHideTimer) clearTimeout(hudHideTimer);
+    hudHideTimer = setTimeout(() => {
+      if (currentHoveredCategory) {
+        unhighlightSlotCard(currentHoveredCategory);
+        currentHoveredCategory = null;
+      }
+      hideSchematicHud();
+    }, 140);
+  }
+
+  function cancelHideHud() {
+    if (hudHideTimer) {
+      clearTimeout(hudHideTimer);
+      hudHideTimer = null;
+    }
+  }
 
   function highlightSlotCard(category) {
     if (!category) return;
+    cancelHideHud();
     const card = document.querySelector(`.slot-card[data-category="${category}"]`);
     const color = SCHEMATIC_CATEGORY_COLORS[category] || '#3b82f6';
     if (card) {
@@ -841,16 +861,20 @@ function setupEventListeners() {
     if (card) {
       card.classList.remove('highlight-from-schematic');
     }
-    hideSchematicHud();
   }
 
   if (pcSvg) {
+    pcSvg.addEventListener('mouseenter', () => {
+      cancelHideHud();
+    });
+
     pcSvg.addEventListener('mouseover', (e) => {
       const target = e.target.closest('.vis-component, .vis-ghost-target');
       if (!target) return;
       const category = target.dataset.category;
       if (!category) return;
 
+      cancelHideHud();
       if (category !== currentHoveredCategory) {
         if (currentHoveredCategory) {
           unhighlightSlotCard(currentHoveredCategory);
@@ -861,17 +885,14 @@ function setupEventListeners() {
     });
 
     pcSvg.addEventListener('mouseout', (e) => {
-      const related = e.relatedTarget ? (e.relatedTarget.closest ? e.relatedTarget.closest('.vis-component, .vis-ghost-target') : null) : null;
+      const related = e.relatedTarget ? (e.relatedTarget.closest ? e.relatedTarget.closest('.vis-component, .vis-ghost-target, #schematic-hud') : null) : null;
       const relatedCategory = related ? related.dataset.category : null;
 
       if (relatedCategory === currentHoveredCategory) {
         return; // Still inside the same component
       }
 
-      if (currentHoveredCategory) {
-        unhighlightSlotCard(currentHoveredCategory);
-        currentHoveredCategory = null;
-      }
+      scheduleHideHud();
     });
 
     pcSvg.addEventListener('click', (e) => {
@@ -900,11 +921,12 @@ function setupEventListeners() {
     if (!category) return;
 
     target.addEventListener('mouseenter', () => {
+      cancelHideHud();
       highlightSlotCard(category);
     });
 
     target.addEventListener('mouseleave', () => {
-      unhighlightSlotCard(category);
+      scheduleHideHud();
     });
 
     target.addEventListener('click', (e) => {
@@ -992,10 +1014,22 @@ function setupEventListeners() {
     });
   }
 
-  // 4. Floating HUD Inspector Readout
+  // 4. Floating HUD Inspector Click & Hover Handlers
   const hudElement = document.getElementById('schematic-hud');
   if (hudElement) {
-    hudElement.style.pointerEvents = 'none';
+    hudElement.addEventListener('click', (e) => {
+      const cat = hudElement.dataset.category;
+      if (cat) {
+        e.stopPropagation();
+        openDrawer(cat);
+      }
+    });
+    hudElement.addEventListener('mouseenter', () => {
+      cancelHideHud();
+    });
+    hudElement.addEventListener('mouseleave', () => {
+      scheduleHideHud();
+    });
   }
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'z') {
@@ -2201,26 +2235,30 @@ function updateSvgVisualizer() {
     psuNameEl.textContent = buildState.psu ? `${buildState.psu.wattage}W` : '';
   }
 
+  const caseBadgeEl = document.getElementById('vis-case-badge');
   const caseNameEl = document.getElementById('vis-case-name');
-  if (caseNameEl) {
-    caseNameEl.textContent = buildState.case ? buildState.case.name.slice(0, 24) : '';
+  if (caseBadgeEl) {
+    if (buildState.case) {
+      caseBadgeEl.textContent = t('schematic.case') || 'КОРПУС';
+      if (caseNameEl) caseNameEl.textContent = buildState.case.name.slice(0, 24);
+    } else {
+      caseBadgeEl.textContent = '+ ' + (t('schematic.case') || 'КОРПУС');
+      if (caseNameEl) caseNameEl.textContent = '';
+    }
   }
 
-  // 2. Case chassis outline interactive stroke & fill
+  // 2. Case chassis outline interactive stroke (fill is ALWAYS 'none' to avoid blocking interior clicks)
   const caseFrame = document.getElementById('vis-case-frame');
   if (caseFrame) {
+    caseFrame.style.fill = 'none';
     if (buildState.case) {
-      caseFrame.style.stroke = 'var(--text-primary)';
-      caseFrame.style.strokeWidth = '2.2px';
+      caseFrame.style.stroke = 'var(--accent)';
+      caseFrame.style.strokeWidth = '2.4px';
       caseFrame.style.strokeDasharray = 'none';
-      caseFrame.style.fill = 'var(--surface)';
-      caseFrame.style.fillOpacity = '0.6';
     } else {
       caseFrame.style.stroke = 'var(--border)';
-      caseFrame.style.strokeWidth = '1.4px';
-      caseFrame.style.strokeDasharray = '4,4';
-      caseFrame.style.fill = 'var(--bg-subtle)';
-      caseFrame.style.fillOpacity = '0.35';
+      caseFrame.style.strokeWidth = '1.8px';
+      caseFrame.style.strokeDasharray = '6,4';
     }
   }
 
@@ -2910,7 +2948,25 @@ let devPollInterval = null;
 // TOAST NOTIFICATIONS
 // =============================================================
 
-function showToast({ title = 'Уведомление', message, htmlMessage, type = 'success', duration = 4500 }) {
+function showToast(options = {}, maybeType) {
+  let title = 'Уведомление';
+  let message = '';
+  let htmlMessage = '';
+  let type = 'success';
+  let duration = 4500;
+
+  if (typeof options === 'string') {
+    message = options;
+    type = maybeType || 'info';
+    title = '';
+  } else if (typeof options === 'object' && options !== null) {
+    title = options.title !== undefined ? options.title : 'Уведомление';
+    message = options.message || '';
+    htmlMessage = options.htmlMessage || '';
+    type = options.type || 'success';
+    duration = options.duration !== undefined ? options.duration : 4500;
+  }
+
   let container = document.getElementById('toast-container');
   if (!container) {
     container = document.createElement('div');
