@@ -691,6 +691,76 @@ function setupEventListeners() {
     if (e.ctrlKey && e.key === 'z') {
       undo();
     }
+    if (e.key === 'Escape') {
+      // 1. Hardware Guide Modal
+      const guideModal = document.getElementById('hardware-guide-modal');
+      const guideOverlay = document.getElementById('hardware-guide-overlay');
+      if (guideModal && !guideModal.classList.contains('hidden')) {
+        guideModal.classList.add('hidden');
+        guideModal.classList.remove('active');
+        if (guideOverlay) {
+          guideOverlay.classList.add('hidden');
+          guideOverlay.classList.remove('active');
+        }
+        document.body.style.overflow = '';
+        return;
+      }
+
+      // 2. Dev Cabinet Modal
+      const devModal = document.getElementById('dev-prices-modal');
+      if (devModal && devModal.classList.contains('active')) {
+        devModal.classList.add('hidden');
+        devModal.classList.remove('active');
+        if (typeof devPollInterval !== 'undefined' && devPollInterval) {
+          clearInterval(devPollInterval);
+          devPollInterval = null;
+        }
+        return;
+      }
+
+      // 3. PRO AI Chat Drawer
+      const proDrawer = document.getElementById('pro-chat-drawer');
+      const proOverlay = document.getElementById('pro-chat-overlay');
+      if (proDrawer && !proDrawer.classList.contains('hidden')) {
+        proDrawer.classList.add('hidden');
+        if (proOverlay) proOverlay.classList.add('hidden');
+        return;
+      }
+
+      // 4. Retailers Store Modal
+      const retModal = document.getElementById('retailers-modal');
+      if (retModal && retModal.classList.contains('active')) {
+        retModal.classList.remove('active');
+        return;
+      }
+
+      // 5. Standard Dialog Modals (Save, Export, Comparison)
+      if (elements.saveModal && elements.saveModal.classList.contains('active')) {
+        closeModal(elements.saveModal);
+        return;
+      }
+      if (elements.exportModal && elements.exportModal.classList.contains('active')) {
+        closeModal(elements.exportModal);
+        return;
+      }
+      if (elements.comparisonModal && elements.comparisonModal.classList.contains('active')) {
+        closeModal(elements.comparisonModal);
+        return;
+      }
+
+      // 6. Autobuild Popover
+      const autobuildPopover = document.getElementById('autobuild-popover');
+      if (autobuildPopover && !autobuildPopover.classList.contains('hidden')) {
+        autobuildPopover.classList.add('hidden');
+        return;
+      }
+
+      // 7. Parts Catalog Drawer
+      if (elements.drawer && elements.drawer.classList.contains('active')) {
+        closeDrawer();
+        return;
+      }
+    }
   });
 
   // Drawer events
@@ -2440,7 +2510,7 @@ function initDevCabinet() {
 
   // Modal backdrop click
   devModal.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal-backdrop')) closeDevModal();
+    if (e.target === devModal || e.target.classList.contains('modal-backdrop')) closeDevModal();
   });
 
   // Global hotkey: Ctrl + Shift + D
@@ -3064,13 +3134,17 @@ function initHardwareGuide() {
 
   function openGuide() {
     modal.classList.remove('hidden');
+    modal.classList.add('active');
     overlay.classList.remove('hidden');
+    overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
   function closeGuide() {
     modal.classList.add('hidden');
+    modal.classList.remove('active');
     overlay.classList.add('hidden');
+    overlay.classList.remove('active');
     document.body.style.overflow = '';
   }
 
