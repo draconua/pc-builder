@@ -29,7 +29,7 @@ module.exports = async function handler(req, res) {
     res.writeHead(204); res.end(); return;
   }
 
-  // Check if local price scraper is running (in local dev mode)
+  // 1. Check if local price scraper is running (in local dev mode)
   try {
     const scraperPath = path.join(__dirname, '..', 'tools', 'price_scraper.js');
     if (fs.existsSync(scraperPath)) {
@@ -43,9 +43,7 @@ module.exports = async function handler(req, res) {
             lastUpdated: cachedData.lastUpdated
           };
           const payload = { status: liveStatus, cachedInfo };
-          if (typeof res.status === 'function' && typeof res.json === 'function') {
-            return res.status(200).json(payload);
-          }
+          if (typeof res.status === 'function') return res.status(200).json(payload);
           res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
           return res.end(JSON.stringify(payload));
         }
@@ -55,6 +53,7 @@ module.exports = async function handler(req, res) {
     // Continue to serverless state
   }
 
+  // 2. Check if global sync status is set
   const data = getPricesData();
   const prices = data.prices || {};
   const count = Object.keys(prices).length;
@@ -64,8 +63,21 @@ module.exports = async function handler(req, res) {
     ? new Date(lastUpdated).toLocaleDateString('pl-PL') + ' ' + new Date(lastUpdated).toLocaleTimeString('pl-PL')
     : '—';
 
-  // Build sample results for diff table
-  const results = Object.keys(prices).slice(0, 15).map(id => {
+  if (global.__SYNC_STATUS__ && global.__SYNC_STATUS__.results && global.__SYNC_STATUS__.results.length > 0) {
+    const payload = {
+      status: global.__SYNC_STATUS__,
+      cachedInfo: {
+        count,
+        lastUpdated
+      }
+    };
+    if (typeof res.status === 'function') return res.status(200).json(payload);
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    return res.end(JSON.stringify(payload));
+  }
+
+  // 3. Fallback: Build results from data/prices_pl.json
+  const results = Object.keys(prices).slice(0, 20).map(id => {
     const p = prices[id];
     return {
       name: id,
@@ -105,7 +117,7 @@ module.exports = async function handler(req, res) {
     }
   };
 
-  if (typeof res.status === 'function' && typeof res.json === 'function') {
+  if (typeof res.status === 'function') {
     return res.status(200).json(payload);
   }
 

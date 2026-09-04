@@ -5,6 +5,8 @@ const path = require('path');
 const url = require('url');
 const { runScraper, getStatus, stopScraper } = require('./price_scraper.js');
 const { getApiKey, generateAiAutoBuild, analyzeAiSynergy, processAiChat } = require('./gemini_engine.js');
+const syncPricesHandler = require('../api/sync-prices.js');
+const syncStatusHandler = require('../api/sync-status.js');
 
 const PORT = 3000;
 const ROOT_DIR = path.join(__dirname, '..');
@@ -24,34 +26,30 @@ const MIME_TYPES = {
   '.ttf': 'font/ttf'
 };
 
+const vm = require('vm');
+
 function parsePartsDatabase() {
   const dataJsPath = path.join(ROOT_DIR, 'js', 'data.js');
   if (!fs.existsSync(dataJsPath)) return {};
-  const content = fs.readFileSync(dataJsPath, 'utf-8');
+  try {
+    const code = fs.readFileSync(dataJsPath, 'utf-8');
+    const stripped = code
+      .replace(/export\s+const\s+/g, 'const ')
+      .replace(/export\s+function\s+/g, 'function ')
+      + '\n;module.exports = { PARTS_DATABASE, CATEGORIES };';
 
-  const partsByCategory = {};
-  const categories = ['cpu', 'motherboard', 'cooler', 'ram', 'gpu', 'ssd', 'hdd', 'psu', 'case', 'monitor'];
-
-  categories.forEach(cat => {
-    partsByCategory[cat] = [];
-    const catRegex = new RegExp(`${cat}:\\s*\\[([\\s\\S]*?)\\]\\s*,`, 'i');
-    const catMatch = content.match(catRegex);
-    if (catMatch) {
-      const block = catMatch[1];
-      const itemRegex = /{\s*id:\s*'([^']+)',\s*name:\s*'([^']+)'(?:[^}]+price:\s*([0-9.]+))?/g;
-      let m;
-      while ((m = itemRegex.exec(block)) !== null) {
-        partsByCategory[cat].push({
-          id: m[1],
-          name: m[2],
-          price: m[3] ? parseFloat(m[3]) : 100,
-          category: cat
-        });
-      }
-    }
-  });
-
-  return partsByCategory;
+    const context = {
+      module: {},
+      exports: {},
+      createBuyLinks: () => ({})
+    };
+    vm.createContext(context);
+    vm.runInContext(stripped, context);
+    return context.module.exports.PARTS_DATABASE || {};
+  } catch (e) {
+    console.error('Error parsing data.js in dev_server:', e.message);
+    return {};
+  }
 }
 
 function parseJsonBody(req) {
@@ -162,21 +160,16 @@ const server = http.createServer(async (req, res) => {
   // SCRAPER API ENDPOINTS
   // -------------------------------------------------------------
 
-  if (pathname === '/api/sync-status') {
-    const status = getStatus();
-    const pricesPath = path.join(ROOT_DIR, 'data', 'prices_pl.json');
-    let cachedInfo = { count: 0, lastUpdated: null };
-    if (fs.existsSync(pricesPath)) {
-      try {
-        const cached = JSON.parse(fs.readFileSync(pricesPath, 'utf-8'));
-        cachedInfo.count = Object.keys(cached.prices || {}).length;
-        cachedInfo.lastUpdated = cached.lastUpdated;
-      } catch (e) {}
-    }
+  // -------------------------------------------------------------
+  // SCRAPER API ENDPOINTS (Unified with api/)
+  // -------------------------------------------------------------
 
-    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify({ status, cachedInfo }));
-    return;
+  if (pathname === '/api/sync-status') {
+    return syncStatusHandler(req, res);
+  }
+
+  if (pathname === '/api/sync-prices') {
+    return syncPricesHandler(req, res);
   }
 
   if (pathname === '/api/cached-prices') {
@@ -195,47 +188,6 @@ const server = http.createServer(async (req, res) => {
     stopScraper();
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     res.end(JSON.stringify({ ok: true, message: 'Парсер остановлен' }));
-    return;
-  }
-
-  if (pathname === '/api/sync-prices' && req.method === 'POST') {
-    try {
-      const params = await parseJsonBody(req);
-      const category = params.category || 'all';
-      const source = params.source || 'hybrid';
-
-      const db = parsePartsDatabase();
-      let partsToScrape = [];
-
-      if (category === 'all') {
-        Object.keys(db).forEach(cat => {
-          partsToScrape = partsToScrape.concat(db[cat]);
-        });
-      } else if (db[category]) {
-        partsToScrape = db[category];
-      }
-
-      if (partsToScrape.length === 0) {
-        res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify({ ok: false, error: 'Комплектующие для парсинга не найдены' }));
-        return;
-      }
-
-      runScraper(partsToScrape, { category, source }).catch(err => {
-        console.error('Async scraper error:', err);
-      });
-
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({
-        ok: true,
-        message: `Парсинг запущен для ${partsToScrape.length} товаров`,
-        total: partsToScrape.length,
-        category
-      }));
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ ok: false, error: err.message }));
-    }
     return;
   }
 

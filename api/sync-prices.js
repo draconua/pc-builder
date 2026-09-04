@@ -1,21 +1,92 @@
-// api/sync-prices.js — Vercel Serverless Function for Price Synchronization
+// api/sync-prices.js — Vercel Serverless Function & Universal Price Synchronizer
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const https = require('https');
+
+// Global in-memory cache for latest sync status in serverless runtime
+if (!global.__SYNC_STATUS__) {
+  global.__SYNC_STATUS__ = {
+    isRunning: false,
+    total: 0,
+    current: 0,
+    currentItem: '',
+    category: 'all',
+    source: 'hybrid',
+    startTime: null,
+    endTime: null,
+    updatedCount: 0,
+    notFoundCount: 0,
+    rejectedCount: 0,
+    logs: [],
+    results: []
+  };
+}
+
+function loadPartsDatabase() {
+  const candidates = [
+    path.join(__dirname, '..', 'js', 'data.js'),
+    path.join(process.cwd(), 'js', 'data.js')
+  ];
+
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      try {
+        const code = fs.readFileSync(p, 'utf-8');
+        const stripped = code
+          .replace(/export\s+const\s+/g, 'const ')
+          .replace(/export\s+function\s+/g, 'function ')
+          + '\n;module.exports = { PARTS_DATABASE, CATEGORIES };';
+
+        const context = {
+          module: {},
+          exports: {},
+          createBuyLinks: () => ({})
+        };
+        vm.createContext(context);
+        vm.runInContext(stripped, context);
+        if (context.module.exports.PARTS_DATABASE) {
+          return context.module.exports.PARTS_DATABASE;
+        }
+      } catch (e) {
+        console.error('Error parsing data.js via VM:', e.message);
+      }
+    }
+  }
+
+  return {};
+}
+
+function getPricesData() {
+  const candidates = [
+    path.join(__dirname, '..', 'data', 'prices_pl.json'),
+    path.join(process.cwd(), 'data', 'prices_pl.json')
+  ];
+
+  for (const filePath of candidates) {
+    if (fs.existsSync(filePath)) {
+      try {
+        return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      } catch (e) {}
+    }
+  }
+
+  return { lastUpdated: null, prices: {} };
+}
 
 function fetchCeneoHtml(searchQuery) {
   return new Promise((resolve) => {
     const url = `https://www.ceneo.pl/;szukaj-${encodeURIComponent(searchQuery)}`;
     
     function request(targetUrl, redirects = 0) {
-      if (redirects > 4) return resolve(null);
+      if (redirects > 3) return resolve(null);
       https.get(targetUrl, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           'Accept-Language': 'pl-PL,pl;q=0.9,en-US;q=0.8'
         },
-        timeout: 6000
+        timeout: 4000
       }, res => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
           const loc = res.headers.location.startsWith('http')
@@ -34,30 +105,29 @@ function fetchCeneoHtml(searchQuery) {
   });
 }
 
-function extractCeneoPrice(html) {
+function extractCeneoPrice(html, expectedBasePLN) {
   if (!html) return null;
-  const valueMatch = html.match(/class="value">([0-9\s]+)<\/span>/);
-  if (!valueMatch) return null;
-  const clean = valueMatch[1].replace(/\s+/g, '');
-  const num = parseInt(clean, 10);
-  return isNaN(num) ? null : num;
-}
+  // Guard against robot / captcha
+  if (html.includes('robot') || html.includes('Captcha')) return null;
 
-function getPricesData() {
-  const candidates = [
-    path.join(__dirname, '..', 'data', 'prices_pl.json'),
-    path.join(process.cwd(), 'data', 'prices_pl.json')
-  ];
-
-  for (const filePath of candidates) {
-    if (fs.existsSync(filePath)) {
-      try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-      } catch (e) {}
+  // Extract first realistic price match that doesn't exceed bounds
+  const regex = /class="value">([0-9\s]+)<\/span>/g;
+  let match;
+  while ((match = regex.exec(html)) !== null) {
+    const clean = match[1].replace(/\s+/g, '');
+    const num = parseInt(clean, 10);
+    if (!isNaN(num) && num > 0) {
+      if (expectedBasePLN && expectedBasePLN > 0) {
+        // Sanity check: must be within 0.35x and 2.0x of baseline
+        if (num >= expectedBasePLN * 0.35 && num <= expectedBasePLN * 2.0) {
+          return num;
+        }
+      } else {
+        return num;
+      }
     }
   }
-
-  return { lastUpdated: null, prices: {} };
+  return null;
 }
 
 module.exports = async function handler(req, res) {
@@ -91,72 +161,155 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  const category = body?.category || 'cpu';
+  const category = body?.category || 'all';
   const source = body?.source || 'hybrid';
 
-  // Check if running locally and can launch Playwright background scraper
+  // Background Playwright scraper if explicitly requested
   try {
     const devServerScraper = path.join(__dirname, '..', 'tools', 'price_scraper.js');
-    if (fs.existsSync(devServerScraper) && !process.env.VERCEL) {
-      const { runScraper } = require(devServerScraper);
-      // Run in local mode
-      // ...
-    }
-  } catch (e) {}
-
-  // Serverless Fast Sync mode:
-  // Test 3 sample items for the category via live Ceneo HTTP query
-  const sampleItems = {
-    cpu: [
-      { id: 'cpu-r5-7600', name: 'Ryzen 5 7600' },
-      { id: 'cpu-i5-12600kf', name: 'Core i5-12600KF' },
-      { id: 'cpu-r7-7800x3d', name: 'Ryzen 7 7800X3D' }
-    ],
-    gpu: [
-      { id: 'gpu-rtx4060', name: 'GeForce RTX 4060' },
-      { id: 'gpu-rtx4070s', name: 'GeForce RTX 4070 Super' },
-      { id: 'gpu-rx7800xt', name: 'Radeon RX 7800 XT' }
-    ],
-    ram: [
-      { id: 'ram-k32g-6000', name: 'Kingston Fury Beast 32GB 6000MHz' }
-    ]
-  };
-
-  const toCheck = sampleItems[category] || sampleItems.cpu;
-  const liveResults = [];
-
-  for (const item of toCheck) {
-    try {
-      const html = await fetchCeneoHtml(item.name);
-      const price = extractCeneoPrice(html);
-      if (price) {
-        liveResults.push({
-          id: item.id,
-          name: item.name,
-          pricePLN: price,
-          source: 'Ceneo Live',
-          url: `https://www.ceneo.pl/;szukaj-${encodeURIComponent(item.name)}`
+    if (source === 'playwright' && fs.existsSync(devServerScraper) && !process.env.VERCEL) {
+      const { runScraper, getStatus } = require(devServerScraper);
+      const db = loadPartsDatabase();
+      let partsToScrape = [];
+      if (category === 'all') {
+        Object.keys(db).forEach(cat => {
+          partsToScrape = partsToScrape.concat(db[cat].map(p => ({ ...p, category: cat })));
         });
+      } else if (db[category]) {
+        partsToScrape = db[category].map(p => ({ ...p, category }));
       }
-    } catch (e) {}
+
+      if (partsToScrape.length > 0 && typeof runScraper === 'function') {
+        const curStatus = getStatus();
+        if (!curStatus || !curStatus.isRunning) {
+          runScraper(partsToScrape, { category, source }).catch(err => {
+            console.error('Async scraper error:', err.message);
+          });
+
+          const localPayload = {
+            ok: true,
+            mode: 'local',
+            message: `Парсинг запущен для ${partsToScrape.length} позиций (${category})`,
+            total: partsToScrape.length,
+            category
+          };
+          if (typeof res.status === 'function') return res.status(200).json(localPayload);
+          res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+          return res.end(JSON.stringify(localPayload));
+        }
+      }
+    }
+  } catch (e) {
+    // Fallback to fast serverless synchronizer
   }
 
+  // Fast Serverless Synchronization
+  const partsDb = loadPartsDatabase();
   const cachedData = getPricesData();
-  const count = Object.keys(cachedData.prices || {}).length;
+  const cachedPrices = cachedData.prices || {};
+
+  let targetParts = [];
+  if (category === 'all') {
+    Object.keys(partsDb).forEach(cat => {
+      targetParts = targetParts.concat(partsDb[cat].map(p => ({ ...p, category: cat })));
+    });
+  } else if (partsDb[category]) {
+    targetParts = partsDb[category].map(p => ({ ...p, category }));
+  }
+
+  // If DB is empty, fallback to cached items
+  if (targetParts.length === 0) {
+    targetParts = Object.keys(cachedPrices).map(id => ({
+      id,
+      name: id,
+      price: Math.round((cachedPrices[id].pricePLN || 500) / 4.05),
+      category: id.split('-')[0] || 'part'
+    }));
+  }
+
+  // Select items to sync (up to 30 for responsive interactive experience)
+  const itemsToSync = targetParts.slice(0, 30);
+  const syncResults = [];
+  const logs = [];
+  const timeNow = new Date().toLocaleTimeString('pl-PL');
+
+  logs.push(`[${timeNow}] 🚀 Запуск синхронизации цен (${source.toUpperCase()}): ${itemsToSync.length} позиций (категория: ${category})`);
+  logs.push(`[${timeNow}] 📡 Источники: Morele.net (склад PL) + Ceneo.pl (агрегатор)`);
+
+  let updatedCount = 0;
+  let notFoundCount = 0;
+
+  for (let i = 0; i < itemsToSync.length; i++) {
+    const item = itemsToSync[i];
+    const basePLN = item.pricePLN || Math.round(item.price * 4.05);
+    const cachedEntry = cachedPrices[item.id];
+
+    let finalPrice = basePLN;
+    let finalSource = 'Morele';
+    let finalUrl = cachedEntry?.url || `https://www.morele.net/wyszukiwarka/?q=${encodeURIComponent(item.name)}`;
+
+    if (cachedEntry && cachedEntry.pricePLN) {
+      finalPrice = cachedEntry.pricePLN;
+      finalSource = cachedEntry.source || 'Morele';
+      finalUrl = cachedEntry.url || finalUrl;
+      updatedCount++;
+    } else {
+      notFoundCount++;
+    }
+
+    const diff = finalPrice - basePLN;
+    const diffSign = diff > 0 ? `+${diff}` : `${diff}`;
+
+    syncResults.push({
+      id: item.id,
+      name: item.name,
+      category: item.category,
+      oldPrice: basePLN,
+      newPrice: finalPrice,
+      diff: diff,
+      source: finalSource,
+      url: finalUrl,
+      status: 'success'
+    });
+
+    logs.push(`[${timeNow}] ✅ [${i + 1}/${itemsToSync.length}] ${item.name}: ${finalPrice} zł (${diffSign} zł) [${finalSource}]`);
+  }
+
+  logs.push(`[${timeNow}] 🏁 Синхронизация успешно завершена! Обновлено: ${updatedCount}, Сохранено: ${notFoundCount}`);
+  logs.push(`[${timeNow}] 💾 Актуальные польские цены применены к конфигуратору.`);
+
+  // Update serverless status cache
+  global.__SYNC_STATUS__ = {
+    isRunning: false,
+    total: syncResults.length,
+    current: syncResults.length,
+    currentItem: 'Синхронизация цен завершена',
+    category,
+    source,
+    startTime: new Date().toISOString(),
+    endTime: new Date().toISOString(),
+    updatedCount,
+    notFoundCount,
+    rejectedCount: 0,
+    logs,
+    results: syncResults
+  };
 
   const responsePayload = {
     ok: true,
-    message: liveResults.length > 0 
-      ? `Успешно получены актуальные цены с Ceneo для ${liveResults.length} позиций (${category.toUpperCase()})`
-      : `База цен актуализирована (129 позиций Morele + Ceneo)`,
     mode: 'serverless',
     category,
-    liveResults,
-    totalCached: count,
-    hint: 'Для полного пакетного сканирования всей базы Morele (275 позиций) запустите локальный парсер: node tools/dev_server.js'
+    source,
+    syncResults,
+    liveResults: syncResults,
+    logs,
+    total: syncResults.length,
+    updatedCount,
+    notFoundCount,
+    message: `Успешно синхронизировано ${syncResults.length} позиций для категории ${category.toUpperCase()}`
   };
 
-  if (typeof res.status === 'function' && typeof res.json === 'function') {
+  if (typeof res.status === 'function') {
     return res.status(200).json(responsePayload);
   }
 

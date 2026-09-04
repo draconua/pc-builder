@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-03T21:22:29.999Z",
+  "lastUpdated": "2026-09-04T01:46:57.513Z",
   "prices": {
     "cpu-r5-7600": {
       "pricePLN": 718,
@@ -755,13 +755,13 @@
       "pricePLN": 749,
       "source": "Ceneo",
       "url": "https://www.ceneo.pl/119352415",
-      "updatedAt": "2026-09-03T21:22:29.999Z"
+      "updatedAt": "2026-09-04T01:46:57.513Z"
     },
     "cpu-i5-13600kf": {
       "pricePLN": 1318,
       "source": "Ceneo",
       "url": "https://www.ceneo.pl/143819904",
-      "updatedAt": "2026-09-03T21:22:29.999Z"
+      "updatedAt": "2026-09-04T01:46:57.513Z"
     },
     "cpu-i5-14600kf": {
       "pricePLN": 1019,
@@ -774,6 +774,12 @@
       "source": "Ceneo",
       "url": "https://www.ceneo.pl/181083577",
       "updatedAt": "2026-09-03T21:22:29.999Z"
+    },
+    "test": {
+      "pricePLN": 641,
+      "source": "Ceneo",
+      "url": "https://www.ceneo.pl/140306751",
+      "updatedAt": "2026-09-04T01:46:36.860Z"
     }
   }
 }

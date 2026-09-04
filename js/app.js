@@ -2479,6 +2479,9 @@ function showToast({ title = 'Уведомление', message, htmlMessage, typ
   }
 }
 
+let devSyncActive = false;
+let devSyncCancelled = false;
+
 function initDevCabinet() {
   const devModal = document.getElementById('dev-prices-modal');
   const devBtn = document.getElementById('dev-modal-btn');
@@ -2493,7 +2496,9 @@ function initDevCabinet() {
   function openDevModal() {
     devModal.classList.remove('hidden');
     devModal.classList.add('active');
-    checkDevSyncStatus();
+    if (!devSyncActive) {
+      checkDevSyncStatus();
+    }
   }
 
   function closeDevModal() {
@@ -2531,13 +2536,47 @@ function initDevCabinet() {
 
   if (btnStart) {
     btnStart.addEventListener('click', async () => {
+      if (devSyncActive) return;
+
       const catSelect = document.getElementById('dev-category-select');
       const category = catSelect ? catSelect.value : 'all';
       const srcSelect = document.getElementById('dev-source-select');
       const source = srcSelect ? srcSelect.value : 'hybrid';
 
+      const statusEl = document.getElementById('dev-progress-status');
+      const countEl = document.getElementById('dev-progress-count');
+      const fillEl = document.getElementById('dev-progress-bar-fill');
+      const statUpdated = document.getElementById('dev-stat-updated');
+      const termLogs = document.getElementById('dev-terminal-logs');
+      const tbody = document.getElementById('dev-diff-tbody');
+
+      devSyncActive = true;
+      devSyncCancelled = false;
+
+      // Toggle buttons
       btnStart.classList.add('hidden');
       if (btnStop) btnStop.classList.remove('hidden');
+
+      // Reset progress & counters
+      if (fillEl) fillEl.style.width = '0%';
+      if (countEl) countEl.textContent = '0 / 0';
+      if (statusEl) statusEl.textContent = 'Инициализация парсера цен...';
+      if (statUpdated) statUpdated.textContent = '0';
+
+      // Live terminal initial logs
+      const startT = new Date().toLocaleTimeString('pl-PL');
+      if (termLogs) {
+        termLogs.innerHTML = `
+          <div class="log-line text-muted">[${startT}] 🚀 Запуск синхронизации (${source.toUpperCase()})...</div>
+          <div class="log-line text-muted">[${startT}] 📡 Подключение к базам Morele.net и Ceneo.pl...</div>
+          <div class="log-line text-muted">[${startT}] ⏳ Загрузка позиций для категории «${category.toUpperCase()}»...</div>
+        `;
+        termLogs.scrollTop = termLogs.scrollHeight;
+      }
+
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted" style="padding: 1.5rem;">⏳ Синхронизация цен в процессе...</td></tr>';
+      }
 
       try {
         const res = await fetch('/api/sync-prices', {
@@ -2546,56 +2585,144 @@ function initDevCabinet() {
           body: JSON.stringify({ category, source })
         });
         const data = await res.json();
+
         if (!data.ok) {
-          alert('Ошибка запуска: ' + (data.error || 'Неизвестная ошибка'));
+          const errT = new Date().toLocaleTimeString('pl-PL');
+          if (termLogs) {
+            termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-danger">[${errT}] ❌ Ошибка запуска: ${escapeHtml(data.error || 'Неизвестная ошибка')}</div>`);
+            termLogs.scrollTop = termLogs.scrollHeight;
+          }
+          if (statusEl) statusEl.textContent = 'Ошибка синхронизации';
           btnStart.classList.remove('hidden');
           if (btnStop) btnStop.classList.add('hidden');
+          devSyncActive = false;
           return;
         }
 
-        // If serverless response returned live results directly
-        if (data.liveResults && data.liveResults.length > 0) {
-          const ratePLN = EXCHANGE_RATES['PLN'] || 4.05;
-          data.liveResults.forEach(r => {
-            const list = PARTS_DATABASE[category] || [];
-            const part = list.find(p => p.id === r.id);
-            if (part) {
-              part.pricePLN = r.pricePLN;
-              part.price = Math.round(r.pricePLN / ratePLN);
-              if (r.url) {
-                if (!part.buyLinks) part.buyLinks = {};
-                part.buyLinks.ceneo = r.url;
-              }
+        // Local mode with background scraper
+        if (data.mode === 'local') {
+          startDevPolling();
+          return;
+        }
+
+        // Fast Serverless Synchronization with live streaming to terminal and diff table
+        const items = data.syncResults || data.liveResults || [];
+        const total = items.length;
+        let updated = 0;
+        const ratePLN = EXCHANGE_RATES['PLN'] || 4.05;
+
+        if (tbody) tbody.innerHTML = '';
+
+        for (let i = 0; i < total; i++) {
+          if (devSyncCancelled) {
+            const stopT = new Date().toLocaleTimeString('pl-PL');
+            if (termLogs) {
+              termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-muted">[${stopT}] ⏹️ Синхронизация остановлена пользователем.</div>`);
+              termLogs.scrollTop = termLogs.scrollHeight;
             }
-          });
-          updateUI();
+            break;
+          }
+
+          const item = items[i];
+          const pct = Math.round(((i + 1) / total) * 100);
+          if (fillEl) fillEl.style.width = `${pct}%`;
+          if (countEl) countEl.textContent = `${i + 1} / ${total}`;
+          if (statusEl) statusEl.textContent = `Парсинг: ${item.name}`;
+
+          const itemT = new Date().toLocaleTimeString('pl-PL');
+          const diffSign = item.diff > 0 ? `+${item.diff}` : `${item.diff}`;
+          const diffClass = item.diff < 0 ? 'diff-negative' : (item.diff > 0 ? 'diff-positive' : 'diff-neutral');
+          const diffText = item.diff < 0 ? `${item.diff} zł ↓` : (item.diff > 0 ? `+${item.diff} zł ↑` : '0 zł');
+
+          if (termLogs) {
+            termLogs.insertAdjacentHTML('beforeend', `
+              <div class="log-line">
+                [${itemT}] ✅ [${i + 1}/${total}] <strong>${escapeHtml(item.name)}</strong>: <span style="color: #10b981;">${item.newPrice} zł</span> (${diffSign} zł) [${escapeHtml(item.source)}]
+              </div>
+            `);
+            termLogs.scrollTop = termLogs.scrollHeight;
+          }
+
+          if (tbody) {
+            tbody.insertAdjacentHTML('beforeend', `
+              <tr>
+                <td><strong>${escapeHtml(item.name)}</strong></td>
+                <td><span class="slack-code-tag">${escapeHtml(item.category || category)}</span></td>
+                <td>${item.oldPrice} zł</td>
+                <td><strong>${item.newPrice} zł</strong></td>
+                <td class="${diffClass}">${diffText}</td>
+                <td><span class="slack-code-tag" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">${escapeHtml(item.source || 'Morele')}</span></td>
+                <td><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="dev-table-link">${escapeHtml(item.source || 'Магазин')} ↗</a></td>
+              </tr>
+            `);
+          }
+
+          // Apply to PARTS_DATABASE
+          const catKey = item.category || category;
+          const list = PARTS_DATABASE[catKey] || [];
+          const part = list.find(p => p.id === item.id);
+          if (part) {
+            part.pricePLN = item.newPrice;
+            part.price = Math.round(item.newPrice / ratePLN);
+            if (item.url) {
+              if (!part.buyLinks) part.buyLinks = {};
+              part.buyLinks.ceneo = item.url;
+            }
+            updated++;
+            if (statUpdated) statUpdated.textContent = updated;
+          }
+
+          // Small delay (80ms) for smooth terminal streaming visibility
+          if (i < total - 1) {
+            await new Promise(r => setTimeout(r, 80));
+          }
+        }
+
+        const endT = new Date().toLocaleTimeString('pl-PL');
+        if (!devSyncCancelled) {
+          if (termLogs) {
+            termLogs.insertAdjacentHTML('beforeend', `
+              <div class="log-line" style="color: #3b82f6; font-weight: 600;">[${endT}] 🏁 Синхронизация успешно завершена! Обновлено позиций: ${updated} из ${total}.</div>
+              <div class="log-line text-muted">[${endT}] 💾 Актуальные польские цены применены к конфигуратору.</div>
+            `);
+            termLogs.scrollTop = termLogs.scrollHeight;
+          }
+          if (statusEl) statusEl.textContent = 'Синхронизация завершена';
+          if (fillEl) fillEl.style.width = '100%';
           showToast({
             title: '⚡ Цены синхронизированы',
-            message: data.message || 'Актуальные цены применены к конфигуратору.',
+            message: `Обновлено ${updated} позиций (${category.toUpperCase()}).`,
             type: 'success',
             duration: 5000
           });
-          btnStart.classList.remove('hidden');
-          if (btnStop) btnStop.classList.add('hidden');
-          checkDevSyncStatus();
-          return;
+        } else {
+          if (statusEl) statusEl.textContent = 'Остановлено пользователем';
         }
 
-        // Start polling for background scraper
-        startDevPolling();
-      } catch (err) {
-        console.error('Failed to start sync:', err);
+        updateUI();
+        devSyncActive = false;
         btnStart.classList.remove('hidden');
         if (btnStop) btnStop.classList.add('hidden');
+      } catch (err) {
+        console.error('Failed to start sync:', err);
+        devSyncActive = false;
+        btnStart.classList.remove('hidden');
+        if (btnStop) btnStop.classList.add('hidden');
+        if (statusEl) statusEl.textContent = 'Ошибка сети';
       }
     });
   }
 
   if (btnStop) {
     btnStop.addEventListener('click', async () => {
+      devSyncCancelled = true;
       try {
         await fetch('/api/stop-sync', { method: 'POST' });
       } catch (e) {}
+      btnStart.classList.remove('hidden');
+      btnStop.classList.add('hidden');
+      const statusEl = document.getElementById('dev-progress-status');
+      if (statusEl) statusEl.textContent = 'Остановлено пользователем';
     });
   }
 
@@ -2616,6 +2743,7 @@ function startDevPolling() {
 }
 
 async function checkDevSyncStatus() {
+  if (devSyncActive) return;
   try {
     const res = await fetch('/api/sync-status');
     if (!res.ok) return;
