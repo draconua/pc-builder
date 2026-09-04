@@ -685,8 +685,23 @@ function setupEventListeners() {
       });
     }
   });
+  // Interactive 2D Schematic Click Handlers: clicking a component opens its drawer
+  document.querySelectorAll('#pc-svg .vis-component').forEach(comp => {
+    const category = comp.dataset.category;
+    if (!category) return;
 
+    comp.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDrawer(category);
+    });
 
+    comp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDrawer(category);
+      }
+    });
+  });
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'z') {
       undo();
@@ -1792,7 +1807,7 @@ function updatePresetButtons() {
   });
 }
 
-// SVG toggling
+// SVG toggling & Real-Time 2D Schematic Synchronization
 function updateSvgVisualizer() {
   const visMap = {
     motherboard: 'vis-motherboard',
@@ -1811,28 +1826,65 @@ function updateSvgVisualizer() {
 
     if (buildState[category]) {
       el.classList.remove('hidden');
+      el.setAttribute('aria-hidden', 'false');
     } else {
       el.classList.add('hidden');
+      el.setAttribute('aria-hidden', 'true');
     }
   });
 
-  // 1. Case chassis outline interactive stroke
+  // 1. Dynamic Model Sub-labels in Schematic
+  const mbNameEl = document.getElementById('vis-mb-name');
+  if (mbNameEl) {
+    mbNameEl.textContent = buildState.motherboard ? (buildState.motherboard.formFactor || 'ATX') + ' • ' + (buildState.motherboard.chipset || buildState.motherboard.socket || '') : '';
+  }
+
+  const cpuNameEl = document.getElementById('vis-cpu-name');
+  if (cpuNameEl) {
+    if (buildState.cpu) {
+      const shortCpu = buildState.cpu.name.replace('AMD Ryzen ', 'R').replace('Intel Core ', 'i').replace('Intel Core Ultra ', 'U');
+      cpuNameEl.textContent = shortCpu;
+    } else {
+      cpuNameEl.textContent = '';
+    }
+  }
+
+  const gpuNameEl = document.getElementById('vis-gpu-name');
+  if (gpuNameEl) {
+    if (buildState.gpu) {
+      const shortGpu = buildState.gpu.name.replace('NVIDIA GeForce ', '').replace('AMD Radeon ', '');
+      gpuNameEl.textContent = shortGpu;
+    } else {
+      gpuNameEl.textContent = '';
+    }
+  }
+
+  const psuNameEl = document.getElementById('vis-psu-name');
+  if (psuNameEl) {
+    psuNameEl.textContent = buildState.psu ? `${buildState.psu.wattage}W` : '';
+  }
+
+  // 2. Case chassis outline interactive stroke & fill
   const caseFrame = document.getElementById('vis-case-frame');
   if (caseFrame) {
     if (buildState.case) {
       caseFrame.style.stroke = 'var(--text-primary)';
-      caseFrame.style.strokeWidth = '1.8px';
+      caseFrame.style.strokeWidth = '2px';
       caseFrame.style.strokeDasharray = 'none';
+      caseFrame.style.fill = 'var(--surface)';
+      caseFrame.style.fillOpacity = '0.5';
     } else {
       caseFrame.style.stroke = 'var(--border)';
-      caseFrame.style.strokeWidth = '1.2px';
-      caseFrame.style.strokeDasharray = '3,3';
+      caseFrame.style.strokeWidth = '1.4px';
+      caseFrame.style.strokeDasharray = '4,4';
+      caseFrame.style.fill = 'var(--bg-subtle)';
+      caseFrame.style.fillOpacity = '0.35';
     }
   }
 
-  // 2. Cooler sub-components toggle (Air vs AIO)
+  // 3. Cooler sub-components toggle (Air vs AIO - case-insensitive)
   if (buildState.cooler) {
-    const isAio = buildState.cooler.type === 'AIO';
+    const isAio = String(buildState.cooler.type).toLowerCase() === 'aio';
     const airEl = document.getElementById('vis-cooler-air');
     const aioEl = document.getElementById('vis-cooler-aio');
     if (airEl) airEl.classList.toggle('hidden', isAio);
