@@ -1,0 +1,62 @@
+/* =============================================================
+   Print Stylesheet
+   ============================================================= */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .header-right, .toolbar, .column-right, .drawer, .drawer-overlay, .modal-overlay, .slot-actions button, .slot-buy-link {
+    display: none !important;
+  }
+  .app {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .main-grid {
+    display: block !important;
+  }
+  
+.slot-card {
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  position: relative;
+  transition: all var(--duration-normal) var(--ease);
+  box-shadow: var(--shadow-sm); /* ADDED RESTING SHADOW */
+}
+}
+
+
+/* Glowing SVG */
+#pc-svg {
+  filter: drop-shadow(0 0 8px rgba(0,0,0,0.05));
+  transition: all 0.4s var(--ease);
+}
+.vis-component.active {
+  filter: drop-shadow(0 4px 12px rgba(15, 23, 42, 0.15));
+}
+[data-theme="dark"] .vis-component.active {
+  filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.15));
+}
+
+
+.progress-ring-circle {
+  filter: drop-shadow(0 0 6px var(--accent-subtle));
+}
+[data-theme="dark"] .progress-ring-circle {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+}
+
+
+
+
+
+
+

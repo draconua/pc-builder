@@ -1,0 +1,10 @@
+/* =============================================================
+   Main Two-Column Workspace Layout
+   ============================================================= */
+.main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 1.75rem;
+  align-items: start;
+}
+

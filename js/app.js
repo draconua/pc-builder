@@ -1597,7 +1597,20 @@ function renderPartsList() {
   const badge = document.getElementById('drawer-count-badge');
   if (badge) badge.textContent = filtered.length;
 
-  filtered.forEach(({ part, isCompatible, errorMsg }) => {
+  window.drawerFilteredParts = filtered;
+  window.drawerCurrentPage = 1;
+  renderPartsPage();
+}
+
+function renderPartsPage() {
+  const filtered = window.drawerFilteredParts;
+  if (!filtered) return;
+  const PAGE_SIZE = 30;
+  const start = (window.drawerCurrentPage - 1) * PAGE_SIZE;
+  const end = start + PAGE_SIZE;
+  const toRender = filtered.slice(start, end);
+
+  toRender.forEach(({ part, isCompatible, errorMsg }) => {
     const card = document.createElement('div');
     const isSelected = buildState[activeCategory]?.id === part.id;
     card.className = `part-card ${isSelected ? 'active' : ''}`;
@@ -1653,6 +1666,20 @@ function renderPartsList() {
 
     elements.partsList.appendChild(card);
   });
+
+  if (end < filtered.length) {
+    const loadMoreBtn = document.createElement('button');
+    loadMoreBtn.className = 'btn btn-secondary';
+    loadMoreBtn.style.margin = '20px auto';
+    loadMoreBtn.style.display = 'block';
+    loadMoreBtn.textContent = 'Показать еще (' + (filtered.length - end) + ')';
+    loadMoreBtn.addEventListener('click', () => {
+      loadMoreBtn.remove();
+      window.drawerCurrentPage++;
+      renderPartsPage();
+    });
+    elements.partsList.appendChild(loadMoreBtn);
+  }
 }
 
 // Select component

@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="meta.title">PC Builder 2026 — Профессиональный конфигуратор ПК</title>
+  <meta name="description" content="Умный интерактивный конфигуратор ПК с детальным расчетом синергии, FPS на всех разрешениях и фильтрами платформ.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%233b82f6'/><text x='16' y='21' font-family='sans-serif' font-size='13' font-weight='bold' fill='%23ffffff' text-anchor='middle'>PC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-C9Mf-FV3.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BC-6SAIy.css">
+</head>
+<body>
+  <div class="app">
+    <!-- TOP NAVIGATION BAR -->
+    <header class="app-header-main">
+      <div class="header-inner">
+        <!-- Brand -->
+        <div class="header-brand">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>
+          </div>
+          <span class="brand-title">PC BUILDER <span class="brand-badge">2026</span></span>
+          <button id="btn-hardware-guide" class="btn-guide-pill" type="button" title="Гид: Для чего каждый компонент в ПК?">
+            <span class="guide-icon">💡</span>
+            <span>Гид по деталям</span>
+          </button>
+        </div>
+
+        <!-- Presets & Auto-Build -->
+        <div class="header-center-controls">
+          <div class="autobuild-container">
+            <button id="btn-auto-builder" class="auto-builder-pill" type="button" data-i18n="autobuild.title">✨ Умный авто-подбор</button>
+            <button id="btn-pro-chat" class="pro-chat-pill" type="button">
+              <span class="pro-badge">PRO</span>
+              <span>AI Чат-Консультант</span>
+            </button>
+            
+            <!-- Floating Auto-Build Popover -->
+            <div class="autobuild-popover hidden" id="autobuild-popover">
+              <div class="popover-header">
+                <span class="popover-title">✨ Параметры авто-подбора ПК</span>
+                <button id="autobuild-popover-close" class="popover-close-btn app-close-btn" type="button" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+              </div>
+              <div class="popover-body">
+                <!-- Budget -->
+                <div class="popover-field">
+                  <div class="popover-label-row">
+                    <span class="field-title" data-i18n="autobuild.budget">Желаемый бюджет:</span>
+                    <div style="display:flex;align-items:center;gap:0.35rem;">
+                      <span id="budget-display-val" class="budget-tag">5000 zł</span>
+                      <span class="budget-buffer-badge" data-i18n="autobuild.buffer">допуск +5%</span>
+                    </div>
+                  </div>
+                  <input type="range" id="auto-budget-range" min="2000" max="16000" step="100" value="5000" class="budget-slider">
+                  <div class="quick-budgets">
+                    <button type="button" class="quick-budget-btn" data-val="3000">3000 zł</button>
+                    <button type="button" class="quick-budget-btn active" data-val="5000">5000 zł</button>
+                    <button type="button" class="quick-budget-btn" data-val="7500">7500 zł</button>
+                    <button type="button" class="quick-budget-btn" data-val="10000">10000 zł</button>
+                  </div>
+                </div>
+
+                <!-- CPU Platform Choice -->
+                <div class="popover-field">
+                  <span class="field-title" data-i18n="autobuild.cpuPlatform">Платформа процессора:</span>
+                  <div class="choice-chips" id="cpu-brand-group">
+                    <button type="button" class="choice-chip active" data-cpu-brand="all">Все</button>
+                    <button type="button" class="choice-chip" data-cpu-brand="AMD">AMD Ryzen</button>
+                    <button type="button" class="choice-chip" data-cpu-brand="Intel">Intel Core</button>
+                  </div>
+                </div>
+
+                <!-- GPU Brand Choice -->
+                <div class="popover-field">
+                  <span class="field-title" data-i18n="autobuild.gpuPlatform">Платформа видеокарты:</span>
+                  <div class="choice-chips" id="gpu-brand-group">
+                    <button type="button" class="choice-chip active" data-gpu-brand="all">Все</button>
+                    <button type="button" class="choice-chip" data-gpu-brand="NVIDIA">NVIDIA RTX</button>
+                    <button type="button" class="choice-chip" data-gpu-brand="AMD">AMD Radeon</button>
+                  </div>
+                </div>
+
+                <!-- Target Gaming -->
+                <div class="popover-field">
+                  <span class="field-title" data-i18n="autobuild.purpose">Целевой гейминг:</span>
+                  <div class="res-chips">
+                    <button type="button" class="res-chip" data-res="1080p">1080p FHD</button>
+                    <button type="button" class="res-chip active" data-res="1440p">1440p 2K</button>
+                    <button type="button" class="res-chip" data-res="4k">4K Ultra</button>
+                  </div>
+                </div>
+
+                <button type="button" id="auto-build-confirm-btn" class="btn btn-primary popover-action-btn">
+                  Собрать конфигурацию ✨
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="presets-segmented">
+            <button class="preset-btn" data-preset="budget">Бюджетная</button>
+            <button class="preset-btn" data-preset="balanced">Оптимальная</button>
+            <button class="preset-btn" data-preset="ultimate">Топовая</button>
+          </div>
+        </div>
+
+        <!-- Controls Right -->
+        <div class="header-right-controls">
+          <div class="segmented-control currency-control">
+            <button class="currency-btn active" data-currency="PLN">PLN</button>
+            <button class="currency-btn" data-currency="USD">USD</button>
+          </div>
+          <div class="segmented-control lang-control">
+            <button class="lang-btn active" data-lang="ru">RU</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="pl">PL</button>
+            <button class="lang-btn" data-lang="ua">UA</button>
+          </div>
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">☀</button>
+          <button id="dev-modal-btn" class="btn-dev-trigger" title="Ценовой парсер: Обновление цен в Польше (Ctrl+Shift+D)">
+            <span class="dev-btn-icon">⚡</span>
+            <span class="dev-btn-text">Обновление цен</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- SUB-HEADER / COMMAND BAR -->
+    <div class="app-command-bar">
+      <div class="command-bar-inner">
+        <!-- Progress Indicator -->
+        <div class="progress-indicator-box">
+          <div class="progress-ring-mini">
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <circle stroke="var(--border)" stroke-width="2.5" fill="transparent" r="9" cx="12" cy="12"/>
+              <circle id="progress-ring-circle" stroke="#3b82f6" stroke-width="2.5" fill="transparent" r="9" cx="12" cy="12" stroke-dasharray="56.5" stroke-dashoffset="56.5"/>
+            </svg>
+          </div>
+          <span class="progress-text-label"><strong id="progress-text">0 / 8</strong> <span class="progress-sub" id="progress-sub">компонентов</span></span>
+        </div>
+
+        <!-- Action Tools -->
+        <div class="command-actions">
+          <button type="button" class="btn-tool" id="btn-clear">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+            <span data-i18n="action.clear">Очистить</span>
+          </button>
+          <button type="button" class="btn-tool" id="btn-save">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span data-i18n="action.save">Сохранить</span>
+          </button>
+          <button type="button" class="btn-tool" id="btn-compare">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <span data-i18n="action.compare">Сравнить</span>
+          </button>
+          <button type="button" class="btn-tool" id="btn-timelapse">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span data-i18n="action.timelapse">Анимация</span>
+          </button>
+          <button type="button" class="btn-tool" id="btn-export">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span data-i18n="action.export">Экспорт</span>
+          </button>
+          <button type="button" class="btn-tool" id="btn-share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            <span data-i18n="action.share">Поделиться</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN SINGLE-SCREEN STAGE -->
+    <main class="main-stage">
+      <!-- LEFT COLUMN: Core Engine (CPU, Motherboard, Cooler, RAM, GPU) -->
+      <section class="stage-col stage-col-left">
+        <!-- 1. CPU -->
+        <div class="slot-card" data-category="cpu" id="slot-cpu">
+          <span class="slot-num">01</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.cpu">Processor</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Вычислительный центр: обрабатывает команды, игровую логику, физику и сетевой код. Отвечает за стабильность 1% Low FPS.">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.cpu.hint">Choose Processor</p><p class="slot-hint-text hidden">Для гейминга отлично подойдут <b>Ryzen 5 9600X</b> или <b>Core i5-14600K</b>.</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- CPU Analogs Box -->
+            <div class="analogs-box hidden" id="cpu-analogs-box">
+              <span class="analogs-title" data-i18n="slot.cpu.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="cpu-analogs-list"></div>
+            </div>
+        </div>
+
+        <!-- 2. Motherboard -->
+        <div class="slot-card" data-category="motherboard" id="slot-motherboard">
+          <span class="slot-num">02</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="6" y="6" width="5" height="5"/><path d="M6 14h4v4H6zM15 6h3M15 9h3M15 14h3M15 17h3"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.motherboard">Motherboard</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Коммутационный хаб: связывает компоненты через шины PCIe/DMI, распределяет электропитание через фазы VRM и задает интерфейсы.">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.motherboard.hint">Choose Motherboard</p><p class="slot-hint-text hidden">Убедитесь, что чипсет подходит под задачи (B650/Z790 — оптимальны).</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- MOTHERBOARD Analogs Box -->
+            <div class="analogs-box hidden" id="motherboard-analogs-box">
+              <span class="analogs-title" data-i18n="slot.motherboard.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="motherboard-analogs-list"></div>
+            </div>
+        </div>
+
+        <!-- 3. Cooler -->
+        <div class="slot-card" data-category="cooler" id="slot-cooler">
+          <span class="slot-num">03</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 9.5c0-4 3-5 5-3s0 5-2.5 5.5M14.5 12c4 0 5 3 3 5s-5 0-5.5-2.5M12 14.5c0 4-3 5-5 3s0-5 2.5-5.5M9.5 12c-4 0-5-3-3-5s5 0 5.5 2.5"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.cooler">Cooling</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Отвод тепла: рассеивает тепло от кристалла CPU через теплотрубки или хладагент СЖО, предотвращая температурный троттлинг.">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.cooler.hint">Choose Cooler</p><p class="slot-hint-text hidden">Воздушный для бюджеток, жидкостный (AIO) для мощных процессоров.</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- COOLER Analogs Box -->
+            <div class="analogs-box hidden" id="cooler-analogs-box">
+              <span class="analogs-title" data-i18n="slot.cooler.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="cooler-analogs-list"></div>
+            </div>
+        </div>
+
+        <!-- 4. RAM -->
+        <div class="slot-card" data-category="ram" id="slot-ram">
+          <span class="slot-num">04</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="10" rx="1.5"/><path d="M6 10v4M10 10v4M14 10v4M18 10v4M6 17v2M18 17v2"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.ram">Memory</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Оперативная память: хранит исполняемый машинный код и буферы активных сцен. Двухканальный режим (2 планки) удваивает ширину шины.">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.ram.hint">Choose RAM</p><p class="slot-hint-text hidden">Рекомендуется <b>32GB DDR5</b> с частотой 6000MHz.</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- RAM Analogs Box -->
+            <div class="analogs-box hidden" id="ram-analogs-box">
+              <span class="analogs-title" data-i18n="slot.ram.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="ram-analogs-list"></div>
+            </div>
+        </div>
+
+        <!-- 5. GPU -->
+        <div class="slot-card" data-category="gpu" id="slot-gpu">
+          <span class="slot-num">05</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="3"/><circle cx="16" cy="12" r="3"/><path d="M5 19v2M19 19v2M2 9h2M2 15h2"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.gpu">Graphics Card</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Графический процессор: выполняет шейдерные расчеты, полигональную геометрию, трассировку лучей и аппаратный апскейлинг (DLSS/FSR).">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.gpu.hint">Choose GPU</p><p class="slot-hint-text hidden">Для 1440p отличным выбором станет <b>RTX 4070 SUPER</b>.</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- GPU Analogs Box -->
+            <div class="analogs-box hidden" id="gpu-analogs-box">
+              <span class="analogs-title" data-i18n="slot.gpu.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="gpu-analogs-list"></div>
+            </div>
+        </div>
+      </section>
+
+      <!-- CENTER COLUMN: Visual Blueprint, Live Cost & Synergy -->
+      <section class="stage-col stage-col-center">
+        <!-- Top Summary Bar -->
+        <div class="stage-panel center-summary">
+          <div class="center-price-row">
+            <span class="center-summary-label" data-i18n="dash.total">TOTAL</span>
+            <span class="center-price-val" id="total-price">0 zł</span>
+          </div>
+          <div class="center-power-row">
+            <div class="power-left">
+              <span class="power-label" data-i18n="dash.power">Est. Power</span>
+              <strong class="power-val" id="power-value">0W</strong>
+            </div>
+            <div class="power-track">
+              <div class="power-bar-fill" id="power-bar" style="width: 0%;"></div>
+            </div>
+            <span class="power-sub" id="power-limit-text">БП не выбран</span>
+          </div>
+        </div>
+
+        <!-- Mobile Interactive Schematic Toggle Button (Visible on mobile/tablet) -->
+        <div class="mobile-schematic-toggle-wrap">
+          <button type="button" id="btn-toggle-mobile-schematic" class="btn-toggle-mobile-schematic" aria-expanded="false">
+            <span class="toggle-btn-left">
+              <span class="schematic-toggle-icon">🖥️</span>
+              <span class="schematic-toggle-text" id="schematic-toggle-text" data-i18n="schematic.mobile_show">Показать интерактивную схему сборки</span>
+            </span>
+            <span class="schematic-toggle-arrow" id="schematic-toggle-arrow">▾</span>
+          </button>
+        </div>
+
+        <!-- Center Schematic / Blueprint -->
+        <div class="stage-panel center-schematic">
+          <div class="schematic-header">
+            <div class="schematic-header-left">
+              <span class="schematic-title" data-i18n="dash.visualizer.title">Схема сборки</span>
+              <span class="status-badge" id="chassis-status" data-i18n="status.waiting">Waiting</span>
+            </div>
+            <div class="schematic-toolbar" role="toolbar" aria-label="Инструменты схемы сборки">
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-airflow" title="Симуляция воздушного потока">
+                <span class="tool-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+                </span>
+                <span class="tool-label" data-i18n="schematic.airflow">Обдув</span>
+              </button>
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-xray" title="Показать посадочные места и слоты">
+                <span class="tool-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+                </span>
+                <span class="tool-label" data-i18n="schematic.xray">Слоты</span>
+              </button>
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-rgb" title="RGB подсветка">
+                <span class="tool-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                </span>
+                <span class="tool-label" data-i18n="schematic.rgb">RGB</span>
+              </button>
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-clearance" title="Проверка габаритов и совместимости в корпусе">
+                <span class="tool-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0l12.6 12.6z"/><line x1="14.5" y1="5.5" x2="17.5" y2="8.5"/><line x1="10" y1="10" x2="12" y2="12"/><line x1="7" y1="13" x2="9" y2="15"/></svg>
+                </span>
+                <span class="tool-label" data-i18n="schematic.clearance">Клиренс</span>
+              </button>
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-scale" title="Увеличить масштаб схемы">
+                <span class="tool-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </span>
+                <span class="tool-label" data-i18n="schematic.zoom">Зум</span>
+              </button>
+            </div>
+          </div>
+          <div class="svg-container">
+            <div class="schematic-canvas-wrap">
+              <svg id="pc-svg" viewBox="0 0 320 400" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <!-- Grid background pattern for CAD blueprint look -->
+                <pattern id="blueprint-grid" width="16" height="16" patternUnits="userSpaceOnUse">
+                  <path d="M 16 0 L 0 0 0 16" fill="none" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.12" />
+                </pattern>
+
+                <!-- Motherboard tech gradient -->
+                <linearGradient id="mb-grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.25" />
+                  <stop offset="100%" stop-color="#0f172a" stop-opacity="0.4" />
+                </linearGradient>
+
+                <!-- GPU sleek metallic gradient -->
+                <linearGradient id="gpu-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#064e3b" stop-opacity="0.4" />
+                  <stop offset="50%" stop-color="#065f46" stop-opacity="0.6" />
+                  <stop offset="100%" stop-color="#047857" stop-opacity="0.35" />
+                </linearGradient>
+
+                <!-- CPU Cooler metallic gradient -->
+                <linearGradient id="cooler-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0284c7" stop-opacity="0.28" />
+                  <stop offset="100%" stop-color="#0369a1" stop-opacity="0.1" />
+                </linearGradient>
+
+                <!-- Glow filter for selected active components -->
+                <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <!-- Passive Interior Canvas (POINTER EVENTS NONE: never intercepts component clicks) -->
+              <rect class="chassis-canvas-bg" x="15" y="15" width="290" height="370" rx="14" fill="var(--bg-subtle)" pointer-events="none" />
+              <rect class="chassis-canvas-grid" x="15" y="15" width="290" height="370" rx="14" fill="url(#blueprint-grid)" pointer-events="none" />
+
+              <!-- Motherboard tray cable grommets (Passive) -->
+              <g class="vis-cable-grommets" pointer-events="none">
+                <rect x="264" y="78" width="7" height="42" rx="3.5" fill="var(--border)" fill-opacity="0.5" />
+                <line x1="267.5" y1="82" x2="267.5" y2="116" stroke="var(--bg)" stroke-width="1.2" stroke-linecap="round" />
+                <rect x="264" y="156" width="7" height="52" rx="3.5" fill="var(--border)" fill-opacity="0.5" />
+                <line x1="267.5" y1="160" x2="267.5" y2="204" stroke="var(--bg)" stroke-width="1.2" stroke-linecap="round" />
+                <rect x="180" y="24" width="36" height="7" rx="3.5" fill="var(--border)" fill-opacity="0.5" />
+              </g>
+
+              <!-- Chassis outer frame & rim (pointer-events: stroke only) -->
+              <g id="vis-case" class="vis-component" data-category="case" role="button" tabindex="0">
+                <rect id="vis-case-frame" class="vis-case-outer comp-shape" x="15" y="15" width="290" height="370" rx="14" fill="none" stroke="var(--border)" stroke-width="2.5" pointer-events="stroke" />
+                <!-- Corner knurled glass thumb screws -->
+                <circle cx="23" cy="23" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="23" cy="23" r="1.2" fill="var(--text-tertiary)" />
+                <circle cx="297" cy="23" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="297" cy="23" r="1.2" fill="var(--text-tertiary)" />
+                <circle cx="23" cy="377" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="23" cy="377" r="1.2" fill="var(--text-tertiary)" />
+                <circle cx="297" cy="377" r="3.5" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <circle cx="297" cy="377" r="1.2" fill="var(--text-tertiary)" />
+              </g>
+
+              <!-- Ghost Blueprint Slots (Visible when unselected, directly clickable) -->
+              <g id="vis-ghost-slots" class="vis-ghost-layer">
+                <!-- Ghost Motherboard -->
+                <g id="ghost-motherboard" class="vis-ghost-target" data-category="motherboard" role="button" tabindex="0">
+                  <rect x="36" y="44" width="224" height="268" rx="8" fill="rgba(99, 102, 241, 0.04)" stroke="#6366f1" stroke-width="1.3" stroke-dasharray="5,4" />
+                  <rect class="ghost-pill-mb" x="46" y="278" width="136" height="22" rx="11" fill="var(--surface)" fill-opacity="0.95" stroke="#6366f1" stroke-width="0.9" />
+                  <text x="114" y="289" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#6366f1" font-size="6.8" font-weight="700" data-i18n="schematic.slot_mb">+ МАТЕРИНСКАЯ ПЛАТА</text>
+                </g>
+
+                <!-- Ghost CPU -->
+                <g id="ghost-cpu" class="vis-ghost-target" data-category="cpu" role="button" tabindex="0">
+                  <rect x="94" y="80" width="60" height="60" rx="6" fill="rgba(59, 130, 246, 0.06)" stroke="#3b82f6" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <rect x="98" y="102" width="52" height="16" rx="8" fill="var(--surface)" fill-opacity="0.95" stroke="#3b82f6" stroke-width="0.8" />
+                  <text x="124" y="110" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#3b82f6" font-size="6.2" font-weight="700" data-i18n="schematic.slot_cpu">+ ПРОЦЕССОР</text>
+                </g>
+
+                <!-- Ghost Cooler (Top Cooling / Radiator Mount) -->
+                <g id="ghost-cooler" class="vis-ghost-target" data-category="cooler" role="button" tabindex="0">
+                  <rect x="42" y="18" width="220" height="22" rx="4" fill="rgba(6, 182, 212, 0.06)" stroke="#06b6d4" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <rect x="94" y="21" width="116" height="16" rx="8" fill="var(--surface)" fill-opacity="0.95" stroke="#06b6d4" stroke-width="0.8" />
+                  <text x="152" y="29" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#06b6d4" font-size="6.5" font-weight="700" data-i18n="schematic.slot_cooler">+ ОХЛАЖДЕНИЕ</text>
+                </g>
+
+                <!-- Ghost RAM -->
+                <g id="ghost-ram" class="vis-ghost-target" data-category="ram" role="button" tabindex="0">
+                  <rect x="166" y="68" width="22" height="84" rx="3" fill="rgba(139, 92, 246, 0.06)" stroke="#8b5cf6" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <text x="177" y="110" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#8b5cf6" font-size="6.2" font-weight="700" transform="rotate(-90 177 110)" data-i18n="schematic.slot_ram">+ DDR5 ОЗУ</text>
+                </g>
+
+                <!-- Ghost GPU -->
+                <g id="ghost-gpu" class="vis-ghost-target" data-category="gpu" role="button" tabindex="0">
+                  <rect x="28" y="196" width="248" height="58" rx="6" fill="rgba(16, 185, 129, 0.05)" stroke="#10b981" stroke-width="1.4" stroke-dasharray="5,4" />
+                  <rect x="92" y="217" width="120" height="20" rx="10" fill="var(--surface)" fill-opacity="0.95" stroke="#10b981" stroke-width="0.9" />
+                  <text x="152" y="227" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#10b981" font-size="6.8" font-weight="700" data-i18n="schematic.slot_gpu">+ ВИДЕОКАРТА</text>
+                </g>
+
+                <!-- Ghost SSD -->
+                <g id="ghost-ssd" class="vis-ghost-target" data-category="ssd" role="button" tabindex="0">
+                  <rect x="132" y="171" width="66" height="16" rx="2.5" fill="rgba(245, 158, 11, 0.06)" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="3,2" />
+                  <text x="165" y="179" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#f59e0b" font-size="5.8" font-weight="700" data-i18n="schematic.slot_ssd">+ M.2 NVMe</text>
+                </g>
+
+                <!-- Ghost PSU -->
+                <g id="ghost-psu" class="vis-ghost-target" data-category="psu" role="button" tabindex="0">
+                  <rect x="28" y="330" width="98" height="42" rx="4" fill="rgba(14, 165, 233, 0.06)" stroke="#0ea5e9" stroke-width="1.3" stroke-dasharray="4,3" />
+                  <text x="77" y="351" class="ghost-label" text-anchor="middle" dominant-baseline="middle" fill="#0ea5e9" font-size="6.5" font-weight="700" data-i18n="schematic.slot_psu">+ БЛОК ПИТАНИЯ</text>
+                </g>
+              </g>
+
+              <!-- Chassis Fans (Passive) -->
+              <!-- Rear Exhaust Fan -->
+              <g class="vis-chassis-fan rear-fan" pointer-events="none">
+                <rect x="18" y="90" width="11" height="56" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="23.5" y1="94" x2="23.5" y2="142" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+              </g>
+              <!-- Front Intake Fans -->
+              <g class="vis-chassis-fan front-fans" pointer-events="none">
+                <rect x="291" y="56" width="11" height="60" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="296.5" y1="60" x2="296.5" y2="112" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+                <rect x="291" y="126" width="11" height="60" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="296.5" y1="130" x2="296.5" y2="182" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+                <rect x="291" y="196" width="11" height="60" rx="3" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+                <line x1="296.5" y1="200" x2="296.5" y2="252" stroke="var(--text-tertiary)" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+              </g>
+
+              <!-- PSU Shroud Area / Bottom Chamber -->
+              <rect class="vis-psu-shroud" x="22" y="324" width="276" height="54" rx="4" fill="var(--surface)" stroke="var(--border)" stroke-width="1" />
+              <line x1="216" y1="335" x2="286" y2="335" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+              <line x1="216" y1="344" x2="286" y2="344" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+              <line x1="216" y1="353" x2="286" y2="353" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+              <line x1="216" y1="362" x2="286" y2="362" stroke="var(--border)" stroke-width="1" stroke-dasharray="2,3" stroke-opacity="0.6" />
+
+              <!-- Interactive Case Badge on PSU Shroud -->
+              <g id="vis-case-badge-group" class="vis-component" data-category="case" role="button" tabindex="0">
+                <rect class="case-shroud-plate comp-shape" x="132" y="333" width="76" height="36" rx="4" fill="var(--surface)" fill-opacity="0.96" stroke="var(--border)" stroke-width="1.2" />
+                <text id="vis-case-badge" x="170" y="344" text-anchor="middle" dominant-baseline="middle" class="vis-label case-badge-text" font-size="6.8" font-weight="800" data-i18n="schematic.case">КОРПУС</text>
+                <text id="vis-case-name" x="170" y="357" text-anchor="middle" dominant-baseline="middle" class="vis-sublabel" font-size="5.8" fill="var(--text-secondary)" font-weight="600"></text>
+              </g>
+
+              <!-- 1. MOTHERBOARD -->
+              <g id="vis-motherboard" class="vis-component hidden" data-category="motherboard" role="button" tabindex="0">
+                <!-- PCB Main Body -->
+                <rect class="comp-shape mb-pcb" x="36" y="42" width="226" height="270" rx="8" fill="url(#mb-grad)" stroke="#6366f1" stroke-width="1.8" />
+                <!-- Corner brass standoffs -->
+                <circle cx="44" cy="50" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="44" cy="50" r="1" fill="#78350f" />
+                <circle cx="254" cy="50" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="254" cy="50" r="1" fill="#78350f" />
+                <circle cx="44" cy="304" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="44" cy="304" r="1" fill="#78350f" />
+                <circle cx="254" cy="304" r="3" fill="#d97706" stroke="#92400e" stroke-width="0.8" />
+                <circle cx="254" cy="304" r="1" fill="#78350f" />
+                <!-- VRM Heatsinks -->
+                <rect class="mb-heatsink" x="46" y="50" width="24" height="74" rx="3" fill="#6366f1" fill-opacity="0.22" stroke="#6366f1" stroke-width="1" />
+                <line x1="50" y1="58" x2="66" y2="58" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="68" x2="66" y2="68" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="78" x2="66" y2="78" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="88" x2="66" y2="88" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="98" x2="66" y2="98" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="50" y1="108" x2="66" y2="108" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <rect class="mb-heatsink" x="74" y="50" width="68" height="18" rx="3" fill="#6366f1" fill-opacity="0.22" stroke="#6366f1" stroke-width="1" />
+                <line x1="82" y1="56" x2="134" y2="56" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <line x1="82" y1="62" x2="134" y2="62" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                <!-- Chipset Heatsink with stylized armor -->
+                <rect class="mb-chipset" x="186" y="222" width="58" height="42" rx="4" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-width="1" />
+                <line x1="192" y1="234" x2="238" y2="234" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.5" />
+                <line x1="192" y1="244" x2="238" y2="244" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.5" />
+                <line x1="192" y1="254" x2="238" y2="254" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.5" />
+                <!-- Reinforced PCIe x16 Armor Slot -->
+                <rect class="pcie-slot" x="46" y="195" width="148" height="8" rx="1.5" fill="#cbd5e1" fill-opacity="0.35" stroke="#94a3b8" stroke-width="1" />
+                <line x1="50" y1="199" x2="190" y2="199" stroke="#6366f1" stroke-width="0.6" stroke-dasharray="2,2" />
+                <!-- PCIe x16 Slot Secondary -->
+                <rect class="pcie-slot" x="46" y="270" width="124" height="6" rx="1.5" fill="#6366f1" fill-opacity="0.15" stroke="#6366f1" stroke-width="0.8" />
+                <!-- Motherboard Silkscreen Badge on lower PCB -->
+                <g class="mb-brand-plate">
+                  <rect x="46" y="280" width="130" height="25" rx="3.5" fill="var(--surface)" fill-opacity="0.92" stroke="#6366f1" stroke-width="0.8" stroke-opacity="0.6" />
+                  <text x="54" y="289" class="vis-label mb-label" text-anchor="start" dominant-baseline="middle" font-size="6.5" font-weight="700" data-i18n="schematic.motherboard">МАТЕРИНСКАЯ ПЛАТА</text>
+                  <text id="vis-mb-name" x="54" y="298" class="vis-sublabel" text-anchor="start" dominant-baseline="middle" font-size="6"></text>
+                </g>
+              </g>
+
+              <!-- 2. CPU -->
+              <g id="vis-cpu" class="vis-component hidden" data-category="cpu" role="button" tabindex="0">
+                <!-- Socket Retention Frame -->
+                <rect x="94" y="80" width="60" height="60" rx="5" fill="var(--surface)" stroke="#3b82f6" stroke-width="1.2" />
+                <!-- Integrated Heat Spreader (IHS) -->
+                <rect class="comp-shape cpu-ihs" x="99" y="85" width="50" height="50" rx="3.5" fill="#3b82f6" fill-opacity="0.22" stroke="#3b82f6" stroke-width="1.8" />
+                <!-- Corner Pin 1 Indicator -->
+                <polygon points="99,85 107,85 99,93" fill="#3b82f6" />
+                <!-- Circuit lines on IHS -->
+                <rect x="109" y="95" width="30" height="30" rx="2" fill="none" stroke="#3b82f6" stroke-width="0.7" stroke-dasharray="2,2" stroke-opacity="0.7" />
+                <!-- CPU Core Label — centered in IHS -->
+                <text id="vis-cpu-title" x="124" y="104" class="vis-label cpu-label" text-anchor="middle" dominant-baseline="middle" font-size="7" font-weight="700" data-i18n="cat.cpu">CPU</text>
+                <text id="vis-cpu-name" x="124" y="116" class="vis-sublabel cpu-sublabel" text-anchor="middle" dominant-baseline="middle" font-size="6"></text>
+              </g>
+
+              <!-- 3. RAM (DIMM Slots) -->
+              <g id="vis-ram" class="vis-component hidden" data-category="ram" role="button" tabindex="0">
+                <!-- DIMM Slot 1 -->
+                <rect x="166" y="70" width="8" height="82" rx="2" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="0.8" />
+                <rect class="comp-shape ram-stick" x="167" y="71" width="6" height="80" rx="1.5" fill="#8b5cf6" fill-opacity="0.45" stroke="#8b5cf6" stroke-width="1.2" />
+                <!-- DIMM Slot 2 -->
+                <rect x="178" y="70" width="8" height="82" rx="2" fill="#8b5cf6" fill-opacity="0.14" stroke="#8b5cf6" stroke-width="0.8" />
+                <rect class="comp-shape ram-stick" x="179" y="71" width="6" height="80" rx="1.5" fill="#8b5cf6" fill-opacity="0.45" stroke="#8b5cf6" stroke-width="1.2" />
+                <!-- Heatspreader brushed metallic line -->
+                <line x1="170" y1="78" x2="170" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
+                <line x1="182" y1="78" x2="182" y2="144" stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.7" />
+                <!-- Top RGB Diffuser Strip -->
+                <rect x="167" y="71" width="6" height="6" rx="1" fill="#c084fc" fill-opacity="0.8" />
+                <rect x="179" y="71" width="6" height="6" rx="1" fill="#c084fc" fill-opacity="0.8" />
+                <!-- RAM Label — below sticks with badge -->
+                <rect x="164" y="153" width="24" height="11" rx="2" fill="var(--surface)" fill-opacity="0.85" stroke="#8b5cf6" stroke-width="0.6" />
+                <text x="176" y="158.5" class="vis-label ram-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.ram">ОЗУ</text>
+              </g>
+
+              <!-- 4. CPU COOLER -->
+              <g id="vis-cooler" class="vis-component hidden" data-category="cooler" role="button" tabindex="0">
+                <!-- 4A. Air Cooler Option -->
+                <g id="vis-cooler-air">
+                  <!-- Heatsink Fins Stack -->
+                  <rect class="comp-shape cooler-fins" x="80" y="65" width="88" height="88" rx="6" fill="url(#cooler-grad)" stroke="#06b6d4" stroke-width="1.6" />
+                  <line x1="88" y1="65" x2="88" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <line x1="98" y1="65" x2="98" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <line x1="108" y1="65" x2="108" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <line x1="118" y1="65" x2="118" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <line x1="128" y1="65" x2="128" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <line x1="138" y1="65" x2="138" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <line x1="148" y1="65" x2="148" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <line x1="158" y1="65" x2="158" y2="153" stroke="#06b6d4" stroke-width="0.7" stroke-opacity="0.4" />
+                  <!-- Center Fan Hub & Blades -->
+                  <circle cx="124" cy="109" r="22" fill="var(--surface)" stroke="#06b6d4" stroke-width="1.3" />
+                  <circle cx="124" cy="109" r="8" fill="#06b6d4" fill-opacity="0.3" stroke="#06b6d4" stroke-width="1" />
+                  <!-- Copper Heatpipe End Caps -->
+                  <circle cx="94" cy="71" r="2" fill="#d97706" />
+                  <circle cx="114" cy="71" r="2" fill="#d97706" />
+                  <circle cx="134" cy="71" r="2" fill="#d97706" />
+                  <circle cx="154" cy="71" r="2" fill="#d97706" />
+                  <rect x="84" y="137" width="80" height="12" rx="2" fill="var(--surface)" fill-opacity="0.9" stroke="#06b6d4" stroke-width="0.7" />
+                  <text x="124" y="143" class="vis-label cooler-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.cooler_air">БАШЕННЫЙ КУЛЕР</text>
+                </g>
+
+                <!-- 4B. AIO Liquid Cooler Option -->
+                <g id="vis-cooler-aio" class="hidden">
+                  <!-- Top-Mounted Radiator Stack (240mm/360mm) -->
+                  <rect class="comp-shape aio-rad" x="42" y="18" width="220" height="22" rx="4" fill="#06b6d4" fill-opacity="0.22" stroke="#06b6d4" stroke-width="1.6" />
+                  <line x1="42" y1="29" x2="262" y2="29" stroke="#06b6d4" stroke-width="0.8" stroke-dasharray="2,2" stroke-opacity="0.6" />
+                  <rect x="105" y="23" width="94" height="12" rx="2" fill="var(--surface)" fill-opacity="0.9" stroke="#06b6d4" stroke-width="0.6" />
+                  <text x="152" y="29" class="vis-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" fill="#06b6d4" data-i18n="schematic.cooler_rad">РАДИАТОР СЖО</text>
+                  <!-- Dual radiator fan silhouettes -->
+                  <circle cx="90" cy="29" r="8" fill="none" stroke="#06b6d4" stroke-width="0.8" stroke-dasharray="2,2" />
+                  <circle cx="214" cy="29" r="8" fill="none" stroke="#06b6d4" stroke-width="0.8" stroke-dasharray="2,2" />
+                  <!-- Flexible Braided Sleeved Tubes with smooth natural curves -->
+                  <path d="M 115 95 C 96 76, 82 54, 90 40" fill="none" stroke="#06b6d4" stroke-width="2.8" stroke-linecap="round" />
+                  <path d="M 133 95 C 152 76, 172 54, 164 40" fill="none" stroke="#06b6d4" stroke-width="2.8" stroke-linecap="round" />
+                  <!-- CPU Pump Block with Infinity Mirror Ring -->
+                  <circle class="comp-shape aio-pump" cx="124" cy="110" r="20" fill="var(--surface)" stroke="#06b6d4" stroke-width="2" />
+                  <circle cx="124" cy="110" r="14" fill="#06b6d4" fill-opacity="0.25" stroke="#06b6d4" stroke-width="1" />
+                  <text x="124" y="105" class="vis-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="800" fill="#06b6d4" data-i18n="schematic.cooler_aio">СЖО</text>
+                  <text id="vis-aio-temp" x="124" y="116" class="vis-sublabel" text-anchor="middle" dominant-baseline="middle" font-size="5.5" font-weight="700" fill="#38bdf8"></text>
+                </g>
+              </g>
+
+              <!-- 5. GPU (Graphics Card) -->
+              <g id="vis-gpu" class="vis-component hidden" data-category="gpu" role="button" tabindex="0">
+                <!-- Backplate & Main Body -->
+                <rect class="comp-shape gpu-body" x="26" y="196" width="250" height="58" rx="6" fill="url(#gpu-grad)" stroke="#10b981" stroke-width="2" />
+                <!-- PCI Bracket on Rear I/O with display ports -->
+                <rect x="20" y="193" width="7" height="64" rx="2" fill="#10b981" fill-opacity="0.35" stroke="#10b981" stroke-width="1" />
+                <rect x="22" y="202" width="3" height="7" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <rect x="22" y="215" width="3" height="7" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <rect x="22" y="228" width="3" height="7" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <rect x="22" y="241" width="3" height="6" rx="0.5" fill="#ffffff" fill-opacity="0.7" />
+                <!-- Geometric airflow cutouts on right side of backplate -->
+                <rect x="238" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <rect x="246" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <rect x="254" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <rect x="262" y="206" width="4" height="38" rx="1.5" fill="var(--bg)" fill-opacity="0.6" />
+                <!-- Triple Axial-Tech Cooling Fans -->
+                <circle cx="82" cy="226" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
+                <circle cx="82" cy="226" r="6" fill="#10b981" fill-opacity="0.5" />
+                <circle cx="140" cy="226" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
+                <circle cx="140" cy="226" r="6" fill="#10b981" fill-opacity="0.5" />
+                <circle cx="198" cy="226" r="18" fill="var(--surface)" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3,1.5" />
+                <circle cx="198" cy="226" r="6" fill="#10b981" fill-opacity="0.5" />
+                <!-- 12V-2x6 / 8-Pin Power Header Plug & Cable -->
+                <rect x="246" y="190" width="16" height="7" rx="1.5" fill="#10b981" stroke="#10b981" stroke-width="0.8" />
+                <path d="M 254 197 C 254 205, 260 215, 260 225" fill="none" stroke="#10b981" stroke-width="1.2" stroke-opacity="0.5" stroke-dasharray="2,2" />
+                <!-- GPU Illuminated Edge Plate / Banner -->
+                <rect class="gpu-edge-plate" x="34" y="198" width="148" height="12" rx="2.5" fill="var(--surface)" fill-opacity="0.94" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.7" />
+                <text x="40" y="204.5" class="vis-label gpu-label" text-anchor="start" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.gpu">ВИДЕОКАРТА</text>
+                <text id="vis-gpu-name" x="176" y="204.5" class="vis-sublabel" text-anchor="end" dominant-baseline="middle" font-size="5.8" font-weight="700"></text>
+              </g>
+
+              <!-- 6. SSD (M.2 NVMe with Heatsink) -->
+              <g id="vis-ssd" class="vis-component hidden" data-category="ssd" role="button" tabindex="0">
+                <!-- M.2 2280 PCB Stick -->
+                <rect class="comp-shape ssd-stick" x="132" y="171" width="66" height="16" rx="2.5" fill="#f59e0b" fill-opacity="0.25" stroke="#f59e0b" stroke-width="1.2" />
+                <!-- Heatsink Thermal Pad grooving -->
+                <line x1="144" y1="171" x2="144" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <line x1="156" y1="171" x2="156" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <line x1="168" y1="171" x2="168" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <line x1="180" y1="171" x2="180" y2="187" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.5" />
+                <circle cx="192" cy="179" r="1.5" fill="#d97706" />
+                <!-- SSD Badge -->
+                <rect x="144" y="173" width="38" height="12" rx="2" fill="var(--surface)" fill-opacity="0.9" stroke="#f59e0b" stroke-width="0.6" />
+                <text x="163" y="179" class="vis-label ssd-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.ssd">M.2 SSD</text>
+              </g>
+
+              <!-- 7. HDD (3.5" Drive Bay in Shroud) -->
+              <g id="vis-hdd" class="vis-component hidden" data-category="hdd" role="button" tabindex="0">
+                <!-- Drive Caddy -->
+                <rect class="comp-shape hdd-body" x="206" y="332" width="76" height="38" rx="4" fill="#a855f7" fill-opacity="0.16" stroke="#a855f7" stroke-width="1.3" />
+                <circle cx="236" cy="351" r="11" fill="none" stroke="#a855f7" stroke-width="0.9" stroke-dasharray="2,2" />
+                <circle cx="236" cy="351" r="3" fill="#a855f7" fill-opacity="0.5" />
+                <rect x="249" y="345" width="28" height="12" rx="2" fill="var(--surface)" fill-opacity="0.85" stroke="#a855f7" stroke-width="0.6" />
+                <text x="263" y="351" class="vis-label hdd-label" text-anchor="middle" dominant-baseline="middle" font-size="6" font-weight="700" data-i18n="schematic.hdd">HDD</text>
+              </g>
+
+              <!-- 8. PSU (Power Supply in Shroud) -->
+              <g id="vis-psu" class="vis-component hidden" data-category="psu" role="button" tabindex="0">
+                <!-- PSU Casing -->
+                <rect class="comp-shape psu-body" x="28" y="330" width="98" height="42" rx="4" fill="#64748b" fill-opacity="0.18" stroke="#0ea5e9" stroke-width="1.6" />
+                <!-- Cooling Fan Intake Grille -->
+                <circle cx="74" cy="351" r="15" fill="var(--surface)" stroke="#0ea5e9" stroke-width="1.2" stroke-dasharray="3,1.5" />
+                <circle cx="74" cy="351" r="5" fill="#0ea5e9" fill-opacity="0.4" />
+                <!-- Modular Cable Connectors Outlines -->
+                <line x1="126" y1="336" x2="126" y2="366" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" />
+                <!-- PSU Label & Wattage -->
+                <text x="74" y="347" class="vis-label psu-label" text-anchor="middle" dominant-baseline="middle" font-size="7" font-weight="800" data-i18n="schematic.psu">БП</text>
+                <text id="vis-psu-name" x="74" y="360" class="vis-sublabel" text-anchor="middle" dominant-baseline="middle" font-size="6.5"></text>
+              </g>
+
+              <!-- Airflow Simulation Streamlines Layer (pointer-events: none) -->
+              <g id="vis-airflow-layer" class="vis-airflow-layer hidden" pointer-events="none">
+                <defs>
+                  <linearGradient id="airflow-intake-grad" x1="1" y1="0" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85" />
+                    <stop offset="100%" stop-color="#0284c7" stop-opacity="0.15" />
+                  </linearGradient>
+                  <linearGradient id="airflow-exhaust-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#fb7185" stop-opacity="0.2" />
+                    <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.9" />
+                  </linearGradient>
+                </defs>
+                <!-- Cold Intake air streams (Front to Rear/CPU) -->
+                <path class="airflow-line intake" d="M 290 85 C 230 85, 180 88, 150 90" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 155 C 220 155, 175 145, 135 145" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 225 C 240 225, 190 225, 150 225" stroke="url(#airflow-intake-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line intake" d="M 290 350 C 220 350, 170 350, 130 350" stroke="url(#airflow-intake-grad)" stroke-width="2" stroke-linecap="round" fill="none" />
+
+                <!-- Warm Exhaust air streams (CPU/Cooler out rear and top) -->
+                <path class="airflow-line exhaust" d="M 115 90 C 75 90, 45 110, 25 110" stroke="url(#airflow-exhaust-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 124 65 C 124 45, 100 25, 65 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 160 65 C 160 45, 185 25, 220 20" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+                <path class="airflow-line exhaust" d="M 60 215 C 40 215, 30 205, 20 205" stroke="url(#airflow-exhaust-grad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+
+                <text x="248" y="52" class="airflow-label cold" font-size="6.5" fill="#38bdf8" font-weight="700" data-i18n="schematic.airflow_in">IN: ВДУВ</text>
+                <text x="20" y="86" class="airflow-label warm" font-size="6.5" fill="#f43f5e" font-weight="700" data-i18n="schematic.airflow_out">OUT: ВЫДУВ</text>
+              </g>
+
+              <!-- Clearance CAD Dimension Layer (pointer-events: none) -->
+              <g id="vis-clearance-layer" class="vis-clearance-layer hidden" pointer-events="none">
+                <defs>
+                  <marker id="dim-arrow-start" viewBox="0 0 6 6" refX="1" refY="3" markerWidth="4" markerHeight="4" orient="auto">
+                    <path d="M 5 0 L 0 3 L 5 6 Z" fill="#10b981" />
+                  </marker>
+                  <marker id="dim-arrow-end" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="4" markerHeight="4" orient="auto">
+                    <path d="M 0 0 L 5 3 L 0 6 Z" fill="#10b981" />
+                  </marker>
+                </defs>
+                <!-- GPU length dimension -->
+                <g id="dim-gpu-group">
+                  <line id="dim-gpu-line" x1="28" y1="262" x2="260" y2="262" stroke="#10b981" stroke-width="1.2" stroke-dasharray="2,2" marker-start="url(#dim-arrow-start)" marker-end="url(#dim-arrow-end)" />
+                  <rect id="dim-gpu-bg" x="90" y="256" width="110" height="12" rx="2" fill="var(--surface)" fill-opacity="0.95" stroke="#10b981" stroke-width="0.8" />
+                  <text id="dim-gpu-text" x="145" y="262" text-anchor="middle" dominant-baseline="middle" font-size="5.5" font-weight="700" fill="#10b981">GPU: 304 мм • Запас +56 мм ✓</text>
+                </g>
+                <!-- Radiator clearance -->
+                <g id="dim-cooler-group">
+                  <line x1="42" y1="12" x2="262" y2="12" stroke="#06b6d4" stroke-width="1.2" stroke-dasharray="2,2" marker-start="url(#dim-arrow-start)" marker-end="url(#dim-arrow-end)" />
+                  <rect id="dim-cooler-bg" x="95" y="6" width="100" height="12" rx="2" fill="var(--surface)" fill-opacity="0.95" stroke="#06b6d4" stroke-width="0.8" />
+                  <text id="dim-cooler-text" x="145" y="12" text-anchor="middle" dominant-baseline="middle" font-size="5.5" font-weight="700" fill="#06b6d4">СЖО: 240 мм (макс 360 мм) ✓</text>
+                </g>
+                <!-- Case limit marker -->
+                <g id="dim-case-group">
+                  <rect x="60" y="386" width="170" height="11" rx="2" fill="var(--surface)" fill-opacity="0.95" stroke="var(--border)" stroke-width="0.7" />
+                  <text id="dim-case-text" x="145" y="391.5" text-anchor="middle" dominant-baseline="middle" font-size="5.2" font-weight="600" fill="var(--text-tertiary)">КОРПУС: Mid-Tower ATX • Макс GPU: 360 мм</text>
+                </g>
+              </g>
+            </svg>
+            </div>
+
+            <!-- Floating Schematic HUD Inspector (Anchored bottom center, zero flex impact on SVG) -->
+            <div class="schematic-hud" id="schematic-hud" aria-live="polite">
+              <div class="hud-top">
+                <div class="hud-cat-pill">
+                  <span class="hud-cat-icon" id="hud-cat-icon">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </span>
+                  <span class="hud-cat-name" id="hud-cat-name">Компонент</span>
+                </div>
+                <span class="hud-status-badge" id="hud-status-badge">Слот свободен</span>
+              </div>
+              <div class="hud-content">
+                <div class="hud-title" id="hud-title">Наведите на деталь</div>
+                <div class="hud-specs" id="hud-specs">Кликните по компоненту для выбора из каталога</div>
+              </div>
+              <div class="hud-action-row">
+                <span class="hud-price" id="hud-price"></span>
+                <span class="hud-hint" id="hud-hint">Нажмите для выбора ↗</span>
+              </div>
+            </div>
+
+            <!-- Clearance Status Strip (Visible when clearance tool is active) -->
+            <div class="schematic-clearance-bar hidden" id="schematic-clearance-bar">
+              <span class="clearance-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0l12.6 12.6z"/></svg>
+              </span>
+              <span class="clearance-summary" id="clearance-summary-text" data-i18n="schematic.fit_all">Все комплектующие идеально помещаются в корпус с запасом</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Balance & Synergy Gauge -->
+        <div class="stage-panel center-bottleneck" id="bottleneck-panel">
+          <div id="bottleneck-placeholder" class="placeholder-text" data-i18n="dash.bottleneck.select">Выберите процессор и видеокарту для проверки баланса</div>
+          <div id="bottleneck-result" class="bottleneck-result hidden">
+            <div class="bottleneck-labels-row">
+              <span class="bottleneck-side-label" data-i18n="dash.bottleneck">Баланс и синергия системы</span>
+              <span id="bottleneck-score-badge" class="bottleneck-score-badge">98%</span>
+            </div>
+            
+            <!-- CPU ↔ GPU Visual Balance -->
+            <div class="bottleneck-visual-row">
+              <span class="bt-label">CPU</span>
+              <div class="bottleneck-bar-track split-track">
+                <div class="bottleneck-bar-fill cpu-fill" id="bottleneck-bar-cpu" style="width: 100%;"></div>
+                <div class="bottleneck-bar-fill gpu-fill" id="bottleneck-bar-gpu" style="width: 100%;"></div>
+                <div class="bt-divider"></div>
+              </div>
+              <span class="bt-label">GPU</span>
+            </div>
+
+            <div class="bottleneck-info-box">
+              <span id="bottleneck-text" class="bottleneck-text">Идеальный баланс (Золотой стандарт)</span>
+              <p id="bottleneck-advice" class="bottleneck-advice"></p>
+            </div>
+
+            <!-- AI Synergy Check Action -->
+            <div class="bottleneck-ai-action-bar">
+              <button type="button" class="btn-check-ai-synergy" id="btn-check-ai-synergy">
+                <span class="btn-ai-icon">✨</span>
+                <span id="btn-check-ai-text">Проверить сборку с AI</span>
+              </button>
+            </div>
+
+            <!-- Detailed AI Synergy Verdict (Shown after clicking check button) -->
+            <div id="ai-synergy-verdict-card" class="ai-synergy-verdict-card hidden">
+              <div class="ai-verdict-header-row">
+                <div class="ai-badge-group">
+                  <span class="ai-brain-icon">🧠</span>
+                  <span class="ai-badge-label">Вердикт Gemini AI</span>
+                </div>
+                <span class="ai-verdict-status-tag" id="ai-verdict-status-tag">Идеальный баланс</span>
+              </div>
+              <p class="ai-verdict-commentary" id="ai-verdict-commentary"></p>
+              <div class="ai-verdict-fps-row" id="ai-verdict-fps-row">
+                <span class="ai-fps-icon">⚡</span>
+                <span id="ai-verdict-fps" class="ai-verdict-fps"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scroll down indicator -->
+        <a href="#details-section" class="scroll-down-hint">
+          <span>Подробная аналитика (FPS во всех разрешениях, Совместимость) ↓</span>
+        </a>
+      </section>
+
+      <!-- RIGHT COLUMN: Storage & Peripherals (SSD, HDD, PSU, Case, Monitor) -->
+      <section class="stage-col stage-col-right">
+        <!-- 6. SSD -->
+        <div class="slot-card" data-category="ssd" id="slot-ssd">
+          <span class="slot-num">06</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h2M7 12h2M13 8h4M13 12h4M7 16h10"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.ssd">SSD Drive</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Скоростной NVMe накопитель: считывает данные до 7500 МБ/с по PCIe 4.0/5.0, исключая микрофризы и долгие загрузки локаций.">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.ssd.hint">Choose SSD</p><p class="slot-hint-text hidden">Под систему берите быстрый NVMe M.2 накопитель от 1TB.</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- SSD Analogs Box -->
+            <div class="analogs-box hidden" id="ssd-analogs-box">
+              <span class="analogs-title" data-i18n="slot.ssd.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="ssd-analogs-list"></div>
+            </div>
+        </div>
+
+        <!-- 7. HDD (Optional) -->
+        <div class="slot-card" data-category="hdd" id="slot-hdd">
+          <span class="slot-num">07</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/><path d="M6 18h.01M18 18h.01"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.hdd">Hard Drive</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Электромеханический диск: энергонезависимый архив для длительного хранения медиафайлов и бэкапов с низкой ценой за 1 ТБ.">?</span>
+              <span class="optional-badge" data-i18n="dash.progress.optional">Optional</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.hdd.hint">Choose HDD (Optional)</p><p class="slot-hint-text hidden">Жесткий диск полезен только для архивов и медиа (файлопомойка).</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- HDD Analogs Box -->
+            <div class="analogs-box hidden" id="hdd-analogs-box">
+              <span class="analogs-title" data-i18n="slot.hdd.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="hdd-analogs-list"></div>
+            </div>
+        </div>
+
+        <!-- 8. PSU -->
+        <div class="slot-card" data-category="psu" id="slot-psu">
+          <span class="slot-num">08</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="14" cy="12" r="4"/><path d="M6 9h3M6 12h3M6 15h3"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.psu">Power Supply</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Импульсный источник питания: преобразует сетевые 220V в стабилизированные линии +12V, +5V и +3.3V. Сертификат 80+ Gold гарантирует надежность.">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.psu.hint">Choose Power Supply</p><p class="slot-hint-text hidden">Берем с запасом 20-30% от мощности системы. <b>ATX 3.0</b> для новых RTX.</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- PSU Analogs Box -->
+            <div class="analogs-box hidden" id="psu-analogs-box">
+              <span class="analogs-title" data-i18n="slot.psu.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="psu-analogs-list"></div>
+            </div>
+        </div>
+
+        <!-- 9. Case -->
+        <div class="slot-card" data-category="case" id="slot-case">
+          <span class="slot-num">09</span>
+          <span class="slot-category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="5.5" r="1"/><path d="M8 9h8M8 12h8M8 15h8"/></svg></span>
+          <div class="slot-body">
+            <div class="slot-header-row">
+              <span class="slot-category" data-i18n="cat.case">Case</span>
+              <span class="slot-info-hint" tabindex="0" data-tooltip="Шасси и аэродинамический контур: формирует сквозной воздушный поток через Mesh-панели, защищает от пыли и экранирует помехи.">?</span>
+            </div>
+            <p class="slot-placeholder" data-i18n="slot.case.hint">Choose Case</p><p class="slot-hint-text hidden">Обращайте внимание на продуваемость (Mesh-панели).</p>
+            <div class="slot-selected hidden">
+              <span class="slot-selected-name"></span>
+              <span class="slot-selected-specs"></span>
+            </div>
+            
+          </div>
+          <div class="slot-actions">
+            <span class="slot-price hidden"></span>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
+            <button class="btn-remove remove-btn hidden" title="Remove">×</button>
+          </div>
+          <!-- CASE Analogs Box -->
+            <div class="analogs-box hidden" id="case-analogs-box">
+              <span class="analogs-title" data-i18n="slot.case.analogs">Альтернативы:</span>
+              <div class="analogs-list" id="case-analogs-list"></div>
+            </div>
+        </div>
+
+        </section>
+    </main>
+
+    <!-- BELOW THE FOLD: ANALYTICS & SAVED BUILDS -->
+    <section class="details-section" id="details-section">
+      <div class="details-header">
+        <h2 data-i18n="dash.analytics.title">Детальная аналитика системы</h2>
+        <p data-i18n="dash.analytics.desc">Игровой потенциал во всех разрешениях, совместимость стандартов и сохранённые сборки</p>
+      </div>
+
+      <div class="details-grid">
+        <!-- ALL-RESOLUTIONS FPS MATRIX -->
+        <div class="panel fps-matrix-panel" id="fps-panel">
+          <div class="panel-header">
+            <h3 data-i18n="dash.fps">ОЦЕНКА FPS В ИГРАХ (ВСЕ РАЗРЕШЕНИЯ)</h3>
+            <span class="fps-benchmark-note" data-i18n="dash.benchmarks.subtitle">Ультра настройки • Без генерации кадров</span>
+          </div>
+          <div class="fps-scroll-hint">
+            <span class="scroll-hint-icon">⇄</span>
+            <span data-i18n="dash.fps.swipeHint">Свайп по таблице для 1080p, 1440p, 4K</span>
+          </div>
+          <div id="fps-placeholder" class="placeholder-text" data-i18n="dash.fps.select">Выберите процессор и видеокарту для расчета FPS</div>
+          <div id="fps-table-container" class="fps-table-container hidden">
+            <table class="fps-matrix-table">
+              <thead>
+                <tr>
+                  <th class="col-game" data-i18n="dash.fps.game">Игра / Жанр</th>
+                  <th class="col-res col-1080">1080p Full HD</th>
+                  <th class="col-res col-1440">1440p 2K QHD</th>
+                  <th class="col-res col-4k">4K Ultra UHD</th>
+                </tr>
+              </thead>
+              <tbody id="fps-matrix-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Compatibility Check -->
+        <div class="panel" id="compatibility-panel">
+          <div class="panel-header">
+            <h3 data-i18n="dash.compat">СОВМЕСТИМОСТЬ</h3>
+          </div>
+          <div id="compatibility-list" class="compatibility-list">
+            <div class="compat-item info" data-i18n="dash.compat.empty">
+              Выберите компоненты для проверки физической и электрической совместимости
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Recommended Monitor Panel -->
+        <div class="panel monitor-panel" id="monitor-panel">
+          <div class="panel-header">
+            <h3 data-i18n="dash.monitor.title">РЕКОМЕНДУЕМЫЙ МОНИТОР</h3>
+            <span class="slot-info-hint" tabindex="0" data-tooltip="Устройство визуализации: частота развертки (Гц) определяет плавность движений, а матрица (IPS/OLED) — контраст и отклик пикселя.">?</span>
+            <span class="monitor-tier-badge" id="monitor-tier-badge">Подбор под GPU</span>
+          </div>
+          <div class="monitor-panel-body">
+            <!-- Dynamic Recommendation Box based on GPU -->
+            <div class="monitor-recommendation-box" id="monitor-rec-box">
+              <div class="monitor-rec-header">
+                <span class="monitor-rec-icon" id="monitor-rec-icon">🖥️</span>
+                <div class="monitor-rec-info">
+                  <h4 class="monitor-rec-title" id="monitor-rec-title">Подбор под видеокарту</h4>
+                  <p class="monitor-rec-desc" id="monitor-rec-desc">Выберите видеокарту для расчета оптимального разрешения и частоты обновления.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Current Selected Monitor (or Empty State) -->
+            <div class="monitor-selection-wrapper" id="monitor-selection-wrapper">
+              <div class="monitor-empty-state" id="monitor-empty-state">
+                <p class="monitor-empty-text">Монитор пока не добавлен к сборке (опционально)</p>
+                <button type="button" class="btn btn-sm btn-select" id="btn-select-monitor">Выбрать из каталога</button>
+              </div>
+              
+              <div class="monitor-selected-card hidden" id="monitor-selected-card">
+                <div class="monitor-card-header-row">
+                  <span class="monitor-selected-name" id="monitor-selected-name">Монитор</span>
+                  <span class="monitor-selected-price" id="monitor-selected-price">0 zł</span>
+                </div>
+                <div class="monitor-selected-specs" id="monitor-selected-specs">
+                  <!-- Slack code tags -->
+                </div>
+                <div class="monitor-card-actions">
+                  <button type="button" class="btn-store-hub" id="monitor-store-hub-btn" title="Сравнить цены в магазинах">
+                    <span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-select" id="btn-change-monitor" data-i18n="slot.select">Изменить</button>
+                  <button type="button" class="btn-remove" id="btn-remove-monitor" title="Убрать монитор">×</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Recommended Picks (One-click equip) -->
+            <div class="monitor-quick-picks" id="monitor-quick-picks">
+              <span class="quick-picks-label">Оптимальные модели под вашу сборку:</span>
+              <div class="quick-picks-list" id="monitor-quick-picks-list">
+                <!-- Dynamically populated chips -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saved Builds -->
+        <div class="panel" id="saved-builds-panel">
+          <div class="panel-header">
+            <h3 data-i18n="dash.saved">СОХРАНЁННЫЕ СБОРКИ</h3>
+          </div>
+          <div id="saved-builds-list" class="saved-builds-list">
+            <div class="placeholder-text" data-i18n="dash.saved.empty">Нет сохранённых конфигураций</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION (ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ) -->
+    <section class="faq-section" id="faq-section">
+      <div class="faq-inner">
+        <div class="faq-header">
+          <span class="faq-badge">СПРАВОЧНИК & БАЗА ЗНАНИЙ</span>
+          <h2 class="faq-title">Часто задаваемые вопросы (FAQ)</h2>
+          <p class="faq-subtitle">Инженерные нюансы подбора комплектующих, баланса фреймтайма и актуальности цен на рынке</p>
+        </div>
+
+        <div class="faq-grid">
+          <!-- FAQ 1 -->
+          <details class="faq-card" open>
+            <summary class="faq-summary">
+              <span class="faq-icon">⚙️</span>
+              <span class="faq-q-text">Как алгоритм рассчитывает совместимость и запас надежности?</span>
+              <span class="faq-chevron">▾</span>
+            </summary>
+            <div class="faq-content">
+              <p>Алгоритм конфигуратора выполняет комплексную валидацию по трем независимым контурам:</p>
+              <ul>
+                <li><strong>Физический контур:</strong> аппаратная сверка сокетов (AM4, AM5, LGA1700, LGA1851), механических ключей слотов ОЗУ (DDR4 vs DDR5), габаритов башенного кулера относительно ширины корпуса и длины видеокарты.</li>
+                <li><strong>Электрический баланс:</strong> расчет суммарного потребления системы с учетом импульсных пиков видеокарты (Transient Spikes) и калибровкой необходимого запаса мощности БП на 25–35% для работы в зоне максимального КПД кривой 80 PLUS.</li>
+                <li><strong>Логическая синергия:</strong> предупреждения о нерациональных связках — например, установка процессора серии 'K' на бюджетную материнскую плату H610 без радиаторов на фазах питания VRM.</li>
+              </ul>
+            </div>
+          </details>
+
+          <!-- FAQ 2 -->
+          <details class="faq-card">
+            <summary class="faq-summary">
+              <span class="faq-icon">⚖️</span>
+              <span class="faq-q-text">Что такое Bottleneck и почему 1% Low FPS важнее среднего значения?</span>
+              <span class="faq-chevron">▾</span>
+            </summary>
+            <div class="faq-content">
+              <p><strong>Bottleneck (узкое место)</strong> — состояние дисбаланса, при котором один из компонентов ограничивает раскрытие потенциала остальных.</p>
+              <p>Средний FPS часто обманчив, так как отражает производительность видеокарты в спокойных сценах. В моменты интенсивных взрывов, перестрелок или быстрого перемещения на сцену выходит процессор и тайминги ОЗУ: если CPU не успевает рассчитать геометрию и физику кадра, GPU простаивает, вызывая микростаттеры и дропы 1% Low FPS. Кнопка <em>«Проверить сборку с AI»</em> анализирует стабильность именно этого показателя.</p>
+            </div>
+          </details>
+
+          <!-- FAQ 3 -->
+          <details class="faq-card">
+            <summary class="faq-summary">
+              <span class="faq-icon">⚡</span>
+              <span class="faq-q-text">DDR4 против DDR5 в 2026 году: где оправдана экономия, а где нужен переход?</span>
+              <span class="faq-chevron">▾</span>
+            </summary>
+            <div class="faq-content">
+              <p><strong>DDR4:</strong> сохраняет экономический смысл только в ультрабюджетном сегменте (сборки до 3000–3500 zł на платформах AMD AM4 или Intel LGA1700 с памятью 3200–3600 МГц), где каждая сэкономленная сотня злотых перенаправляется в видеокарту.</p>
+              <p><strong>DDR5:</strong> безальтернативный стандарт для всех современных платформ (AMD AM5, Intel LGA1851). Благодаря чипам Hynix A-die и комплектам DDR5-6000 CL30 задержки сравнялись с DDR4, а пропускная способность удвоилась, что дает от 15% до 25% прироста минимального фреймрейта в современных играх на движке Unreal Engine 5.</p>
+            </div>
+          </details>
+
+          <!-- FAQ 4 -->
+          <details class="faq-card">
+            <summary class="faq-summary">
+              <span class="faq-icon">🚀</span>
+              <span class="faq-q-text">M.2 NVMe против SATA SSD и HDD: требования современных игровых движков</span>
+              <span class="faq-chevron">▾</span>
+            </summary>
+            <div class="faq-content">
+              <p>Современные игры перешли на архитектуру потокового стриминга геометрии и виртуализированных текстур (Microsoft DirectStorage, Unreal Engine Nanite). Скорости SATA SSD (~500 МБ/с) и тем более HDD (~150 МБ/с) физически недостаточно для прокачки 10–15 ГБ данных в секунду.</p>
+              <p>Твердотельные накопители <strong>M.2 NVMe PCIe 4.0</strong> (со скоростью 5000–7400 МБ/с) исключают «заикания» мира при повороте камеры, обеспечивают мгновенный запуск локаций и не создают очереди ожидания для графического процессора.</p>
+            </div>
+          </details>
+
+          <!-- FAQ 5 -->
+          <details class="faq-card">
+            <summary class="faq-summary">
+              <span class="faq-icon">💰</span>
+              <span class="faq-q-text">Как формируются цены в злотых (PLN) и фильтруются аномалии ритейлеров?</span>
+              <span class="faq-chevron">▾</span>
+            </summary>
+            <div class="faq-content">
+              <p>Конфигуратор использует регулярную синхронизацию с крупнейшими польскими торговыми площадками — <strong>Ceneo.pl, Morele.net и x-kom.pl</strong>.</p>
+              <p>Для предотвращения искажений внедрен алгоритм статистического отсева (Sanity Check): любые аномальные выбросы цен (например, когда поиск маркетплейса ошибочно привязывает к карточке процессора готовый ПК за 15000 zł или кулер за 100 zł) автоматически блокируются, защищая точность итоговой стоимости сборки.</p>
+            </div>
+          </details>
+
+          <!-- FAQ 6 -->
+          <details class="faq-card">
+            <summary class="faq-summary">
+              <span class="faq-icon">🧠</span>
+              <span class="faq-q-text">В чем разница между базовым автоподбором и Gemini PRO AI-консультантом?</span>
+              <span class="faq-chevron">▾</span>
+            </summary>
+            <div class="faq-content">
+              <p><strong>Бесплатный автоподбор:</strong> математически оптимизирует конфигурацию по матрице эталонных архетипов, распределяя бюджет с точностью до злотого для максимизации соотношения FPS/Цена.</p>
+              <p><strong>Gemini PRO AI Консультант:</strong> специализированная нейросетевая модель с глубоким пониманием архитектур. Вы можете описать любые специфические задачи («тихая белая сборка без RGB», «ПК для одновременного рендера видео в 4K и стримов на Twitch», «упор на тишину и минимальные децибелы»), и AI не только объяснит логику каждого выбора, но и <em>в один клик применит выбранные комплектующие на интерактивной схеме</em>.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEGAL NOTICE & FOOTER -->
+    <footer class="app-footer-main" id="app-footer">
+      <div class="footer-inner">
+        <!-- Legal Notice 4-Column Grid -->
+        <div class="footer-legal-grid">
+          <div class="footer-legal-card">
+            <div class="legal-card-header">
+              <span class="legal-icon">⚖️</span>
+              <h4>Правовое уведомление (Disclaimer)</h4>
+            </div>
+            <p>
+              PC Builder является независимым некоммерческим справочным веб-инструментом. Все оценки совместимости, расчеты энергопотребления и FPS в играх носят информационный характер. Перед покупкой и сборкой ПК всегда сверяйтесь с официальной документацией и спецификациями производителей оборудования.
+            </p>
+          </div>
+
+          <div class="footer-legal-card">
+            <div class="legal-card-header">
+              <span class="legal-icon">🏷️</span>
+              <h4>Товарные знаки и бренды</h4>
+            </div>
+            <p>
+              Все названия брендов, логотипы и товарные знаки (включая Intel®, Core™, AMD®, Ryzen™, Radeon™, NVIDIA®, GeForce®, RTX™, ASUS®, MSI®, Gigabyte®, Deepcool®, Corsair® и др.) принадлежат их законным правообладателям. Их упоминание на сайте служит исключительно для идентификации комплектующих.
+            </p>
+          </div>
+
+          <div class="footer-legal-card">
+            <div class="legal-card-header">
+              <span class="legal-icon">🏪</span>
+              <h4>Цены и партнерские ссылки</h4>
+            </div>
+            <p>
+              Цены в польских злотых (PLN) агрегируются из открытых источников ритейлеров (Ceneo.pl, Morele.net, x-kom.pl). Сайт не является продавцом товаров. Ссылки на внешние магазины могут являться партнерскими, что помогает поддерживать и развивать проект без каких-либо дополнительных затрат для пользователей.
+            </p>
+          </div>
+
+          <div class="footer-legal-card">
+            <div class="legal-card-header">
+              <span class="legal-icon">🛡️</span>
+              <h4>Конфиденциальность и данные</h4>
+            </div>
+            <p>
+              Сервис не собирает персональные данные и не требует регистрации. Ваши черновики сборок и пользовательские настройки сохраняются исключительно локально на вашем компьютере (технология LocalStorage в браузере) и не передаются третьим лицам.
+            </p>
+          </div>
+        </div>
+
+        <!-- Bottom Footer Row -->
+        <div class="footer-bottom-bar">
+          <div class="footer-brand-meta">
+            <div class="footer-logo-box">💻</div>
+            <div class="footer-meta-texts">
+              <span class="footer-copy-brand">PC BUILDER 2026</span>
+              <span class="footer-copy-text">Умный конфигуратор ПК с искусственным интеллектом Gemini Pro</span>
+            </div>
+          </div>
+          <div class="footer-nav-links">
+            <button type="button" class="footer-link-action" id="footer-btn-guide">💡 Гид по деталям</button>
+            <a href="#faq-section" class="footer-link-action">❓ Частые вопросы (FAQ)</a>
+            <button type="button" class="footer-link-action" id="btn-scroll-top">↑ Наверх к сборке</button>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+    <!-- STICKY BOTTOM SUMMARY BAR (Mobile & Tablet) -->
+    <div id="mobile-summary-bar" class="mobile-summary-bar" aria-label="Итоги сборки">
+      <div class="mobile-summary-inner">
+        <div class="mobile-summary-info">
+          <div class="mobile-summary-price-box">
+            <span class="mobile-summary-label">Итого:</span>
+            <span class="mobile-summary-price" id="mobile-total-price">0 zł</span>
+          </div>
+          <div class="mobile-summary-sub">
+            <span id="mobile-power-val" class="mobile-summary-power">0W</span>
+            <span class="mobile-summary-dot">•</span>
+            <span id="mobile-progress-val" class="mobile-summary-progress">0 / 8</span>
+          </div>
+        </div>
+        <div class="mobile-summary-actions">
+          <button type="button" id="btn-mobile-view-schematic" class="btn-mobile-action" title="Показать схему сборки">
+            <span class="mobile-btn-icon">🖥️</span>
+            <span class="mobile-btn-text">Схема ПК</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRAWER FOR COMPONENT SELECTION -->
+    <div class="autobuild-backdrop hidden" id="autobuild-backdrop"></div>
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+    <aside id="drawer" class="drawer">
+      <div class="drawer-drag-handle" aria-hidden="true"></div>
+      <div class="drawer-header">
+        <div class="drawer-header-left">
+          <h2 id="drawer-title" data-i18n="drawer.title">Select Component</h2>
+          <span class="drawer-count-badge" id="drawer-parts-count">0 доступно</span>
+        </div>
+        <button id="drawer-close" class="drawer-close-btn app-close-btn" aria-label="Close drawer" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+      <div class="drawer-controls geek-drawer-controls">
+        <div class="search-input-wrapper geek-search-wrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="parts-search" placeholder="Поиск по названию, сокету, характеристикам..." data-i18n-placeholder="drawer.search">
+          <kbd class="geek-kbd">Ctrl+K</kbd>
+          <button id="search-clear-btn" class="search-clear-btn hidden" title="Очистить">×</button>
+        </div>
+
+        <!-- Dynamic Brand & Platform Filter Chips -->
+        <div class="drawer-brand-chips" id="drawer-brand-chips">
+          <!-- Populated dynamically per category -->
+        </div>
+
+        <div class="drawer-filters geek-filters-bar">
+          <div class="geek-sort-group" id="drawer-sort-group">
+            <button type="button" class="geek-sort-chip active" data-sort="default" data-i18n="drawer.sort.popular">⚡ Топ продаж</button>
+            <button type="button" class="geek-sort-chip" data-sort="price-asc" data-i18n="drawer.sort.priceAsc">💰 Дешевле</button>
+            <button type="button" class="geek-sort-chip" data-sort="price-desc" data-i18n="drawer.sort.priceDesc">💎 Мощнее</button>
+          </div>
+          
+          <button type="button" class="geek-compat-toggle active" id="btn-toggle-compat">
+            <span class="led-dot"></span>
+            <span id="compat-toggle-label" data-i18n="drawer.compat.on">Совместимые: ВКЛ</span>
+          </button>
+          <input type="checkbox" id="filter-compat" checked class="hidden">
+          <select id="sort-select" class="hidden"><option value="price-asc">asc</option></select>
+        </div>
+      </div>
+      <div id="parts-list" class="parts-list">
+        <!-- Rendered by JS -->
+      </div>
+    </aside>
+
+    
+    <!-- MODAL: MULTI-RETAILER STORE AGGREGATOR -->
+    <div id="retailers-modal" class="modal-overlay">
+      <div class="modal-dialog modal-md geek-panel retailer-dialog">
+        <div class="modal-header retailer-modal-header">
+          <div class="retailer-modal-top">
+            <div class="retailer-badge-row">
+              <span class="slack-code-tag retailer-modal-badge">[ 🏪 MULTI_STORE_AGGREGATOR_v2026 ]</span>
+              <span class="retailer-status-pill">● 8 МАГАЗИНОВ ОНЛАЙН</span>
+            </div>
+            <h3 id="retailer-modal-part-name" class="retailer-modal-product-title">Где купить деталь</h3>
+            <div class="retailer-modal-meta">
+              <span id="retailer-modal-price" class="retailer-est-price">-- zł</span>
+              <div id="retailer-modal-specs"></div>
+            </div>
+          </div>
+          <button type="button" class="retailer-modal-close-btn app-close-btn" id="retailers-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="modal-body retailer-modal-body">
+          <p class="retailer-sub-hint" data-i18n="store.modal.hint">Выберите страну и магазин для перехода к актуальным ценам:</p>
+          
+          <!-- Country Selector Tabs -->
+          <div class="retailer-country-tabs" id="retailer-country-tabs"></div>
+          
+          <!-- Framed Deck Panel -->
+          <div class="retailers-deck-frame">
+            <div class="deck-frame-header">
+              <span class="deck-frame-title" data-i18n="store.modal.catalog">\[ КАТАЛОГ МАГАЗИНОВ С ПРЯМЫМ ПОИСКОМ \]</span>
+              <span class="deck-frame-badge">1-CLICK JUMP ↗</span>
+            </div>
+            <div class="retailer-grid" id="retailer-grid">
+              <!-- 8 store cards -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MODAL: SAVE BUILD -->
+    <div id="save-modal" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 data-i18n="modal.save.title">Сохранить сборку</h3>
+          <button type="button" class="modal-close app-close-btn" id="save-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="modal-body">
+          <label for="save-build-name" class="modal-label" data-i18n="modal.save.label">Название конфигурации:</label>
+          <input type="text" id="save-build-name" class="modal-input" placeholder="Мой игровой ПК 2026" data-i18n-placeholder="modal.save.placeholder">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="save-modal-cancel" data-i18n="action.cancel">Отмена</button>
+          <button class="btn btn-primary" id="save-modal-confirm" data-i18n="action.save">Сохранить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: EXPORT BUILD -->
+    <div id="export-modal" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 data-i18n="modal.export.title">Экспорт конфигурации</h3>
+          <button type="button" class="modal-close app-close-btn" id="export-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="modal-body">
+          <textarea id="export-text" class="modal-textarea" readonly></textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="export-modal-copy" data-i18n="action.copy">Копировать</button>
+          <button class="btn btn-primary" id="export-modal-ok">Закрыть</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: COMPARISON -->
+    <div id="comparison-modal" class="modal-overlay">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <h3 data-i18n="modal.compare.title">Сравнение конфигураций</h3>
+          <button type="button" class="modal-close app-close-btn" id="comparison-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="modal-body">
+          <div id="comparison-content" class="comparison-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- DEV CABINET: LIVE PRICE PARSER MODAL -->
+    <div id="dev-prices-modal" class="modal-overlay hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-dialog modal-dev-dialog">
+        <div class="modal-header dev-modal-header">
+          <div class="dev-header-left">
+            <span class="dev-badge">PRICE ENGINE</span>
+            <div>
+              <h2>Ценовой парсер: Актуализация цен (Morele & Ceneo)</h2>
+              <p class="text-secondary" style="font-size: 0.8rem; margin: 2px 0 0 0;">Сравнение цен в польском ритейле и синхронизация всего каталога комплектующих</p>
+            </div>
+          </div>
+          <button id="dev-modal-close" class="modal-close-btn app-close-btn" aria-label="Close" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+
+        <div class="dev-modal-body">
+          <!-- Control Strip -->
+          <div class="dev-control-strip">
+            <div class="dev-control-field" style="max-width: 280px;">
+              <label for="dev-source-select">Источник (Магазин):</label>
+              <select id="dev-source-select" class="dev-select">
+                <option value="hybrid" selected>Morele + Ceneo (Умный гибрид ⭐)</option>
+                <option value="morele">Morele.net (Прямой ритейлер)</option>
+                <option value="ceneo">Ceneo.pl (Агрегатор 50+ магазинов)</option>
+                <option value="playwright">Playwright Headless (Локальный глубокий краулер)</option>
+              </select>
+            </div>
+            <div class="dev-control-field">
+              <label for="dev-category-select">Категория комплектующих:</label>
+              <select id="dev-category-select" class="dev-select">
+                <option value="all" selected>Вся база (251 шт., все 10 категорий ⭐)</option>
+                <option value="cpu">Процессоры CPU (51 шт.)</option>
+                <option value="gpu">Видеокарты GPU (35 шт.)</option>
+                <option value="motherboard">Материнские платы (34 шт.)</option>
+                <option value="cooler">Охлаждение (25 шт.)</option>
+                <option value="ram">Оперативная память (17 шт.)</option>
+                <option value="ssd">SSD накопители (19 шт.)</option>
+                <option value="hdd">Жесткие диски (12 шт.)</option>
+                <option value="psu">Блоки питания (19 шт.)</option>
+                <option value="case">Корпуса (19 шт.)</option>
+                <option value="monitor">Мониторы (20 шт.)</option>
+              </select>
+            </div>
+
+            <div class="dev-control-actions">
+              <button type="button" id="btn-start-sync" class="btn btn-primary btn-dev-start">
+                <span>▶ Запустить парсинг</span>
+              </button>
+              <button type="button" id="btn-stop-sync" class="btn btn-dev-stop hidden">
+                <span>⏹ Остановить</span>
+              </button>
+              <button type="button" id="btn-apply-prices" class="btn btn-dev-apply">
+                <span>💾 Применить к сайту</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress and Stats Bar -->
+          <div class="dev-progress-card">
+            <div class="dev-progress-header">
+              <span id="dev-progress-status">Готов к запуску</span>
+              <span id="dev-progress-count">0 / 0</span>
+            </div>
+            <div class="dev-progress-bar-track">
+              <div id="dev-progress-bar-fill" class="dev-progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="dev-stats-row">
+              <span class="dev-stat-pill">Обновлено: <strong id="dev-stat-updated">0</strong></span>
+              <span class="dev-stat-pill">Не найдено: <strong id="dev-stat-notfound">0</strong></span>
+              <span class="dev-stat-pill">В кэше сервера: <strong id="dev-stat-cached">0</strong></span>
+              <span class="dev-stat-pill">Синхронизация: <span id="dev-stat-date">—</span></span>
+            </div>
+          </div>
+
+          <!-- Live Terminal Output -->
+          <div class="dev-terminal-wrapper">
+            <div class="dev-terminal-header">
+              <span>ЖИВОЙ ТЕРМИНАЛ СКРАПЕРА</span>
+              <button type="button" id="btn-clear-logs" class="btn-clear-terminal">Очистить лог</button>
+            </div>
+            <div id="dev-terminal-logs" class="dev-terminal-logs">
+              <div class="log-line text-muted">[Готов] Выберите категорию и нажмите «Запустить парсинг»...</div>
+            </div>
+          </div>
+
+          <!-- Results Diff Table -->
+          <div class="dev-diff-table-wrapper">
+            <div class="dev-diff-header">
+              <h3>Сводка изменений цен</h3>
+              <span class="dev-diff-subtitle">Цены сравниваются с текущими значениями в конфигураторе</span>
+            </div>
+            <div class="dev-table-container">
+              <table class="dev-diff-table">
+                <thead>
+                  <tr>
+                    <th>Товар</th>
+                    <th>Категория</th>
+                    <th>Было (PLN)</th>
+                    <th>Актуально</th>
+                    <th>Разница</th>
+                    <th>Источник</th>
+                    <th>Ссылка</th>
+                  </tr>
+                </thead>
+                <tbody id="dev-diff-tbody">
+                  <tr><td colspan="6" class="text-center text-muted" style="padding: 1.5rem;">Пока нет результатов сканирования</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- PRO AI CONSULTANT DOCK / DRAWER -->
+    <div id="pro-chat-overlay" class="pro-chat-overlay hidden"></div>
+    <aside id="pro-chat-drawer" class="pro-chat-drawer hidden">
+      <div class="pro-chat-header">
+        <div class="pro-chat-title-group">
+          <div class="pro-ai-avatar">🧠</div>
+          <div>
+            <div class="pro-ai-name">
+              <strong>Gemini Pro Consultant</strong>
+              <span class="pro-pill-badge">PRO</span>
+            </div>
+            <div class="pro-ai-status" id="pro-ai-status-indicator">● Интерактивный подбор железа</div>
+          </div>
+        </div>
+        <button type="button" class="pro-chat-close-btn app-close-btn" id="pro-chat-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+
+      <!-- Chat Messages Container -->
+      <div class="pro-chat-messages" id="pro-chat-messages">
+        <div class="pro-chat-bubble ai">
+          <div class="pro-bubble-avatar">🧠</div>
+          <div class="pro-bubble-content">
+            <p><strong>Привет! Я ваш персональный AI-архитектор ПК на базе Gemini Pro.</strong></p>
+            <p>Напишите мне свои пожелания простыми словами — для каких игр или работы нужен компьютер, какой бюджет, предпочтения по цвету, шуму или сокету. Я подберу идеальные комплектующие из нашего каталога и сразу установлю их на схему!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Prompt Suggestions -->
+      <div class="pro-quick-prompts" id="pro-quick-prompts">
+        <button type="button" class="pro-prompt-chip" data-prompt="Собери белый тихий ПК для CS2 и стримов за 5500 zł">⚪ Белый тихий ПК для CS2 (5500 zł)</button>
+        <button type="button" class="pro-prompt-chip" data-prompt="Ультимативный 4K гейминг на максималках за 10000 zł">🎮 4K Гейминг Ultra (10000 zł)</button>
+        <button type="button" class="pro-prompt-chip" data-prompt="Рабочая станция для монтажа в 4K и 3D рендера за 7500 zł">🎬 Монтаж и 3D рендер (7500 zł)</button>
+        <button type="button" class="pro-prompt-chip" data-prompt="Компактный бюджетный ПК для танков и GTA V за 3500 zł">📦 Компактный хит (3500 zł)</button>
+      </div>
+
+      <!-- Chat Input Area -->
+      <div class="pro-chat-input-area">
+        <div class="pro-input-wrapper">
+          <textarea id="pro-chat-input" rows="1" placeholder="Опишите свои задачи и пожелания к сборке..."></textarea>
+          <button type="button" id="pro-chat-send-btn" class="pro-send-btn" title="Отправить (Enter)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="pro-input-footer">
+          <span>Gemini Pro анализирует совместимость и управляет слотами сборки на лету</span>
+        </div>
+      </div>
+    </aside>
+
+
+    <!-- HARDWARE GUIDE MODAL (ДЛЯ ЧЕГО КАЖДАЯ ДЕТАЛЬ В ПК) -->
+    <div id="hardware-guide-overlay" class="modal-overlay hidden"></div>
+    <div id="hardware-guide-modal" class="modal hardware-guide-modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-header guide-modal-header">
+        <div class="guide-header-title-box">
+          <div class="guide-header-icon">💡</div>
+          <div>
+            <h2 class="guide-modal-title">Энциклопедия железа: Для чего каждая деталь в ПК?</h2>
+            <p class="guide-modal-subtitle">Понятное руководство простыми словами для новичков и полезная шпаргалка по выбору идеального баланса</p>
+          </div>
+        </div>
+        <button id="hardware-guide-close" class="modal-close-btn app-close-btn" aria-label="Close guide" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+
+      <div class="guide-modal-body">
+        <div class="guide-cards-grid">
+          <!-- 1. CPU -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">💻</span>
+              <div class="guide-comp-info">
+                <h3>Процессор (CPU - Central Processing Unit)</h3>
+                <span class="guide-role-badge">Вычислительное ядро архитектуры x86-64</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="cpu">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Осуществляет диспетчеризацию команд, физические симуляции (Havok/Chaos), логику ИИ, обработку геометрии и сетевую синхронизацию. Скорость процессора определяет темп подготовки кадров для видеокарты и формирует ключевой показатель комфорта — 1% Low FPS.
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>В играх критичны производительность на такт (IPC) и объем кэша L3. Например, микросхемы с технологией 3D V-Cache (Ryzen 7 7800X3D) радикально сокращают латентность обращений к оперативной памяти с ~65 нс до ~12 нс, исключая микростаттеры в киберспорте и открытых мирах.</span>
+            </div>
+          </div>
+
+          <!-- 2. Motherboard -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">🖲️</span>
+              <div class="guide-comp-info">
+                <h3>Материнская плата (Motherboard)</h3>
+                <span class="guide-role-badge">Системная магистраль и подсистема питания VRM</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="motherboard">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Коммутирует все узлы через шины PCI-Express, интерфейсы DMI/Infinity Fabric и каналы памяти DDR. Подсистема питания VRM (Voltage Regulator Module) преобразует 12V от блока питания в рабочие напряжения ядер Vcore (~1.1–1.3V).
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Количество реальных фаз питания и силовых сборок (DrMOS на 60–90A) с массивными алюминиевыми радиаторами определяют, сможет ли плата удерживать максимальные буст-частоты процессора без термического троттлинга цепей питания (VRM > 105°C).</span>
+            </div>
+          </div>
+
+          <!-- 3. Cooler -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">❄️</span>
+              <div class="guide-comp-info">
+                <h3>Охлаждение процессора (Air / Liquid Cooler)</h3>
+                <span class="guide-role-badge">Термодинамический контур рассеивания тепла</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="cooler">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Отводит тепло от теплораспределительной крышки (IHS) кремниевого кристалла процессора. При превышении температурного порога (TjMax ~89–100°C) алгоритмы Precision Boost и Thermal Velocity Boost снижают частоты и производительность.
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Для энергоэффективных CPU до 130W (Ryzen 5/7, Core i5) оптимальны башенные кулеры с 4–7 тепловыми трубками из спеченной меди. Жидкостные СЖО с радиатором 360 мм необходимы процессорам с энергопотреблением свыше 200W в режиме PL2/MTP.</span>
+            </div>
+          </div>
+
+          <!-- 4. RAM -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">⚡</span>
+              <div class="guide-comp-info">
+                <h3>Оперативная память (RAM - DDR4 / DDR5)</h3>
+                <span class="guide-role-badge">Высокоскоростная буферизация данных низкой латентности</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="ram">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Служит промежуточным хранилищем для машинного кода и декомпрессированных текстур перед передачей в кэш-память процессора. Пропускная способность формируется частотой (МГц) и первичными/вторичными таймингами (CL/tRCD/tRP/tRAS).
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Установка двух модулей активирует двухканальный режим (Dual-Channel), удваивая ширину шины данных до 128 бит. В 2026 году золотой стандарт — 32 ГБ (2×16GB) DDR5-6000 с таймингами CL30 при синхронном соотношении UCLK:MCLK 1:1.</span>
+            </div>
+          </div>
+
+          <!-- 5. GPU -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">🎮</span>
+              <div class="guide-comp-info">
+                <h3>Видеокарта (GPU - Graphics Processing Unit)</h3>
+                <span class="guide-role-badge">Массивно-параллельный графический вычислитель</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="gpu">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Оснащена тысячами вычислительных ядер (CUDA / Stream Processors), специализированными RT-ядрами трассировки лучей и тензорными блоками нейросетевого апскейлинга. Обрабатывает трехмерную геометрию, текстурирование и шейдерные эффекты.
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Объем и пропускная способность видеопамяти (VRAM) имеют решающее значение: при нехватке видеопамяти ресурсы аварийно выгружаются в ОЗУ через PCIe, вызывая дропы FPS. Для 1440p в современных играх требуется не менее 12–16 ГБ VRAM, а для 4K — от 16 ГБ GDDR6X/GDDR7.</span>
+            </div>
+          </div>
+
+          <!-- 6. SSD -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">🚀</span>
+              <div class="guide-comp-info">
+                <h3>Твердотельный накопитель (SSD M.2 NVMe)</h3>
+                <span class="guide-role-badge">Энергонезависимая 3D NAND память на шине PCI-Express</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="ssd">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Обеспечивает скорость линейного чтения до 5000–7500 МБ/с по протоколу NVMe 1.4/2.0. Поддерживает аппаратную спецификацию Microsoft DirectStorage, позволяющую видеокарте загружать ассеты напрямую из флеш-памяти в обход задержек центрального процессора.
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Для стабильной производительности важна скорость произвольного чтения 4K блоков (IOPS) и наличие выделенного DRAM-буфера или поддержки HMB (Host Memory Buffer), что предотвращает просадку скорости при длительных операциях записи.</span>
+            </div>
+          </div>
+
+          <!-- 7. HDD -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">💾</span>
+              <div class="guide-comp-info">
+                <h3>Жёсткий диск (HDD - Hard Disk Drive)</h3>
+                <span class="guide-role-badge">Магнитный архив высокой плотности записи</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="hdd">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Электромеханический диск со шпинделем 5400–7200 об/мин. Скорость ограничена планкой 140–200 МБ/с при механических задержках позиционирования головок в 12–18 мс (в 200 раз медленнее NVMe).
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Используется исключительно как холодное файловое хранилище для видеоархивов, резервных копий и документов с минимальной стоимостью за терабайт. Установка современных ОС и требовательных игр на HDD в 2026 году категорически не рекомендуется.</span>
+            </div>
+          </div>
+
+          <!-- 8. PSU -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">🔌</span>
+              <div class="guide-comp-info">
+                <h3>Блок питания (PSU - Power Supply Unit)</h3>
+                <span class="guide-role-badge">Импульсный стабилизатор электропитания постоянного тока</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="psu">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Преобразует сетевой переменный ток 220V в прецизионно стабилизированные шины +12V, +5V и +3.3V с резонансной топологией LLC и раздельной стабилизацией DC-DC.
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Современные видеокарты формируют импульсные всплески потребления длительностью до 10 мс (Transient Spikes), превышающие номинальное TDP в 1.8–2 раза. Стандарт ATX 3.0/3.1 с разъемом 12V-2x6 спроектирован для бессбойного поглощения перегрузок до 200%.</span>
+            </div>
+          </div>
+
+          <!-- 9. Case -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">📦</span>
+              <div class="guide-comp-info">
+                <h3>Корпус (Chassis / Enclosure)</h3>
+                <span class="guide-role-badge">Несущая аэродинамическая рама и термоинтерфейс среды</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="case">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Формирует конвекционный воздушный тракт и защищает электронику от электромагнитных наводок (EMI). Обеспечивает физический клиренс для длиннобазных видеокарт (300–360 мм) и массивных кулеров.
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Сетчатая перфорированная передняя панель (High-Airflow Mesh) снижает гидравлическое сопротивление входящего потока воздуха, обеспечивая дельту температур основных узлов на 10–18°C ниже, чем в глухих стеклянных конструкциях.</span>
+            </div>
+          </div>
+
+          <!-- 10. Monitor -->
+          <div class="guide-component-card">
+            <div class="guide-card-top">
+              <span class="guide-comp-icon">🖥️</span>
+              <div class="guide-comp-info">
+                <h3>Монитор (Display Device)</h3>
+                <span class="guide-role-badge">Устройство кадровой развертки и визуализации</span>
+              </div>
+              <button type="button" class="guide-quick-pick-btn" data-guide-cat="monitor">Выбрать в каталоге →</button>
+            </div>
+            <p class="guide-comp-desc">
+              Принимает цифровой видеопоток по протоколам DisplayPort 1.4a/2.1 и HDMI 2.1. Определяет плотность пикселей (PPI), цветопередачу и время отклика матрицы (GtG).
+            </p>
+            <div class="guide-tip-box">
+              <span class="guide-tip-label">⚙️ Архитектурные нюансы:</span>
+              <span>Матрицы Fast-IPS и OLED обеспечивают отклик от 1 мс до 0.03 мс, устраняя размытие в динамике. Частота 144–240 Гц в сочетании с технологиями адаптивной синхронизации (G-Sync Compatible / AMD FreeSync) устраняет разрывы кадров (Tearing) без инпут-лага V-Sync.</span>
+            </div>
+          </div>
+        </div>
+
+  </body>
+</html>

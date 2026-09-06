@@ -1,0 +1,71 @@
+/* =============================================================
+   Responsive Breakpoints
+   ============================================================= */
+@media (max-width: 1024px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+  
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  
+  background-color: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  margin-top: -1.5rem;
+  padding-top: 1.5rem;}
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+  .toolbar-center {
+    justify-content: center;
+  }
+  .toolbar-right {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+  
+.slot-card {
+  background-color: var(--surface-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  position: relative;
+  transition: all var(--duration-normal) var(--ease);
+  box-shadow: var(--shadow-sm); /* ADDED RESTING SHADOW */
+}
+  .slot-category-icon {
+    display: none;
+  }
+  .slot-num {
+    width: 1.4rem;
+  }
+  .drawer {
+    width: 100%;
+    right: -100%;
+  }
+}
+

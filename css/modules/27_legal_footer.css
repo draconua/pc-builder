@@ -1,0 +1,130 @@
+/* ============================================================= */
+/* LEGAL NOTICE & FOOTER                                         */
+/* ============================================================= */
+
+.app-footer-main {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  padding: 3rem 1.5rem 2rem 1.5rem;
+  color: var(--text-secondary);
+}
+
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-legal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding-bottom: 2.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 1100px) {
+  .footer-legal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-legal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-legal-card {
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.legal-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.65rem;
+}
+
+.legal-card-header h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.legal-icon {
+  font-size: 1rem;
+}
+
+.footer-legal-card p {
+  color: var(--text-secondary);
+}
+
+.footer-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding-top: 1.75rem;
+}
+
+.footer-brand-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-logo-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: white;
+}
+
+.footer-meta-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-copy-brand {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.footer-copy-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.footer-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.footer-link-action {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  padding: 0;
+}
+
+.footer-link-action:hover {
+  color: #3b82f6;
+}
+

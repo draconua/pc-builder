@@ -1,0 +1,602 @@
+/* =============================================================
+   GEEK / CYBER-WORKBENCH & SLACK CODE DESIGN SYSTEM
+   ============================================================= */
+
+/* 1. Authentic Slack-Style Code Formatting */
+.slack-code-tag {
+  display: inline-flex;
+  align-items: center;
+  background: #1e2228;
+  color: #e5a55d;
+  border: 1px solid #383f45;
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  margin: 2px 3px 2px 0;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.slack-code-tag:hover {
+  border-color: #f59e0b;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .slack-code-tag {
+  background: var(--surface);
+  color: #fbbf24;
+  border-color: #30363d;
+}
+
+[data-theme="light"] .slack-code-tag {
+  background: #f4f5f7;
+  color: #e01e5a; /* Authentic Slack Red */
+  border: 1px solid #e3e5e8;
+  box-shadow: none;
+}
+
+[data-theme="light"] .slack-code-tag:hover {
+  background: #eef0f3;
+  border-color: #d1d5db;
+  color: #c91951;
+}
+
+/* Part specs container with Slack pills */
+.slot-selected-specs, .part-specs-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+}
+
+/* 2. Cyber-Blueprint Background (Geek Station Texture) */
+
+
+
+/* 3. Slot Cards: High-Tech Hardware Blades */
+.slot-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.9rem 1.15rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s var(--ease);
+}
+
+.slot-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3.5px;
+  background: var(--border);
+  border-radius: 0 4px 4px 0;
+  transition: background 0.2s;
+}
+
+.slot-card.filled {
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.slot-card.filled::before {
+  background: linear-gradient(180deg, #38bdf8, #818cf8);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+[data-theme="dark"] .slot-card {
+  background: var(--surface);
+  border-color: #232c3d;
+}
+
+[data-theme="dark"] .slot-card:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 6px 22px rgba(56, 189, 248, 0.12);
+}
+
+/* 4. Multi-Retailer Store Aggregator Modal */
+.modal-md {
+  max-width: 680px !important;
+  width: 92% !important;
+}
+
+.retailer-modal-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.retailer-modal-header-info h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.retailer-sub-hint {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.retailer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .retailer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.retailer-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.95rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.18s var(--ease);
+  color: var(--text-primary);
+}
+
+.retailer-card:hover {
+  transform: translateY(-2px);
+  border-color: #38bdf8;
+  background: var(--surface-hover);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2);
+}
+
+.retailer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.retailer-icon {
+  font-size: 1.3rem;
+}
+
+.retailer-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.retailer-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.retailer-jump-btn {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-top: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* 5. Geek Drawer Controls */
+.geek-drawer-controls {
+  padding: 1rem 1.4rem;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.geek-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.geek-search-wrapper input {
+  width: 100%;
+  padding: 0.65rem 4.5rem 0.65rem 2.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.geek-search-wrapper input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+.geek-kbd {
+  position: absolute;
+  right: 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary); /* Contrast fix */
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* Dynamic Brand Chips in Drawer */
+.drawer-brand-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.geek-brand-chip {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+
+.geek-brand-chip:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.geek-brand-chip.active {
+  background: #1e2430;
+  color: #fbbf24;
+  border-color: #fbbf24;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.25);
+}
+
+/* Geek Filters Bar */
+.geek-filters-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.geek-sort-group {
+  display: inline-flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.geek-sort-chip {
+  background: transparent;
+  border: none;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.geek-sort-chip:hover {
+  color: var(--text-primary);
+}
+
+.geek-sort-chip.active {
+  background: #38bdf8;
+  color: var(--bg);
+  font-weight: 800;
+}
+
+.geek-compat-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.geek-compat-toggle .led-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #64748b;
+  transition: all 0.2s;
+}
+
+.geek-compat-toggle.active .led-dot {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.part-store-btn {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: #38bdf8;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.part-store-btn:hover {
+  background: #38bdf8;
+  color: var(--bg);
+  border-color: #38bdf8;
+}
+
+.footer-left-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+
+/* Store Hub Interactive Button in Slot Cards */
+.btn-store-hub {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 7px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none;
+  border: 1px solid rgba(2, 132, 199, 0.35);
+  background: rgba(2, 132, 199, 0.08);
+  color: #0284c7;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.btn-store-hub:hover {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.28);
+}
+
+.btn-store-hub:active {
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .btn-store-hub {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+[data-theme="dark"] .btn-store-hub:hover {
+  background: #38bdf8;
+  color: var(--bg);
+  border-color: #38bdf8;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+}
+
+.store-hub-icon {
+  font-size: 0.88rem;
+  line-height: 1;
+}
+
+.store-hub-arrow {
+  font-size: 0.8rem;
+  font-weight: 800;
+  transition: transform 0.15s;
+}
+
+.btn-store-hub:hover .store-hub-arrow {
+  transform: translate(1px, -1px);
+}
+
+/* Redesigned Retailers Popover Modal */
+.modal-md {
+  max-width: 720px !important;
+  width: 94% !important;
+}
+
+.retailer-modal-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.retailer-modal-badge {
+  align-self: flex-start;
+}
+
+.retailer-modal-product-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.retailer-modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.retailer-est-price {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--success);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+}
+
+.retailer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 650px) {
+  .retailer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.retailer-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.retailer-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--border);
+  transition: background 0.2s;
+}
+
+.retailer-card:hover {
+  transform: translateY(-2px);
+  border-color: #38bdf8;
+  background: var(--surface-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.retailer-card:hover::before {
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.retailer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-left: 0.2rem;
+}
+
+.retailer-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.retailer-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.retailer-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.retailer-desc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.retailer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.retailer-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.retailer-btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #0284c7;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.2);
+  transition: all 0.15s;
+}
+
+[data-theme="dark"] .retailer-btn-action {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.retailer-card:hover .retailer-btn-action {
+  background: #38bdf8;
+  color: var(--bg);
+  border-color: #38bdf8;
+  transform: translateX(2px);
+}
+
+

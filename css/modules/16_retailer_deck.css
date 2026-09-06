@@ -1,0 +1,174 @@
+/* =============================================================
+   RETAILER STORE AGGREGATOR DECK PANEL & CONTROLS
+   ============================================================= */
+
+
+/* 2. Top Badges Row */
+.retailer-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.retailer-status-pill {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+
+/* 3. Framed Deck Panel Container (The Box for Buttons) */
+.retailers-deck-frame {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.15rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .retailers-deck-frame {
+  background: var(--bg);
+  border: 1px solid #222d42;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.deck-frame-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.deck-frame-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+
+.deck-frame-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #0284c7;
+  background: rgba(2, 132, 199, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+}
+
+[data-theme="dark"] .deck-frame-badge {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+}
+
+/* 4. Retailer Cards inside the Frame */
+.retailer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+@media (max-width: 660px) {
+  .retailer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.retailer-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.95rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  text-decoration: none;
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-primary);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .retailer-card {
+  background: var(--surface);
+  border-color: #263349;
+}
+
+.retailer-card:hover {
+  transform: translateY(-2px);
+  border-color: #38bdf8;
+  background: var(--surface-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+[data-theme="dark"] .retailer-card:hover {
+  background: var(--surface-hover);
+  border-color: #38bdf8;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+}
+
+
+
+
+/* Country Selector Tabs in Retailer Modal */
+.retailer-country-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.85rem 0 1rem 0;
+}
+
+.retailer-country-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.retailer-country-chip:hover {
+  border-color: #38bdf8;
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.retailer-country-chip.active {
+  background: #0284c7;
+  border-color: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+
+[data-theme="dark"] .retailer-country-chip.active {
+  background: #38bdf8;
+  border-color: #38bdf8;
+  color: var(--bg);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.45);
+}
+
+.country-flag {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+

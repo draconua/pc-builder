@@ -1,0 +1,428 @@
+/* =============================================================
+   Right Column: Sticky Inspector Sidebar
+   ============================================================= */
+
+
+/* Standard Panel Card */
+.panel {
+  background-color: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.panel-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary); /* Contrast fix */
+}
+
+.placeholder-text {
+  font-size: 0.78125rem;
+  color: var(--text-secondary); /* Contrast fix */
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.status-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* 1. Summary Panel Details */
+.summary-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.summary-row .label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.price-val {
+  font-family: var(--font-mono);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.price-val .currency {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-secondary); /* Contrast fix */
+  margin-left: 0.2rem;
+}
+
+.power-row {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+#power-value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.power-bar-track {
+  width: 100%;
+  height: 5px;
+  background-color: var(--bg-subtle);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.power-bar-fill {
+  height: 100%;
+  background-color: var(--accent);
+  transition: width 0.35s var(--ease);
+}
+
+.power-bar-fill.overload {
+  background-color: var(--error);
+}
+
+.power-sub {
+  font-size: 0.7rem;
+  color: var(--text-secondary); /* Contrast fix */
+  margin-top: 0.15rem;
+}
+
+/* 2. SVG Blueprint Schematic Styling */
+.visualizer-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  border: 1px solid var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+}
+
+#pc-svg {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  display: block;
+}
+
+.vis-component {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.35s var(--ease),
+              transform 0.25s var(--ease),
+              filter 0.25s var(--ease);
+  opacity: 1;
+}
+
+.vis-component.hidden {
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.vis-component:not(.hidden):hover {
+  filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.45));
+}
+
+.vis-label {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  fill: var(--text-tertiary);
+  pointer-events: none;
+  user-select: none;
+  transition: fill 0.25s var(--ease);
+}
+
+.vis-sublabel {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  fill: var(--text-secondary);
+  pointer-events: none;
+  user-select: none;
+  transition: fill 0.25s var(--ease);
+}
+
+.vis-component:not(.hidden) .vis-label {
+  fill: var(--text-primary);
+}
+
+.vis-component:not(.hidden) .vis-sublabel {
+  fill: var(--text-secondary);
+}
+
+/* 3. FPS Panel */
+.fps-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.fps-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface);
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.fps-item:hover {
+  border-color: var(--border);
+}
+
+.fps-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.fps-game {
+  font-size: 0.78125rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fps-tier-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.05rem 0.35rem;
+  border-radius: var(--radius-xs);
+  width: fit-content;
+  line-height: 1.2;
+}
+
+.fps-tier-ultra {
+  background-color: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+}
+
+.fps-tier-high {
+  background-color: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.fps-tier-medium {
+  background-color: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
+}
+
+.fps-tier-playable {
+  background-color: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.fps-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+/* 4. Bottleneck Gauge (Two-Sided) */
+.bottleneck-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bottleneck-labels-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary); /* Contrast fix */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bottleneck-bar-track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background-color: var(--bg-subtle);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.bottleneck-center-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--border-hover);
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.bottleneck-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  transition: all 0.35s var(--ease);
+}
+
+.bottleneck-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 0.25rem;
+}
+
+.bottleneck-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.bottleneck-advice {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+/* 5. Compatibility Diagnostic List */
+.compatibility-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.compat-item {
+  font-size: 0.72rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.35;
+}
+
+.compat-success {
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success);
+}
+
+.compat-warning {
+  background-color: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  color: var(--warning);
+}
+
+.compat-error {
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error);
+}
+
+.compat-info-item {
+  font-size: 0.75rem;
+  color: var(--text-secondary); /* Contrast fix */
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+/* 6. Saved Builds List */
+.saved-builds-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.saved-build-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  transition: border-color var(--duration-fast) var(--ease);
+}
+
+.saved-build-card:hover {
+  border-color: var(--border);
+}
+
+.saved-build-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.saved-build-name {
+  font-size: 0.78125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.saved-build-date {
+  font-size: 0.65rem;
+  color: var(--text-secondary); /* Contrast fix */
+  font-family: var(--font-mono);
+}
+
+.saved-build-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+

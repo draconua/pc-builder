@@ -1,0 +1,114 @@
+/* ============================================================= */
+/* BOTTLENECK AI SYNERGY BUTTON & VERDICT CARD                   */
+/* ============================================================= */
+
+.bottleneck-ai-action-bar {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-check-ai-synergy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.14));
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-check-ai-synergy:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(168, 85, 247, 0.26));
+  border-color: rgba(168, 85, 247, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.2);
+}
+
+.btn-check-ai-synergy:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-ai-icon {
+  font-size: 1rem;
+  filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.5));
+}
+
+/* Detailed AI Synergy Verdict Card */
+.ai-synergy-verdict-card {
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.05), rgba(99, 102, 241, 0.05));
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 12px;
+  text-align: left;
+  animation: fadeInSynergy 0.25s ease-out;
+}
+
+@keyframes fadeInSynergy {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-verdict-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+}
+
+.ai-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ai-brain-icon {
+  font-size: 0.95rem;
+}
+
+.ai-badge-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #818cf8;
+}
+
+.ai-verdict-status-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.ai-verdict-commentary {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+  margin: 0 0 0.45rem 0;
+}
+
+.ai-verdict-fps-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.ai-fps-icon {
+  color: #f59e0b;
+}
+
