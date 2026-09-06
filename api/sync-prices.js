@@ -25,31 +25,16 @@ if (!global.__SYNC_STATUS__) {
 
 function loadPartsDatabase() {
   const candidates = [
-    path.join(__dirname, '..', 'js', 'data.js'),
-    path.join(process.cwd(), 'js', 'data.js')
+    path.join(__dirname, '..', 'data', 'hardware.json'),
+    path.join(process.cwd(), 'data', 'hardware.json')
   ];
 
   for (const p of candidates) {
     if (fs.existsSync(p)) {
       try {
-        const code = fs.readFileSync(p, 'utf-8');
-        const stripped = code
-          .replace(/export\s+const\s+/g, 'const ')
-          .replace(/export\s+function\s+/g, 'function ')
-          + '\n;module.exports = { PARTS_DATABASE, CATEGORIES };';
-
-        const context = {
-          module: {},
-          exports: {},
-          createBuyLinks: () => ({})
-        };
-        vm.createContext(context);
-        vm.runInContext(stripped, context);
-        if (context.module.exports.PARTS_DATABASE) {
-          return context.module.exports.PARTS_DATABASE;
-        }
+        return JSON.parse(fs.readFileSync(p, 'utf-8'));
       } catch (e) {
-        console.error('Error parsing data.js via VM:', e.message);
+        console.error('Error parsing hardware.json:', e.message);
       }
     }
   }

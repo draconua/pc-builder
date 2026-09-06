@@ -81,7 +81,7 @@ function createBuyLinks(name) {
 
 export let PARTS_DATABASE = {};
 try {
-  const res = await fetch('/data/hardware.json');
+  const res = await fetch('data/hardware.json');
   if(res.ok) PARTS_DATABASE = await res.json();
 } catch(e) {
   console.error(e);
@@ -93,11 +93,11 @@ export const PRESETS = {
     name: 'Budget 1080p Gaming',
     desc: 'Cost-efficient setup for great Full HD gaming and daily tasks.',
     parts: {
-      cpu: 'cpu-i3-12100f',
-      motherboard: 'mb-h610m-k',
+      cpu: 'cpu-i3-13100f',
+      motherboard: 'mb-b760m-ds3h-d4',
       cooler: 'clr-se214xt',
       ram: 'ram-cv16g-3200',
-      gpu: 'gpu-rx6600',
+      gpu: 'gpu-rtx4060',
       ssd: 'ssd-nv2-1tb',
       hdd: 'hdd-wdblue-2tb',
       psu: 'psu-cv550',
@@ -114,7 +114,7 @@ export const PRESETS = {
       motherboard: 'mb-b650m-k',
       cooler: 'clr-ls520',
       ram: 'ram-grs32g-6000',
-      gpu: 'gpu-rtx5070',
+      gpu: 'gpu-rtx4070s',
       ssd: 'ssd-sn850x-2tb',
       hdd: null,
       psu: 'psu-rm750e',
@@ -127,11 +127,11 @@ export const PRESETS = {
     name: 'Ultimate 4K Dream PC',
     desc: 'Uncompromised top-tier performance for 4K ultra gaming and work.',
     parts: {
-      cpu: 'cpu-r7-9800x3d',
-      motherboard: 'mb-x870e-aorus-pro',
+      cpu: 'cpu-u9-285k',
+      motherboard: 'mb-z890-rog-strix-f',
       cooler: 'clr-kraken-360',
-      ram: 'ram-gtz32g-6400',
-      gpu: 'gpu-rtx4090',
+      ram: 'ram-gtzrgb64g-6400',
+      gpu: 'gpu-rtx5090',
       ssd: 'ssd-990pro-2tb',
       hdd: null,
       psu: 'psu-rm1000e',
