@@ -29,27 +29,15 @@ const MIME_TYPES = {
 const vm = require('vm');
 
 function parsePartsDatabase() {
-  const dataJsPath = path.join(ROOT_DIR, 'js', 'data.js');
-  if (!fs.existsSync(dataJsPath)) return {};
-  try {
-    const code = fs.readFileSync(dataJsPath, 'utf-8');
-    const stripped = code
-      .replace(/export\s+const\s+/g, 'const ')
-      .replace(/export\s+function\s+/g, 'function ')
-      + '\n;module.exports = { PARTS_DATABASE, CATEGORIES };';
-
-    const context = {
-      module: {},
-      exports: {},
-      createBuyLinks: () => ({})
-    };
-    vm.createContext(context);
-    vm.runInContext(stripped, context);
-    return context.module.exports.PARTS_DATABASE || {};
-  } catch (e) {
-    console.error('Error parsing data.js in dev_server:', e.message);
-    return {};
+  const hwJsonPath = path.join(ROOT_DIR, 'data', 'hardware.json');
+  if (fs.existsSync(hwJsonPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(hwJsonPath, 'utf-8'));
+    } catch (e) {
+      console.error('Error reading hardware.json in dev_server:', e.message);
+    }
   }
+  return {};
 }
 
 function parseJsonBody(req) {

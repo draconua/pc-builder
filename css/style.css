@@ -1099,12 +1099,14 @@ input, textarea, select, button {
   z-index: 100;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--duration-normal) var(--ease);
+  visibility: hidden;
+  transition: opacity var(--duration-normal) var(--ease), visibility var(--duration-normal) var(--ease);
 }
 
 .drawer-overlay.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
 }
 
 .drawer {
@@ -1379,13 +1381,15 @@ input, textarea, select, button {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--duration-normal) var(--ease);
+  visibility: hidden;
+  transition: opacity var(--duration-normal) var(--ease), visibility var(--duration-normal) var(--ease);
   padding: 1.5rem;
 }
 
 .modal-overlay.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
 }
 
 .modal, .modal-dialog {
@@ -1442,7 +1446,6 @@ input, textarea, select, button {
 .modal-close-btn,
 .drawer-close-btn,
 .retailer-modal-close-btn,
-.search-clear-btn,
 .pro-chat-close,
 .pro-chat-close-btn,
 .popover-close-btn,
@@ -1511,7 +1514,6 @@ input, textarea, select, button {
 .modal-close-btn:hover,
 .drawer-close-btn:hover,
 .retailer-modal-close-btn:hover,
-.search-clear-btn:hover,
 .pro-chat-close:hover,
 .pro-chat-close-btn:hover,
 .popover-close-btn:hover,
@@ -1537,7 +1539,6 @@ input, textarea, select, button {
 .modal-close-btn:active,
 .drawer-close-btn:active,
 .retailer-modal-close-btn:active,
-.search-clear-btn:active,
 .pro-chat-close:active,
 .pro-chat-close-btn:active,
 .popover-close-btn:active,
@@ -1561,7 +1562,6 @@ input, textarea, select, button {
 .modal-close-btn:focus-visible,
 .drawer-close-btn:focus-visible,
 .retailer-modal-close-btn:focus-visible,
-.search-clear-btn:focus-visible,
 .pro-chat-close:focus-visible,
 .pro-chat-close-btn:focus-visible,
 .popover-close-btn:focus-visible,
@@ -3746,6 +3746,36 @@ html, body {
   color: var(--text-secondary); /* Contrast fix */
   font-weight: 700;
   pointer-events: none;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 58px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+  z-index: 2;
+}
+
+.search-clear-btn:hover {
+  background: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.search-clear-btn.hidden {
+  display: none !important;
 }
 
 /* Dynamic Brand Chips in Drawer */

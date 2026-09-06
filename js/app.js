@@ -147,6 +147,52 @@ const elements = {
   comparisonContent: document.getElementById('comparison-content')
 };
 
+function initElements() {
+  elements.themeToggle = document.getElementById('theme-toggle');
+  elements.progressCircle = document.getElementById('progress-ring-circle');
+  elements.progressText = document.getElementById('progress-text');
+  elements.btnClear = document.getElementById('btn-clear');
+  elements.btnSave = document.getElementById('btn-save');
+  elements.btnCompare = document.getElementById('btn-compare');
+  elements.btnTimelapse = document.getElementById('btn-timelapse');
+  elements.btnExport = document.getElementById('btn-export');
+  elements.btnShare = document.getElementById('btn-share');
+  elements.totalPrice = document.getElementById('total-price');
+  elements.powerValue = document.getElementById('power-value');
+  elements.powerBar = document.getElementById('power-bar');
+  elements.powerLimitText = document.getElementById('power-limit-text');
+  elements.chassisStatus = document.getElementById('chassis-status');
+  elements.fpsResolution = document.getElementById('fps-resolution');
+  elements.fpsPlaceholder = document.getElementById('fps-placeholder');
+  elements.fpsGrid = document.getElementById('fps-grid');
+  elements.bottleneckPlaceholder = document.getElementById('bottleneck-placeholder');
+  elements.bottleneckResult = document.getElementById('bottleneck-result');
+  elements.bottleneckBar = document.getElementById('bottleneck-bar');
+  elements.bottleneckText = document.getElementById('bottleneck-text');
+  elements.compatibilityList = document.getElementById('compatibility-list');
+  elements.savedBuildsList = document.getElementById('saved-builds-list');
+  elements.drawerOverlay = document.getElementById('drawer-overlay');
+  elements.drawer = document.getElementById('drawer');
+  elements.drawerTitle = document.getElementById('drawer-title');
+  elements.drawerClose = document.getElementById('drawer-close');
+  elements.partsSearch = document.getElementById('parts-search');
+  elements.toggleCompat = document.getElementById('toggle-compat') || document.getElementById('filter-compat');
+  elements.sortSelect = document.getElementById('sort-select');
+  elements.partsList = document.getElementById('parts-list');
+  elements.exportModal = document.getElementById('export-modal');
+  elements.exportCloseBtn = document.getElementById('export-modal-close') || document.getElementById('modal-close-btn');
+  elements.exportTextarea = document.getElementById('export-text') || document.getElementById('export-textarea');
+  elements.btnCopySpec = document.getElementById('export-modal-copy') || document.getElementById('btn-copy-spec');
+  elements.btnPrint = document.getElementById('btn-print');
+  elements.saveModal = document.getElementById('save-modal');
+  elements.saveCloseBtn = document.getElementById('save-modal-close') || document.getElementById('save-close-btn');
+  elements.saveNameInput = document.getElementById('save-build-name') || document.getElementById('save-name-input');
+  elements.saveConfirmBtn = document.getElementById('save-modal-confirm') || document.getElementById('save-confirm-btn');
+  elements.comparisonModal = document.getElementById('comparison-modal');
+  elements.comparisonClose = document.getElementById('comparison-modal-close') || document.getElementById('comparison-close');
+  elements.comparisonContent = document.getElementById('comparison-content');
+}
+
 
   // Smooth Floating Popover for Auto-Builder (No intrusive modal)
   const btnAutoBuilder = document.getElementById('btn-auto-builder');
@@ -326,38 +372,40 @@ const elements = {
         body: JSON.stringify({ budgetPLN, targetRes, cpuBrand, gpuBrand })
       });
 
-      const res = await response.json();
+      if (response.ok) {
+        const res = await response.json();
 
-      if (res.ok && res.data && res.data.cpu) {
-        // Hydrate parts from PARTS_DATABASE
-        const aiParts = res.data;
-        const findP = (cat, id) => (PARTS_DATABASE[cat] || []).find(p => p.id === id);
+        if (res.ok && res.data && res.data.cpu) {
+          // Hydrate parts from PARTS_DATABASE
+          const aiParts = res.data;
+          const findP = (cat, id) => (PARTS_DATABASE[cat] || []).find(p => p.id === id);
 
-        const newBuild = {
-          cpu: findP('cpu', aiParts.cpu),
-          gpu: findP('gpu', aiParts.gpu),
-          motherboard: findP('motherboard', aiParts.motherboard),
-          ram: findP('ram', aiParts.ram),
-          cooler: findP('cooler', aiParts.cooler),
-          psu: findP('psu', aiParts.psu),
-          case: findP('case', aiParts.case),
-          ssd: findP('ssd', aiParts.ssd),
-          hdd: null,
-          monitor: null
-        };
+          const newBuild = {
+            cpu: findP('cpu', aiParts.cpu),
+            gpu: findP('gpu', aiParts.gpu),
+            motherboard: findP('motherboard', aiParts.motherboard),
+            ram: findP('ram', aiParts.ram),
+            cooler: findP('cooler', aiParts.cooler),
+            psu: findP('psu', aiParts.psu),
+            case: findP('case', aiParts.case),
+            ssd: findP('ssd', aiParts.ssd),
+            hdd: null,
+            monitor: null
+          };
 
-        // If AI picked valid core parts, apply it!
-        if (newBuild.cpu && newBuild.gpu) {
-          buildState = newBuild;
-          updateUI();
+          // If AI picked valid core parts, apply it!
+          if (newBuild.cpu && newBuild.gpu) {
+            buildState = newBuild;
+            updateUI();
 
-          showToast({
-            title: `🧠 Gemini AI: ${escapeHtml(aiParts.verdictTitle || 'Оптимальная связка')}`,
-            htmlMessage: `<span style="color: #60a5fa; font-size: 0.8rem;">⚡ Собрано нейросетью под ${budgetPLN} zł:</span><br>${escapeHtml(aiParts.reasoning || '')}`,
-            type: 'success',
-            duration: 8000
-          });
-          return;
+            showToast({
+              title: `🧠 Gemini AI: ${escapeHtml(aiParts.verdictTitle || 'Оптимальная связка')}`,
+              htmlMessage: `<span style="color: #60a5fa; font-size: 0.8rem;">⚡ Собрано нейросетью под ${budgetPLN} zł:</span><br>${escapeHtml(aiParts.reasoning || '')}`,
+              type: 'success',
+              duration: 8000
+            });
+            return;
+          }
         }
       }
     } catch (e) {
@@ -591,6 +639,7 @@ function renderDrawerQuickFilters(category) {
 }
 
 function init() {
+  initElements();
   initI18n();
   initTheme();
   initCurrency();
@@ -630,6 +679,97 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('pc-builder-theme', newTheme);
   elements.themeToggle.textContent = newTheme === 'dark' ? '☾' : '☀';
+}
+
+// =============================================================
+// INTERACTIVE 2D SCHEMATIC: BIDIRECTIONAL HIGHLIGHTS & TOOLBAR
+// =============================================================
+const SCHEMATIC_CATEGORY_COLORS = {
+  cpu: '#3b82f6',
+  motherboard: '#6366f1',
+  cooler: '#06b6d4',
+  ram: '#8b5cf6',
+  gpu: '#10b981',
+  ssd: '#f59e0b',
+  hdd: '#d97706',
+  psu: '#f97316',
+  case: '#64748b'
+};
+
+const SCHEMATIC_CATEGORY_ICONS = {
+  cpu: '⚙️',
+  motherboard: '🎛️',
+  cooler: '❄️',
+  ram: '⚡',
+  gpu: '🎮',
+  ssd: '💾',
+  hdd: '💿',
+  psu: '🔌',
+  case: '🖥️'
+};
+
+function showSchematicHud(category) {
+  const hud = document.getElementById('schematic-hud');
+  if (!hud) return;
+
+  const iconEl = document.getElementById('hud-cat-icon');
+  const nameEl = document.getElementById('hud-cat-name');
+  const statusBadge = document.getElementById('hud-status-badge');
+  const titleEl = document.getElementById('hud-title');
+  const specsEl = document.getElementById('hud-specs');
+  const priceEl = document.getElementById('hud-price');
+  const hintEl = document.getElementById('hud-hint');
+
+  hud.dataset.category = category;
+  const catName = t(`cat.${category}`) || category.toUpperCase();
+  const color = SCHEMATIC_CATEGORY_COLORS[category] || '#3b82f6';
+  const icon = SCHEMATIC_CATEGORY_ICONS[category] || '⚡';
+
+  if (iconEl) iconEl.textContent = icon;
+  if (nameEl) {
+    nameEl.textContent = catName;
+    nameEl.style.color = color;
+  }
+
+  const item = buildState[category];
+  if (item) {
+    if (statusBadge) {
+      statusBadge.textContent = t('schematic.installed') || 'Установлено';
+      statusBadge.className = 'hud-status-badge installed';
+    }
+    if (titleEl) titleEl.textContent = item.name;
+    if (specsEl) {
+      const specsArr = [
+        item.socket ? `Сокет: ${item.socket}` : null,
+        item.chipset ? `Чипсет: ${item.chipset}` : null,
+        item.vram ? `VRAM: ${item.vram}` : null,
+        item.capacity ? `Объем: ${item.capacity}` : null,
+        item.wattage ? `Мощность: ${item.wattage}W` : null,
+        item.tdp ? `TDP: ${item.tdp}W` : null,
+        item.type ? `Тип: ${item.type}` : null,
+        item.formFactor ? `Форм-фактор: ${item.formFactor}` : null
+      ].filter(Boolean);
+      specsEl.textContent = specsArr.slice(0, 3).join(' • ') || (item.brand || '');
+    }
+    if (priceEl) priceEl.textContent = formatPrice(item.price);
+    if (hintEl) hintEl.textContent = 'Кликните, чтобы заменить ↗';
+  } else {
+    if (statusBadge) {
+      statusBadge.textContent = 'Слот свободен';
+      statusBadge.className = 'hud-status-badge';
+    }
+    if (titleEl) titleEl.textContent = `Слот: ${catName}`;
+    if (specsEl) specsEl.textContent = t('schematic.emptySlot') || 'Слот свободен — нажмите для выбора';
+    if (priceEl) priceEl.textContent = '';
+    if (hintEl) hintEl.textContent = 'Выбрать в каталоге ↗';
+  }
+
+  hud.classList.add('visible');
+}
+
+function hideSchematicHud() {
+  const hud = document.getElementById('schematic-hud');
+  if (hud) hud.classList.remove('visible');
 }
 
 // Setup Event Listeners
@@ -709,7 +849,7 @@ function setupEventListeners() {
   }
 
   // Theme toggle
-  elements.themeToggle.addEventListener('click', toggleTheme);
+  if (elements.themeToggle) elements.themeToggle.addEventListener('click', toggleTheme);
 
   // Language selectors
   document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -745,17 +885,25 @@ function setupEventListeners() {
   });
 
   // Toolbar Actions
-  elements.btnClear.addEventListener('click', clearBuild);
-  elements.btnSave.addEventListener('click', () => openModal(elements.saveModal));
-  elements.btnCompare.addEventListener('click', openComparisonModal);
-  elements.btnTimelapse.addEventListener('click', runTimelapseAnimation);
-  elements.btnExport.addEventListener('click', openExportModal);
-  elements.btnShare.addEventListener('click', shareBuild);
+  if (elements.btnClear) elements.btnClear.addEventListener('click', clearBuild);
+  if (elements.btnSave) elements.btnSave.addEventListener('click', () => openModal(elements.saveModal));
+  if (elements.btnCompare) elements.btnCompare.addEventListener('click', openComparisonModal);
+  if (elements.btnTimelapse) elements.btnTimelapse.addEventListener('click', runTimelapseAnimation);
+  if (elements.btnExport) elements.btnExport.addEventListener('click', openExportModal);
+  if (elements.btnShare) elements.btnShare.addEventListener('click', shareBuild);
 
-  // Checklist slot buttons (ONLY .select-btn opens drawer, not whole card)
+  // Checklist slot buttons and cards (card and select-btn open drawer)
   document.querySelectorAll('.slot-card').forEach(card => {
     const category = card.dataset.category;
+    if (!category) return;
     
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.remove-btn, .slot-buy-link, .slot-info-hint, .analogs-box, .analog-pill')) {
+        return;
+      }
+      openDrawer(category);
+    });
+
     const selectBtn = card.querySelector('.select-btn');
     if (selectBtn) {
       selectBtn.addEventListener('click', (e) => {
@@ -772,97 +920,6 @@ function setupEventListeners() {
       });
     }
   });
-
-  // =============================================================
-  // INTERACTIVE 2D SCHEMATIC: BIDIRECTIONAL HIGHLIGHTS & TOOLBAR
-  // =============================================================
-  const SCHEMATIC_CATEGORY_COLORS = {
-    cpu: '#3b82f6',
-    motherboard: '#6366f1',
-    cooler: '#06b6d4',
-    ram: '#8b5cf6',
-    gpu: '#10b981',
-    ssd: '#f59e0b',
-    hdd: '#d97706',
-    psu: '#f97316',
-    case: '#64748b'
-  };
-
-  const SCHEMATIC_CATEGORY_ICONS = {
-    cpu: '⚙️',
-    motherboard: '🎛️',
-    cooler: '❄️',
-    ram: '⚡',
-    gpu: '🎮',
-    ssd: '💾',
-    hdd: '💿',
-    psu: '🔌',
-    case: '🖥️'
-  };
-
-  function showSchematicHud(category) {
-    const hud = document.getElementById('schematic-hud');
-    if (!hud) return;
-
-    const iconEl = document.getElementById('hud-cat-icon');
-    const nameEl = document.getElementById('hud-cat-name');
-    const statusBadge = document.getElementById('hud-status-badge');
-    const titleEl = document.getElementById('hud-title');
-    const specsEl = document.getElementById('hud-specs');
-    const priceEl = document.getElementById('hud-price');
-    const hintEl = document.getElementById('hud-hint');
-
-    hud.dataset.category = category;
-    const catName = t(`cat.${category}`) || category.toUpperCase();
-    const color = SCHEMATIC_CATEGORY_COLORS[category] || '#3b82f6';
-    const icon = SCHEMATIC_CATEGORY_ICONS[category] || '⚡';
-
-    if (iconEl) iconEl.textContent = icon;
-    if (nameEl) {
-      nameEl.textContent = catName;
-      nameEl.style.color = color;
-    }
-
-    const item = buildState[category];
-    if (item) {
-      if (statusBadge) {
-        statusBadge.textContent = t('schematic.installed') || 'Установлено';
-        statusBadge.className = 'hud-status-badge installed';
-      }
-      if (titleEl) titleEl.textContent = item.name;
-      if (specsEl) {
-        const specsArr = [
-          item.socket ? `Сокет: ${item.socket}` : null,
-          item.chipset ? `Чипсет: ${item.chipset}` : null,
-          item.vram ? `VRAM: ${item.vram}` : null,
-          item.capacity ? `Объем: ${item.capacity}` : null,
-          item.wattage ? `Мощность: ${item.wattage}W` : null,
-          item.tdp ? `TDP: ${item.tdp}W` : null,
-          item.type ? `Тип: ${item.type}` : null,
-          item.formFactor ? `Форм-фактор: ${item.formFactor}` : null
-        ].filter(Boolean);
-        specsEl.textContent = specsArr.slice(0, 3).join(' • ') || (item.brand || '');
-      }
-      if (priceEl) priceEl.textContent = formatPrice(item.price);
-      if (hintEl) hintEl.textContent = 'Кликните, чтобы заменить ↗';
-    } else {
-      if (statusBadge) {
-        statusBadge.textContent = 'Слот свободен';
-        statusBadge.className = 'hud-status-badge';
-      }
-      if (titleEl) titleEl.textContent = `Слот: ${catName}`;
-      if (specsEl) specsEl.textContent = t('schematic.emptySlot') || 'Слот свободен — нажмите для выбора';
-      if (priceEl) priceEl.textContent = '';
-      if (hintEl) hintEl.textContent = 'Выбрать в каталоге ↗';
-    }
-
-    hud.classList.add('visible');
-  }
-
-  function hideSchematicHud() {
-    const hud = document.getElementById('schematic-hud');
-    if (hud) hud.classList.remove('visible');
-  }
 
   // 1. Slot Card Hover -> Highlight in Schematic & Ghost Slots
   document.querySelectorAll('.slot-card').forEach(card => {
@@ -1198,12 +1255,26 @@ function setupEventListeners() {
   // Drawer events
   if (elements.drawerClose) elements.drawerClose.addEventListener('click', closeDrawer);
   if (elements.drawerOverlay) elements.drawerOverlay.addEventListener('click', closeDrawer);
+  const searchClearBtn = document.getElementById('search-clear-btn');
   if (elements.partsSearch) {
     elements.partsSearch.addEventListener('input', (e) => {
       searchQuery = e.target.value;
+      if (searchClearBtn) {
+        searchClearBtn.classList.toggle('hidden', !searchQuery.trim());
+      }
       renderPartsList();
     });
   }
+  if (searchClearBtn) {
+    searchClearBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (elements.partsSearch) elements.partsSearch.value = '';
+      searchClearBtn.classList.add('hidden');
+      searchQuery = '';
+      renderPartsList();
+    });
+  }
+
   if (elements.toggleCompat) {
     elements.toggleCompat.addEventListener('change', (e) => {
       hideIncompatible = e.target.checked;
@@ -1219,7 +1290,13 @@ function setupEventListeners() {
 
   // Modal closes
   if (elements.exportCloseBtn) elements.exportCloseBtn.addEventListener('click', () => closeModal(elements.exportModal));
+  const exportOkBtn = document.getElementById('export-modal-ok');
+  if (exportOkBtn) exportOkBtn.addEventListener('click', () => closeModal(elements.exportModal));
+
   if (elements.saveCloseBtn) elements.saveCloseBtn.addEventListener('click', () => closeModal(elements.saveModal));
+  const saveCancelBtn = document.getElementById('save-modal-cancel');
+  if (saveCancelBtn) saveCancelBtn.addEventListener('click', () => closeModal(elements.saveModal));
+
   if (elements.comparisonClose) elements.comparisonClose.addEventListener('click', () => closeModal(elements.comparisonModal));
 
   // Save Modal Confirm
@@ -1281,7 +1358,6 @@ function setupEventListeners() {
       }
     });
   }
-}
 
   // Close Retailers Modal
   const retClose = document.getElementById('retailers-modal-close');
@@ -1328,6 +1404,7 @@ function setupEventListeners() {
       if (searchInput) searchInput.focus();
     }
   });
+}
 
 // Translations logic
 function updateTranslations() {
@@ -1485,6 +1562,8 @@ function openDrawer(category) {
   elements.drawerTitle.textContent = `${t('slot.select')}: ${t(`cat.${category}`)}`;
   elements.partsSearch.value = '';
   searchQuery = '';
+  const clearBtn = document.getElementById('search-clear-btn');
+  if (clearBtn) clearBtn.classList.add('hidden');
   
   elements.drawerOverlay.classList.add('active');
   elements.drawer.classList.add('active');
@@ -1579,8 +1658,12 @@ function renderPartsList() {
       const btnShowAll = document.getElementById('btn-show-all-parts');
       if (btnShowAll) {
         btnShowAll.addEventListener('click', () => {
-          elements.toggleCompat.checked = false;
+          if (elements.toggleCompat) elements.toggleCompat.checked = false;
           hideIncompatible = false;
+          const btnToggleCompat = document.getElementById('btn-toggle-compat');
+          if (btnToggleCompat) btnToggleCompat.classList.remove('active');
+          const compatLabel = document.getElementById('compat-toggle-label');
+          if (compatLabel) compatLabel.textContent = 'Все детали: ВКЛ';
           renderPartsList();
         });
       }
@@ -1648,9 +1731,17 @@ function renderPartsPage() {
           }
           <button type="button" class="part-store-btn" data-part-id="${part.id}" title="Сравнить цены в 8 магазинах">🏪 Цены ↗</button>
         </div>
-        <button class="select-part-btn">${isSelected ? t('slot.selected') : t('slot.select')}</button>
+        <button type="button" class="select-part-btn">${isSelected ? t('slot.selected') : t('slot.select')}</button>
       </div>
     `;
+
+    const selectBtn = card.querySelector('.select-part-btn');
+    if (selectBtn) {
+      selectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectPart(activeCategory, part);
+      });
+    }
 
     const storeBtn = card.querySelector('.part-store-btn');
     if (storeBtn) {
@@ -1669,11 +1760,13 @@ function renderPartsPage() {
 
   if (end < filtered.length) {
     const loadMoreBtn = document.createElement('button');
-    loadMoreBtn.className = 'btn btn-secondary';
+    loadMoreBtn.type = 'button';
+    loadMoreBtn.className = 'btn btn-secondary load-more-btn';
     loadMoreBtn.style.margin = '20px auto';
     loadMoreBtn.style.display = 'block';
     loadMoreBtn.textContent = 'Показать еще (' + (filtered.length - end) + ')';
-    loadMoreBtn.addEventListener('click', () => {
+    loadMoreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       loadMoreBtn.remove();
       window.drawerCurrentPage++;
       renderPartsPage();
@@ -2933,7 +3026,7 @@ function loadSavedBuild(b) {
   CATEGORIES.forEach(cat => {
     const partId = b.parts[cat];
     if (partId) {
-      buildState[cat] = PARTS_DATABASE[cat].find(p => p.id === partId) || null;
+      buildState[cat] = (PARTS_DATABASE[cat] || []).find(p => p.id === partId) || null;
     } else {
       buildState[cat] = null;
     }
@@ -2943,14 +3036,18 @@ function loadSavedBuild(b) {
 }
 
 function confirmSaveBuild() {
-  const name = elements.saveNameInput.value.trim();
+  const name = elements.saveNameInput ? elements.saveNameInput.value.trim() : '';
   if (!name) {
-    alert('Please enter a build name!');
+    showToast({
+      title: 'Сохранение сборки',
+      message: 'Пожалуйста, введите название конфигурации',
+      type: 'warning'
+    });
     return;
   }
   saveBuild(name, buildState);
   closeModal(elements.saveModal);
-  elements.saveNameInput.value = '';
+  if (elements.saveNameInput) elements.saveNameInput.value = '';
   renderSavedBuildsList();
 }
 
@@ -2958,7 +3055,12 @@ function confirmSaveBuild() {
 function openComparisonModal() {
   const builds = loadBuilds();
   if (builds.length === 0) {
-    alert(t('dash.saved.empty'));
+    if (elements.comparisonModal) closeModal(elements.comparisonModal);
+    showToast({
+      title: 'Сравнение сборок',
+      message: t('dash.saved.empty') || 'Сначала сохраните хотя бы одну сборку для сравнения',
+      type: 'warning'
+    });
     return;
   }
 
@@ -3055,14 +3157,11 @@ function openComparisonModal() {
 
 // Modal open/close utilities
 function openModal(modal) {
-  modal.classList.add('active');
+  if (modal) modal.classList.add('active');
 }
 
 function closeModal(modal) {
-  modal.classList.remove('active');
-
-
-
+  if (modal) modal.classList.remove('active');
 }
 
 // Boot

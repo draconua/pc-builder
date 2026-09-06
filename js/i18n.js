@@ -148,6 +148,7 @@ const translations = {
     'action.share': 'Поделиться',
     'action.export': 'Экспорт',
     'action.save': 'Сохранить',
+    'misc.of': 'из',
     'action.compare': 'Сравнить',
     'action.timelapse': 'Анимация',
     'action.copy': 'Копировать',
@@ -383,6 +384,7 @@ const translations = {
     'action.share': 'Share',
     'action.export': 'Export',
     'action.save': 'Save',
+    'misc.of': 'of',
     'action.compare': 'Compare',
     'action.timelapse': 'Timelapse',
     'action.copy': 'Copy',
@@ -618,6 +620,7 @@ const translations = {
     'action.share': 'Udostępnij',
     'action.export': 'Eksportuj',
     'action.save': 'Zapisz',
+    'misc.of': 'z',
     'action.compare': 'Porównaj',
     'action.timelapse': 'Animacja',
     'action.copy': 'Kopiuj',
@@ -853,6 +856,7 @@ const translations = {
     'action.share': 'Поділитися',
     'action.export': 'Експорт',
     'action.save': 'Зберегти',
+    'misc.of': 'з',
     'action.compare': 'Порівняти',
     'action.timelapse': 'Анімація',
     'action.copy': 'Копіювати',
@@ -994,7 +998,8 @@ const HARD_FALLBACKS = {
   'schematic.clearance.aio': { ru: 'СЖО', en: 'AIO', pl: 'AIO', ua: 'СРО' },
   'schematic.clearance.max_gpu': { ru: 'Макс GPU', en: 'Max GPU', pl: 'Maks GPU', ua: 'Макс GPU' },
   'schematic.mobile_show': { ru: 'Показать интерактивную схему сборки', en: 'Show interactive PC schematic', pl: 'Pokaż interaktywny schemat PC', ua: 'Показати інтерактивну схему збірки' },
-  'schematic.mobile_hide': { ru: 'Скрыть интерактивную схему сборки', en: 'Hide interactive PC schematic', pl: 'Ukryj interaktywny schemat PC', ua: 'Приховати інтерактивну схему збірки' }
+  'schematic.mobile_hide': { ru: 'Скрыть интерактивную схему сборки', en: 'Hide interactive PC schematic', pl: 'Ukryj interaktywny schemat PC', ua: 'Приховати інтерактивну схему збірки' },
+  'misc.of': { ru: 'из', en: 'of', pl: 'z', ua: 'з' }
 };
 
 export function t(key) {
@@ -1016,6 +1021,9 @@ export function t(key) {
 export function setLanguage(lang) {
   if (translations[lang]) {
     currentLang = lang;
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('lang', lang);
+    }
     try {
       localStorage.setItem('pc-builder-lang', lang);
     } catch (e) {}
@@ -1033,5 +1041,8 @@ export function initI18n() {
       currentLang = saved;
     }
   } catch (e) {}
+  if (typeof document !== 'undefined') {
+    document.documentElement.setAttribute('lang', currentLang);
+  }
   return currentLang;
 }

@@ -80,12 +80,54 @@ function createBuyLinks(name) {
 }
 
 export let PARTS_DATABASE = {};
-try {
-  const res = await fetch('data/hardware.json');
-  if(res.ok) PARTS_DATABASE = await res.json();
-} catch(e) {
-  console.error(e);
+
+async function loadDatabase() {
+  if (typeof window === 'undefined' && typeof process !== 'undefined') {
+    try {
+      const nodeFs = 'node:fs';
+      const nodePath = 'node:path';
+      const fs = await import(/* @vite-ignore */ nodeFs);
+      const path = await import(/* @vite-ignore */ nodePath);
+      const candidates = [
+        path.resolve(process.cwd(), 'data/hardware.json'),
+        path.resolve(process.cwd(), '../data/hardware.json')
+      ];
+      for (const p of candidates) {
+        if (fs.existsSync(p)) {
+          return JSON.parse(fs.readFileSync(p, 'utf8'));
+        }
+      }
+    } catch (e) {
+      console.error('[Database] Node load error:', e.message);
+    }
+  } else {
+    const urls = [];
+    try {
+      urls.push(new URL('../data/hardware.json', import.meta.url).href);
+    } catch (e) {}
+    urls.push('data/hardware.json', '/data/hardware.json');
+
+    for (const u of urls) {
+      try {
+        const res = await fetch(u);
+        if (res.ok) {
+          const json = await res.json();
+          if (json && Object.keys(json).length > 0) return json;
+        }
+      } catch (e) {}
+    }
+  }
+  return {};
 }
+
+PARTS_DATABASE = await loadDatabase();
+
+// Guarantee that every category array exists to prevent runtime errors
+CATEGORIES.forEach(cat => {
+  if (!Array.isArray(PARTS_DATABASE[cat])) {
+    PARTS_DATABASE[cat] = [];
+  }
+});
 
 export const PRESETS = {
   budget: {

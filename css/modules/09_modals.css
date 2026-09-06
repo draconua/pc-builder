@@ -15,13 +15,15 @@
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--duration-normal) var(--ease);
+  visibility: hidden;
+  transition: opacity var(--duration-normal) var(--ease), visibility var(--duration-normal) var(--ease);
   padding: 1.5rem;
 }
 
 .modal-overlay.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
 }
 
 .modal, .modal-dialog {
@@ -78,7 +80,6 @@
 .modal-close-btn,
 .drawer-close-btn,
 .retailer-modal-close-btn,
-.search-clear-btn,
 .pro-chat-close,
 .pro-chat-close-btn,
 .popover-close-btn,
@@ -147,7 +148,6 @@
 .modal-close-btn:hover,
 .drawer-close-btn:hover,
 .retailer-modal-close-btn:hover,
-.search-clear-btn:hover,
 .pro-chat-close:hover,
 .pro-chat-close-btn:hover,
 .popover-close-btn:hover,
@@ -173,7 +173,6 @@
 .modal-close-btn:active,
 .drawer-close-btn:active,
 .retailer-modal-close-btn:active,
-.search-clear-btn:active,
 .pro-chat-close:active,
 .pro-chat-close-btn:active,
 .popover-close-btn:active,
@@ -197,7 +196,6 @@
 .modal-close-btn:focus-visible,
 .drawer-close-btn:focus-visible,
 .retailer-modal-close-btn:focus-visible,
-.search-clear-btn:focus-visible,
 .pro-chat-close:focus-visible,
 .pro-chat-close-btn:focus-visible,
 .popover-close-btn:focus-visible,

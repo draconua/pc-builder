@@ -215,6 +215,20 @@ function parsePartsFromText(content) {
 
 async function loadPartsDatabase() {
   if (cachedDb) return cachedDb;
+  
+  const hwCandidates = [
+    path.join(ROOT_DIR, 'data', 'hardware.json'),
+    path.join(process.cwd(), 'data', 'hardware.json')
+  ];
+  for (const p of hwCandidates) {
+    if (fs.existsSync(p)) {
+      try {
+        cachedDb = JSON.parse(fs.readFileSync(p, 'utf-8'));
+        return cachedDb;
+      } catch (e) {}
+    }
+  }
+
   try {
     const url = require('url');
     const fileUrl = url.pathToFileURL(DATA_JS_PATH).href;
