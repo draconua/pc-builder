@@ -270,4 +270,78 @@ test.describe('Catalog and Button Interactivity Validation', () => {
       }
     }
   });
+
+  test('price sync modal displays accurate dynamic component counts and sync works cleanly', async ({ page }) => {
+    const fs = await import('fs');
+    const path = await import('path');
+    const dbPath = path.resolve('data/hardware.json');
+    const db = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+
+    const totalCount = Object.values(db).reduce((sum, arr) => sum + arr.length, 0);
+    const cpuCount = db.cpu.length;
+    const gpuCount = db.gpu.length;
+
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    // Open dev prices modal
+    await page.click('#dev-modal-btn');
+    await page.waitForTimeout(300);
+    await expect(page.locator('#dev-prices-modal')).toBeVisible();
+
+    // Verify option counts match database dynamically
+    const allOpt = page.locator('#dev-category-select option[value="all"]');
+    await expect(allOpt).toHaveText(new RegExp(`Вся база \\(${totalCount} шт.`));
+
+    const cpuOpt = page.locator('#dev-category-select option[value="cpu"]');
+    await expect(cpuOpt).toHaveText(new RegExp(`Процессоры CPU \\(${cpuCount} шт.`));
+
+    const gpuOpt = page.locator('#dev-category-select option[value="gpu"]');
+    await expect(gpuOpt).toHaveText(new RegExp(`Видеокарты GPU \\(${gpuCount} шт.`));
+
+    // Verify progress counter reflects selected category
+    const initialCount = await page.locator('#dev-progress-count').innerText();
+    expect(initialCount).toBe(`0 / ${totalCount}`);
+
+    // Verify initial idle state: progress bar is at 0% and updated count is 0
+    const initialBarWidth = await page.$eval('#dev-progress-bar-fill', el => el.style.width);
+    expect(initialBarWidth === '0%' || initialBarWidth === '0px' || initialBarWidth === '').toBeTruthy();
+    const initialUpdated = await page.locator('#dev-stat-updated').innerText();
+    expect(initialUpdated).toBe('0');
+
+    // Verify server cache count matches prices database
+    const pricesPath = path.resolve('data/prices_pl.json');
+    const pricesData = JSON.parse(fs.readFileSync(pricesPath, 'utf8'));
+    const pricesCount = Object.keys(pricesData.prices || {}).length;
+    await expect(page.locator('#dev-stat-cached')).toHaveText(String(pricesCount));
+
+    // Switch to CPU category
+    await page.selectOption('#dev-category-select', 'cpu');
+    await page.waitForTimeout(200);
+    const cpuSelectedCount = await page.locator('#dev-progress-count').innerText();
+    expect(cpuSelectedCount).toBe(`0 / ${cpuCount}`);
+    const cpuStatus = await page.locator('#dev-progress-status').innerText();
+    expect(cpuStatus).toContain(`${cpuCount} шт.`);
+
+    // Run sync on CPU category
+    await page.click('#btn-start-sync');
+    await page.waitForTimeout(1500);
+
+    // Wait for completion or active progress
+    await page.waitForFunction(() => {
+      const status = document.getElementById('dev-progress-status');
+      return status && (status.textContent.includes('завершена') || status.textContent.includes('Парсинг'));
+    }, { timeout: 15000 });
+
+    // Test apply prices button
+    await page.click('#btn-apply-prices');
+    await page.waitForTimeout(300);
+    await expect(page.locator('.app-toast')).toBeVisible();
+
+    // Close modal
+    await page.click('#dev-modal-close');
+    await page.waitForTimeout(200);
+    await expect(page.locator('#dev-prices-modal')).toBeHidden();
+  });
 });
+

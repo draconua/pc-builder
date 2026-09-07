@@ -94,13 +94,13 @@ module.exports = async function handler(req, res) {
     status: {
       isRunning: false,
       total: count,
-      current: count,
-      currentItem: 'База цен Morele & Ceneo синхронизирована (Cloud)',
+      current: 0,
+      currentItem: 'База цен Morele & Ceneo готова к синхронизации',
       category: 'all',
       source: 'hybrid',
       startTime: null,
       endTime: lastUpdated,
-      updatedCount: count,
+      updatedCount: 0,
       notFoundCount: 0,
       rejectedCount: 0,
       logs: [

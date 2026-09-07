@@ -31,8 +31,8 @@ export function checkCompatibility(build) {
     // VRM Check (Approximation based on chipset if not strictly defined)
     const mbChipset = motherboard.name.toLowerCase();
     let maxVrmTdp = 300; // default for high-end
-    if (mbChipset.includes('h610') || mbChipset.includes('a520') || mbChipset.includes('a620')) maxVrmTdp = 120;
-    else if (mbChipset.includes('b660') || mbChipset.includes('b760') || mbChipset.includes('b550') || mbChipset.includes('b650m-k')) maxVrmTdp = 180;
+    if (mbChipset.includes('h610') || mbChipset.includes('h510') || mbChipset.includes('a520') || mbChipset.includes('a620')) maxVrmTdp = 120;
+    else if (mbChipset.includes('b660') || mbChipset.includes('b760') || mbChipset.includes('b550') || mbChipset.includes('b650m-k') || mbChipset.includes('b450') || mbChipset.includes('b560') || mbChipset.includes('b860') || mbChipset.includes('b850')) maxVrmTdp = 180;
     
     const actualCpuTdp = cpu.maxTdp || cpu.tdp || 65;
     if (actualCpuTdp > maxVrmTdp) {
@@ -253,18 +253,18 @@ export function checkCompatibility(build) {
        const isGen5Ssd = ssd.interface.includes('Gen5');
        const isGen4Ssd = ssd.interface.includes('Gen4');
        const mbName = motherboard.name.toLowerCase();
-       const mbIsGen5 = mbName.includes('z790') || mbName.includes('x670') || mbName.includes('b650e') || mbName.includes('x870');
-       const mbIsGen4 = mbName.includes('b550') || mbName.includes('b660') || mbName.includes('b760') || mbName.includes('z690') || mbIsGen5;
+       const mbIsGen5 = mbName.includes('z790') || mbName.includes('x670') || mbName.includes('b650e') || mbName.includes('x870') || mbName.includes('z890') || mbName.includes('b850');
+       const mbIsGen4 = mbName.includes('b550') || mbName.includes('b660') || mbName.includes('b760') || mbName.includes('z690') || mbName.includes('b560') || mbName.includes('z590') || mbName.includes('b860') || mbIsGen5;
        
        if (isGen5Ssd && !mbIsGen5) {
            status.push({
                type: 'warning',
                message: `PCIe Bottleneck: SSD — Gen5, но материнская плата может поддерживать только Gen4. Он будет работать, но на урезанной скорости.`
            });
-       } else if (isGen4Ssd && !mbIsGen4 && (mbName.includes('a520') || mbName.includes('h610'))) {
+       } else if (isGen4Ssd && !mbIsGen4 && (mbName.includes('a520') || mbName.includes('h610') || mbName.includes('h510') || mbName.includes('b450') || mbName.includes('a320') || mbName.includes('z390'))) {
            status.push({
                type: 'warning',
-               message: `PCIe Bottleneck: SSD — Gen4, но бюджетная плата поддерживает только Gen3. Скорость будет урезана вдвое.`
+               message: `PCIe Bottleneck: SSD — Gen4, но плата поддерживает только Gen3. Скорость будет урезана вдвое.`
            });
        }
     }

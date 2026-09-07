@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-04T02:19:21.008Z",
+  "lastUpdated": "2026-09-07T00:13:49.890123Z",
   "prices": {
     "cpu-r5-7600": {
       "pricePLN": 718,
@@ -904,12 +904,6 @@
       "updatedAt": "2026-09-03T21:22:29.999Z",
       "category": "cpu"
     },
-    "test": {
-      "pricePLN": 641,
-      "source": "Ceneo",
-      "url": "https://www.ceneo.pl/140306751",
-      "updatedAt": "2026-09-04T01:46:36.860Z"
-    },
     "cpu-u5-235": {
       "pricePLN": 1009,
       "source": "Morele",
@@ -1763,6 +1757,1063 @@
       "url": "https://www.morele.net/wyszukiwarka/?q=BenQ%20PD3220U",
       "category": "monitor",
       "updatedAt": "2026-09-04T02:19:21.008Z"
+    },
+    "cpu-i3-10100f": {
+      "pricePLN": 263,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i3-10100F",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i5-10400f": {
+      "pricePLN": 385,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-10400F",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i7-10700k": {
+      "pricePLN": 709,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i7-10700K",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i9-10900k": {
+      "pricePLN": 932,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i9-10900K",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i5-11400f": {
+      "pricePLN": 446,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-11400F",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i7-11700k": {
+      "pricePLN": 790,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i7-11700K",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i5-12600k": {
+      "pricePLN": 709,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i5-12600K",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i7-12700f": {
+      "pricePLN": 871,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i7-12700F",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i7-12700k": {
+      "pricePLN": 972,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i7-12700K",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-i9-12900k": {
+      "pricePLN": 1256,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i9-12900K",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r5-3600x": {
+      "pricePLN": 466,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%203600X",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r7-3700x": {
+      "pricePLN": 587,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%203700X",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r9-3900x": {
+      "pricePLN": 850,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%209%203900X",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r5-5600g": {
+      "pricePLN": 486,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%205600G",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r7-5700g": {
+      "pricePLN": 668,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%205700G",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r7-5800x": {
+      "pricePLN": 709,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%205800X",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-u9-285": {
+      "pricePLN": 2187,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%209%20285",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-u7-265": {
+      "pricePLN": 1519,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%207%20265",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-u7-265f": {
+      "pricePLN": 1438,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%207%20265F",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-u5-245": {
+      "pricePLN": 1114,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%205%20245",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-u5-225": {
+      "pricePLN": 806,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20Ultra%205%20225",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r5-9600": {
+      "pricePLN": 932,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%209600",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r7-9700": {
+      "pricePLN": 1256,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%209700",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r5-8600g": {
+      "pricePLN": 729,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%208600G",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "cpu-r7-8700g": {
+      "pricePLN": 1094,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%207%208700G",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cpu"
+    },
+    "mb-h510m-a-pro": {
+      "pricePLN": 275,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20H510M-A%20PRO",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b560m-ds3h": {
+      "pricePLN": 360,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B560M%20DS3H%20V2",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b560-tomahawk": {
+      "pricePLN": 563,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20B560%20TOMAHAWK%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-z590-p": {
+      "pricePLN": 603,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20Prime%20Z590-P",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b560m-plus-wifi": {
+      "pricePLN": 482,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20B560M-PLUS%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b450-tomahawk-max2": {
+      "pricePLN": 373,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20B450%20TOMAHAWK%20MAX%20II",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b450m-ds3h": {
+      "pricePLN": 263,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B450M%20DS3H%20V2",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b450-plus2": {
+      "pricePLN": 385,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20GAMING%20B450-PLUS%20II",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b450m-pro4": {
+      "pricePLN": 279,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASRock%20B450M%20Pro4%20R2.0",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b550-plus": {
+      "pricePLN": 547,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20B550-PLUS",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b550m-a-wifi2": {
+      "pricePLN": 441,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20Prime%20B550M-A%20WIFI%20II",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b550-gaming-plus": {
+      "pricePLN": 506,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MPG%20B550%20GAMING%20PLUS",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b660m-a-d4": {
+      "pricePLN": 466,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20PRO%20B660M-A%20DDR4",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b660-gaming-x-d4": {
+      "pricePLN": 522,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20B660%20GAMING%20X%20DDR4",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b760-plus-wifi-d4": {
+      "pricePLN": 628,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20B760-PLUS%20WIFI%20D4",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-z690-tomahawk-d4": {
+      "pricePLN": 749,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20Z690%20TOMAHAWK%20WIFI%20DDR4",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-z890-a-wifi": {
+      "pricePLN": 968,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20PRO%20Z890-A%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-z890-tuf-wifi": {
+      "pricePLN": 1170,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20Z890-PLUS%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-z890-eagle-ax": {
+      "pricePLN": 887,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20Z890%20EAGLE%20AX",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b860-tomahawk-wifi": {
+      "pricePLN": 725,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20B860%20TOMAHAWK%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b860-tuf-wifi": {
+      "pricePLN": 765,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20B860-PLUS%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-x870e-carbon-wifi": {
+      "pricePLN": 1818,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MPG%20X870E%20CARBON%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-x870-pro-rs": {
+      "pricePLN": 846,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASRock%20X870%20Pro%20RS",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-x870-tuf-wifi": {
+      "pricePLN": 1211,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20X870-PLUS%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b850-tuf-wifi": {
+      "pricePLN": 806,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20B850-PLUS%20WIFI",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "mb-b850-pro-rs": {
+      "pricePLN": 644,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASRock%20B850%20Pro%20RS%20WiFi",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "motherboard"
+    },
+    "clr-ag400": {
+      "pricePLN": 113,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20AG400",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-se224xts": {
+      "pricePLN": 101,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ID-Cooling%20SE-224-XTS",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-ax120r-se": {
+      "pricePLN": 89,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Thermalright%20Assassin%20X%20120%20Refined%20SE",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-ba120-evo": {
+      "pricePLN": 130,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Thermalright%20Burst%20Assassin%20120%20EVO",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-fc140": {
+      "pricePLN": 198,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Thermalright%20Frost%20Commander%20140",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-purerock2": {
+      "pricePLN": 158,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet%21%20Pure%20Rock%202",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-freezer36": {
+      "pricePLN": 134,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Arctic%20Freezer%2036",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-ag620": {
+      "pricePLN": 223,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20AG620%20ARGB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-galahad2-360": {
+      "pricePLN": 603,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Lian%20Li%20Galahad%20II%20Trinity%20360",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-galahad2-lcd-360": {
+      "pricePLN": 1008,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Lian%20Li%20Galahad%20II%20LCD%20360",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-freezer3-280": {
+      "pricePLN": 385,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Arctic%20Liquid%20Freezer%20III%20280",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "clr-freezer3-420": {
+      "pricePLN": 506,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Arctic%20Liquid%20Freezer%20III%20420",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "cooler"
+    },
+    "ram-tfv-16g-3200": {
+      "pricePLN": 138,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20T-Force%20Vulcan%20Z%2016GB%20%282x8GB%29%203200MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-tfv-32g-3200": {
+      "pricePLN": 235,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20T-Force%20Vulcan%20Z%2032GB%20%282x16GB%29%203200MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-tfd-16g-3600": {
+      "pricePLN": 182,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20T-Force%20Delta%20RGB%2016GB%20%282x8GB%29%203600MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-tfd-32g-3600": {
+      "pricePLN": 300,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20T-Force%20Delta%20RGB%2032GB%20%282x16GB%29%203600MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-pvs-16g-3600": {
+      "pricePLN": 170,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Patriot%20Viper%20Steel%2016GB%20%282x8GB%29%203600MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-pvs-32g-3600": {
+      "pricePLN": 275,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Patriot%20Viper%20Steel%2032GB%20%282x16GB%29%203600MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-gsa-16g-3200": {
+      "pricePLN": 130,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=G.Skill%20Aegis%2016GB%20%282x8GB%29%203200MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-tfd5-32g-7200": {
+      "pricePLN": 587,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20T-Force%20Delta%20RGB%2032GB%20%282x16GB%29%207200MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-tz5r-32g-7200": {
+      "pricePLN": 644,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=G.Skill%20Trident%20Z5%20RGB%2032GB%20%282x16GB%29%207200MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-tz5roy-32g-8000": {
+      "pricePLN": 887,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=G.Skill%20Trident%20Z5%20Royal%2032GB%20%282x16GB%29%208000MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-cors-dt-32g-7000": {
+      "pricePLN": 725,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Corsair%20Dominator%20Titanium%2032GB%20%282x16GB%29%207000MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-pvv-32g-7000": {
+      "pricePLN": 547,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Patriot%20Viper%20Venom%2032GB%20%282x16GB%29%207000MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "ram-kfr-32g-7200": {
+      "pricePLN": 668,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Kingston%20FURY%20Renegade%2032GB%20%282x16GB%29%207200MHz",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ram"
+    },
+    "gpu-rx580-8g": {
+      "pricePLN": 344,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%20580%208GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-gtx1650": {
+      "pricePLN": 446,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20GTX%201650%204GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-gtx1660s": {
+      "pricePLN": 587,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20GTX%201660%20SUPER%206GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-gtx1660ti": {
+      "pricePLN": 628,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20GTX%201660%20Ti%206GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx2060-6g": {
+      "pricePLN": 668,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20RTX%202060%206GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx2060s": {
+      "pricePLN": 790,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20RTX%202060%20SUPER%208GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx2070s": {
+      "pricePLN": 952,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20RTX%202070%20SUPER%208GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx2080s": {
+      "pricePLN": 1114,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20RTX%202080%20SUPER%208GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx2080ti": {
+      "pricePLN": 1336,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=NVIDIA%20GeForce%20RTX%202080%20Ti%2011GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rx5600xt": {
+      "pricePLN": 567,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%205600%20XT%206GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rx6700xt": {
+      "pricePLN": 1211,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%206700%20XT%2012GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rx6800xt": {
+      "pricePLN": 1701,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%206800%20XT%2016GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rx8800xt": {
+      "pricePLN": 2223,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%208800%20XT%2016GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rx8700xt": {
+      "pricePLN": 1818,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%208700%20XT%2016GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rx8600xt": {
+      "pricePLN": 1413,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%208600%20XT%2012GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rx8600": {
+      "pricePLN": 1130,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Radeon%20RX%208600%208GB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx5070-tuf": {
+      "pricePLN": 2750,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20TUF%20Gaming%20GeForce%20RTX%205070%2012GB%20OC",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx5080-gaming-x": {
+      "pricePLN": 4451,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20GeForce%20RTX%205080%2016GB%20Gaming%20Trio",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "gpu-rtx5090-strix": {
+      "pricePLN": 8906,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20ROG%20Strix%20GeForce%20RTX%205090%2032GB%20OC",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "gpu"
+    },
+    "ssd-t705-1tb": {
+      "pricePLN": 709,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Crucial%20T705%201TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-t705-2tb": {
+      "pricePLN": 1170,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Crucial%20T705%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-mp700pro-2tb": {
+      "pricePLN": 1211,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Corsair%20MP700%20PRO%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-cardea-z540-2tb": {
+      "pricePLN": 1049,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20T-Force%20Cardea%20Z540%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-spatium-m570pro-2tb": {
+      "pricePLN": 1130,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20SPATIUM%20M570%20PRO%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-nm790-1tb": {
+      "pricePLN": 320,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Lexar%20NM790%201TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-nm790-2tb": {
+      "pricePLN": 563,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Lexar%20NM790%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-nm790-4tb": {
+      "pricePLN": 1089,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Lexar%20NM790%204TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-mp44l-1tb": {
+      "pricePLN": 239,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20MP44L%201TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-mp44l-2tb": {
+      "pricePLN": 441,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=TeamGroup%20MP44L%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-980pro-1tb": {
+      "pricePLN": 385,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Samsung%20980%20Pro%201TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-980pro-2tb": {
+      "pricePLN": 628,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Samsung%20980%20Pro%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "ssd-p5plus-1tb": {
+      "pricePLN": 344,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Crucial%20P5%20Plus%201TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "ssd"
+    },
+    "hdd-p300-1tb": {
+      "pricePLN": 154,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Toshiba%20P300%201TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "hdd"
+    },
+    "hdd-p300-2tb": {
+      "pricePLN": 223,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Toshiba%20P300%202TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "hdd"
+    },
+    "hdd-p300-3tb": {
+      "pricePLN": 292,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Toshiba%20P300%203TB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "hdd"
+    },
+    "hdd-skyhawk-4tb": {
+      "pricePLN": 360,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Seagate%20SkyHawk%204TB%20Surveillance",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "hdd"
+    },
+    "hdd-wdpurple-4tb": {
+      "pricePLN": 373,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=WD%20Purple%204TB%20Surveillance",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "hdd"
+    },
+    "hdd-n300-4tb": {
+      "pricePLN": 401,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Toshiba%20N300%204TB%20NAS",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "hdd"
+    },
+    "psu-pk550d": {
+      "pricePLN": 186,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20PK550D",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-pk650d": {
+      "pricePLN": 219,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20PK650D",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-a550bn": {
+      "pricePLN": 198,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20A550BN",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-a650bn": {
+      "pricePLN": 235,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20A650BN",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-sp10-550": {
+      "pricePLN": 223,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet%21%20System%20Power%2010%20550W",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-sp10-650": {
+      "pricePLN": 263,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet%21%20System%20Power%2010%20650W",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-b12-bc650": {
+      "pricePLN": 279,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Seasonic%20B12%20BC-650",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-a850gl": {
+      "pricePLN": 482,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20A850GL%20PCIE5",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-pp12m-750": {
+      "pricePLN": 466,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet%21%20Pure%20Power%2012%20M%20750W",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-pp12m-1000": {
+      "pricePLN": 668,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=be%20quiet%21%20Pure%20Power%2012%20M%201000W",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-rm850x-shift": {
+      "pricePLN": 644,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Corsair%20RM850x%20Shift",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-rm1000x-shift": {
+      "pricePLN": 806,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Corsair%20RM1000x%20Shift",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-focus-gx850-atx3": {
+      "pricePLN": 603,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Seasonic%20Focus%20GX-850%20ATX%203.0",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "psu-superflower-vii-850": {
+      "pricePLN": 587,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Super%20Flower%20Leadex%20VII%20Gold%20850W",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "psu"
+    },
+    "case-matrexx40": {
+      "pricePLN": 182,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20Matrexx%2040%203FS",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-cc360": {
+      "pricePLN": 198,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Deepcool%20CC360%20ARGB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-montech-x3": {
+      "pricePLN": 239,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Montech%20X3%20Mesh",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-montech-air100": {
+      "pricePLN": 251,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Montech%20AIR%20100%20ARGB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-zalman-s2tg": {
+      "pricePLN": 170,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Zalman%20S2%20TG",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-g360a": {
+      "pricePLN": 344,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Phanteks%20Eclipse%20G360A",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-nv5": {
+      "pricePLN": 401,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Phanteks%20NV5",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-lancool216": {
+      "pricePLN": 401,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Lian%20Li%20LANCOOL%20216",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "case-duoface-pro": {
+      "pricePLN": 360,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Cougar%20Duoface%20Pro%20RGB",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "case"
+    },
+    "mon-vp249qgr": {
+      "pricePLN": 466,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20VP249QGR%2024%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-g244fe2": {
+      "pricePLN": 522,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20G244F%20E2%2024%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-g2724d": {
+      "pricePLN": 887,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Dell%20G2724D%2027%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-27gr75q": {
+      "pricePLN": 927,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=LG%20UltraGear%2027GR75Q-B%2027%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-m27q": {
+      "pricePLN": 1008,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20M27Q%2027%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-g50a-27": {
+      "pricePLN": 968,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Samsung%20Odyssey%20G5%20G50A%2027%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-27gs95qe": {
+      "pricePLN": 3033,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=LG%20UltraGear%20OLED%2027GS95QE%2027%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-fo27q3": {
+      "pricePLN": 3236,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Gigabyte%20AORUS%20FO27Q3%2027%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "mon-mag274upf": {
+      "pricePLN": 1697,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=MSI%20MAG%20274UPF%2027%22",
+      "updatedAt": "2026-09-07T00:13:49.890123Z",
+      "category": "monitor"
+    },
+    "cpu-i7-8700k-1": {
+      "pricePLN": 405,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=Intel%20Core%20i7-8700K",
+      "updatedAt": "2026-09-07T00:13:55.548Z",
+      "category": "cpu"
+    },
+    "cpu-r5-3600-1": {
+      "pricePLN": 324,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=AMD%20Ryzen%205%203600",
+      "updatedAt": "2026-09-07T00:13:55.552Z",
+      "category": "cpu"
+    },
+    "mb-z390-p": {
+      "pricePLN": 344,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=ASUS%20Prime%20Z390-P",
+      "updatedAt": "2026-09-07T00:13:55.552Z",
+      "category": "motherboard"
+    },
+    "gpu-gtx1080ti-1": {
+      "pricePLN": 608,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=GTX%201080%20Ti",
+      "updatedAt": "2026-09-07T00:13:55.552Z",
+      "category": "gpu"
+    },
+    "gpu-rx5700xt-1": {
+      "pricePLN": 486,
+      "source": "Morele",
+      "url": "https://www.morele.net/wyszukiwarka/?q=RX%205700%20XT",
+      "updatedAt": "2026-09-07T00:13:55.552Z",
+      "category": "gpu"
     }
   }
 }

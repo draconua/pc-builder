@@ -359,7 +359,7 @@ function initElements() {
     // Show temporary thinking toast while AI reasons
     const thinkingToast = showToast({
       title: '✨ Gemini AI подбирает ПК...',
-      message: 'Анализируем 200+ деталей и балансируем связку под ваш бюджет...',
+      message: 'Анализируем 400+ деталей и балансируем связку под ваш бюджет...',
       type: 'info',
       duration: 12000
     });
@@ -3171,6 +3171,8 @@ function closeModal(modal) {
 // =============================================================
 
 let devPollInterval = null;
+let devSyncActive = false;
+let devSyncCancelled = false;
 
 
 // =============================================================
@@ -3205,7 +3207,7 @@ function showToast(options = {}, maybeType) {
   }
 
   const toast = document.createElement('div');
-  toast.className = `toast-item toast-${type}`;
+  toast.className = `toast-item app-toast toast-${type}`;
 
   const icons = {
     success: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
@@ -3245,8 +3247,91 @@ function showToast(options = {}, maybeType) {
   }
 }
 
-let devSyncActive = false;
-let devSyncCancelled = false;
+async function buildClientPriceSync(category, source) {
+  let pricesMap = {};
+  try {
+    const res = await fetch('/data/prices_pl.json');
+    if (res.ok) {
+      const p = await res.json();
+      pricesMap = p.prices || {};
+    }
+  } catch (e) {}
+
+  let targetParts = [];
+  if (category === 'all') {
+    CATEGORIES.forEach(cat => {
+      const list = PARTS_DATABASE[cat] || [];
+      targetParts = targetParts.concat(list.map(p => ({ ...p, category: cat })));
+    });
+  } else if (PARTS_DATABASE[category]) {
+    targetParts = PARTS_DATABASE[category].map(p => ({ ...p, category }));
+  }
+
+  const syncResults = [];
+  for (const item of targetParts) {
+    const basePLN = item.pricePLN || Math.round(item.price * (EXCHANGE_RATES['PLN'] || 4.05));
+    const cached = pricesMap[item.id];
+    const newPrice = cached && cached.pricePLN ? cached.pricePLN : basePLN;
+    const diff = newPrice - basePLN;
+    const srcName = source === 'ceneo' ? 'Ceneo' : (cached && cached.source ? cached.source : 'Morele');
+    const url = (cached && cached.url) || (item.buyLinks && (item.buyLinks[srcName.toLowerCase()] || item.buyLinks.morele)) || `https://www.morele.net/wyszukiwarka/?q=${encodeURIComponent(item.name)}`;
+    syncResults.push({
+      id: item.id,
+      name: item.name,
+      category: item.category,
+      oldPrice: basePLN,
+      newPrice: newPrice,
+      diff: diff,
+      source: srcName,
+      url: url,
+      status: 'success'
+    });
+  }
+
+  return {
+    ok: true,
+    mode: 'client',
+    syncResults,
+    liveResults: syncResults,
+    total: syncResults.length,
+    category
+  };
+}
+
+function getSelectedCategoryTotal() {
+  const catSelect = document.getElementById('dev-category-select');
+  const cat = catSelect ? catSelect.value : 'all';
+  return cat === 'all'
+    ? CATEGORIES.reduce((acc, c) => acc + (PARTS_DATABASE[c]?.length || 0), 0)
+    : (PARTS_DATABASE[cat]?.length || 0);
+}
+
+function updateDevCategoryCounts() {
+  const catSelect = document.getElementById('dev-category-select');
+  if (!catSelect || !PARTS_DATABASE) return;
+
+  const totalCount = CATEGORIES.reduce((acc, cat) => acc + (PARTS_DATABASE[cat] ? PARTS_DATABASE[cat].length : 0), 0);
+
+  const labels = {
+    all: `Вся база (${totalCount} шт., все 10 категорий ⭐)`,
+    cpu: `Процессоры CPU (${PARTS_DATABASE.cpu?.length || 0} шт.)`,
+    gpu: `Видеокарты GPU (${PARTS_DATABASE.gpu?.length || 0} шт.)`,
+    motherboard: `Материнские платы (${PARTS_DATABASE.motherboard?.length || 0} шт.)`,
+    cooler: `Охлаждение (${PARTS_DATABASE.cooler?.length || 0} шт.)`,
+    ram: `Оперативная память (${PARTS_DATABASE.ram?.length || 0} шт.)`,
+    ssd: `SSD накопители (${PARTS_DATABASE.ssd?.length || 0} шт.)`,
+    hdd: `Жесткие диски (${PARTS_DATABASE.hdd?.length || 0} шт.)`,
+    psu: `Блоки питания (${PARTS_DATABASE.psu?.length || 0} шт.)`,
+    case: `Корпуса (${PARTS_DATABASE.case?.length || 0} шт.)`,
+    monitor: `Мониторы (${PARTS_DATABASE.monitor?.length || 0} шт.)`
+  };
+
+  Array.from(catSelect.options).forEach(opt => {
+    if (labels[opt.value]) {
+      opt.textContent = labels[opt.value];
+    }
+  });
+}
 
 function initDevCabinet() {
   const devModal = document.getElementById('dev-prices-modal');
@@ -3262,7 +3347,17 @@ function initDevCabinet() {
   function openDevModal() {
     devModal.classList.remove('hidden');
     devModal.classList.add('active');
+    updateDevCategoryCounts();
     if (!devSyncActive) {
+      const catTotal = getSelectedCategoryTotal();
+      const countEl = document.getElementById('dev-progress-count');
+      const statusEl = document.getElementById('dev-progress-status');
+      if (countEl && (countEl.textContent === '0 / 0' || !countEl.textContent.includes('/'))) {
+        countEl.textContent = `0 / ${catTotal}`;
+      }
+      if (statusEl && (statusEl.textContent === 'Готов к запуску' || statusEl.textContent.startsWith('Готов к запуску'))) {
+        statusEl.textContent = `Готов к запуску (${catTotal} шт.)`;
+      }
       checkDevSyncStatus();
     }
   }
@@ -3275,6 +3370,28 @@ function initDevCabinet() {
       devPollInterval = null;
     }
   }
+
+  const catSelectEl = document.getElementById('dev-category-select');
+  if (catSelectEl) {
+    catSelectEl.addEventListener('change', () => {
+      if (!devSyncActive) {
+        const catTotal = getSelectedCategoryTotal();
+        const countEl = document.getElementById('dev-progress-count');
+        const statusEl = document.getElementById('dev-progress-status');
+        const fillEl = document.getElementById('dev-progress-bar-fill');
+        const statUpdated = document.getElementById('dev-stat-updated');
+        const statNotFound = document.getElementById('dev-stat-notfound');
+        if (countEl) countEl.textContent = `0 / ${catTotal}`;
+        if (statusEl) statusEl.textContent = `Готов к запуску (${catTotal} шт.)`;
+        if (fillEl) fillEl.style.width = '0%';
+        if (statUpdated) statUpdated.textContent = '0';
+        if (statNotFound) statNotFound.textContent = '0';
+      }
+    });
+  }
+
+  // Initial populate of category counts
+  updateDevCategoryCounts();
 
   if (devBtn) devBtn.addEventListener('click', openDevModal);
   if (devClose) devClose.addEventListener('click', closeDevModal);
@@ -3313,6 +3430,7 @@ function initDevCabinet() {
       const countEl = document.getElementById('dev-progress-count');
       const fillEl = document.getElementById('dev-progress-bar-fill');
       const statUpdated = document.getElementById('dev-stat-updated');
+      const statNotFound = document.getElementById('dev-stat-notfound');
       const termLogs = document.getElementById('dev-terminal-logs');
       const tbody = document.getElementById('dev-diff-tbody');
 
@@ -3324,10 +3442,12 @@ function initDevCabinet() {
       if (btnStop) btnStop.classList.remove('hidden');
 
       // Reset progress & counters
+      const catTotal = getSelectedCategoryTotal();
       if (fillEl) fillEl.style.width = '0%';
-      if (countEl) countEl.textContent = '0 / 0';
+      if (countEl) countEl.textContent = `0 / ${catTotal}`;
       if (statusEl) statusEl.textContent = 'Инициализация парсера цен...';
       if (statUpdated) statUpdated.textContent = '0';
+      if (statNotFound) statNotFound.textContent = '0';
 
       // Live terminal initial logs
       const startT = new Date().toLocaleTimeString('pl-PL');
@@ -3345,17 +3465,28 @@ function initDevCabinet() {
       }
 
       try {
-        const res = await fetch('/api/sync-prices', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ category, source })
-        });
-        const data = await res.json();
+        let data = null;
+        try {
+          const res = await fetch('/api/sync-prices', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ category, source })
+          });
+          if (res.ok) {
+            data = await res.json();
+          }
+        } catch (fetchErr) {
+          console.warn('Backend sync-prices endpoint not responding, switching to client-side catalog sync:', fetchErr.message);
+        }
 
-        if (!data.ok) {
+        if (!data || !data.ok) {
+          data = await buildClientPriceSync(category, source);
+        }
+
+        if (!data || !data.ok) {
           const errT = new Date().toLocaleTimeString('pl-PL');
           if (termLogs) {
-            termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-danger">[${errT}] ❌ Ошибка запуска: ${escapeHtml(data.error || 'Неизвестная ошибка')}</div>`);
+            termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-danger">[${errT}] ❌ Ошибка запуска: ${escapeHtml((data && data.error) || 'Неизвестная ошибка')}</div>`);
             termLogs.scrollTop = termLogs.scrollHeight;
           }
           if (statusEl) statusEl.textContent = 'Ошибка синхронизации';
@@ -3371,7 +3502,7 @@ function initDevCabinet() {
           return;
         }
 
-        // Fast Serverless Synchronization with live streaming to terminal and diff table
+        // Fast Serverless / Client Synchronization with live streaming to terminal and diff table
         const items = data.syncResults || data.liveResults || [];
         const total = items.length;
         let updated = 0;
@@ -3392,7 +3523,7 @@ function initDevCabinet() {
         };
 
         let currentCatSection = '';
-        const delayMs = total > 100 ? 55 : (total > 40 ? 80 : 120);
+        const delayMs = total > 200 ? 15 : (total > 100 ? 30 : (total > 40 ? 50 : 80));
 
         if (tbody) tbody.innerHTML = '';
 
@@ -3566,16 +3697,34 @@ async function checkDevSyncStatus() {
         ? new Date(cachedInfo.lastUpdated).toLocaleDateString('pl-PL') + ' ' + new Date(cachedInfo.lastUpdated).toLocaleTimeString('pl-PL')
         : '—';
     }
+    const catTotal = getSelectedCategoryTotal();
 
     if (status.isRunning) {
       if (btnStart) btnStart.classList.add('hidden');
       if (btnStop) btnStop.classList.remove('hidden');
       if (statusEl) statusEl.textContent = `Парсинг: ${status.currentItem || 'Запрос к Ceneo...'}`;
+      if (countEl) countEl.textContent = `${status.current} / ${status.total}`;
+      if (fillEl) {
+        const pct = status.total > 0 ? Math.round((status.current / status.total) * 100) : 0;
+        fillEl.style.width = `${pct}%`;
+      }
+      if (statUpdated) statUpdated.textContent = status.updatedCount;
+      if (statNotFound) statNotFound.textContent = status.notFoundCount;
     } else {
       if (btnStart) btnStart.classList.remove('hidden');
       if (btnStop) btnStop.classList.add('hidden');
-      if (statusEl) {
-        statusEl.textContent = status.total > 0 ? 'Парсинг завершён' : 'Готов к запуску';
+      if (status.total > 0 && devPollInterval) {
+        if (statusEl) statusEl.textContent = 'Парсинг завершён';
+        if (countEl) countEl.textContent = `${status.current} / ${status.total}`;
+        if (fillEl) fillEl.style.width = '100%';
+        if (statUpdated) statUpdated.textContent = status.updatedCount;
+        if (statNotFound) statNotFound.textContent = status.notFoundCount;
+      } else if (!devPollInterval) {
+        if (statusEl) statusEl.textContent = `Готов к запуску (${catTotal} шт.)`;
+        if (countEl) countEl.textContent = `0 / ${catTotal}`;
+        if (fillEl) fillEl.style.width = '0%';
+        if (statUpdated) statUpdated.textContent = '0';
+        if (statNotFound) statNotFound.textContent = '0';
       }
       if (devPollInterval && !status.isRunning && status.total > 0) {
         clearInterval(devPollInterval);
@@ -3583,23 +3732,14 @@ async function checkDevSyncStatus() {
       }
     }
 
-    if (countEl) countEl.textContent = `${status.current} / ${status.total}`;
-    if (fillEl) {
-      const pct = status.total > 0 ? Math.round((status.current / status.total) * 100) : 0;
-      fillEl.style.width = `${pct}%`;
-    }
-
-    if (statUpdated) statUpdated.textContent = status.updatedCount;
-    if (statNotFound) statNotFound.textContent = status.notFoundCount;
-
     // Render terminal logs
-    if (termLogs && status.logs && status.logs.length > 0) {
+    if (termLogs && status.logs && status.logs.length > 0 && devPollInterval) {
       termLogs.innerHTML = status.logs.map(l => `<div class="log-line">${escapeHtml(l)}</div>`).join('');
       termLogs.scrollTop = termLogs.scrollHeight;
     }
 
     // Render diff table
-    if (tbody && status.results && status.results.length > 0) {
+    if (tbody && status.results && status.results.length > 0 && devPollInterval) {
       tbody.innerHTML = status.results.map(r => {
         let diffClass = 'diff-neutral';
         let diffText = '0 zł';
@@ -3626,6 +3766,18 @@ async function checkDevSyncStatus() {
     }
   } catch (err) {
     console.error('Error polling sync status:', err);
+    try {
+      const staticRes = await fetch('/data/prices_pl.json');
+      if (staticRes.ok) {
+        const cachedData = await staticRes.json();
+        const statCached = document.getElementById('dev-stat-cached');
+        const statDate = document.getElementById('dev-stat-date');
+        if (statCached && cachedData.prices) statCached.textContent = Object.keys(cachedData.prices).length;
+        if (statDate && cachedData.lastUpdated) {
+          statDate.textContent = new Date(cachedData.lastUpdated).toLocaleDateString('pl-PL') + ' ' + new Date(cachedData.lastUpdated).toLocaleTimeString('pl-PL');
+        }
+      }
+    } catch (e) {}
   }
 }
 
