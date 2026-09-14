@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-DahU4QU2.js"></script>
+  <script type="module" crossorigin src="/assets/index-CMzrWeBN.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-DWfnOdJ8.css">
 </head>
 <body>
@@ -23,9 +23,9 @@
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>
           </div>
           <span class="brand-title">PC BUILDER <span class="brand-badge">2026</span></span>
-          <button id="btn-hardware-guide" class="btn-guide-pill" type="button" title="Гид: Для чего каждый компонент в ПК?">
+          <button id="btn-hardware-guide" class="btn-guide-pill" type="button" title="Гид: Для чего каждый компонент в ПК?" data-i18n-title="guide.btn_title">
             <span class="guide-icon">💡</span>
-            <span>Гид по деталям</span>
+            <span data-i18n="nav.guide">Гид по деталям</span>
           </button>
         </div>
 
@@ -35,14 +35,14 @@
             <button id="btn-auto-builder" class="auto-builder-pill" type="button" data-i18n="autobuild.title">✨ Умный авто-подбор</button>
             <button id="btn-pro-chat" class="pro-chat-pill" type="button">
               <span class="pro-badge">PRO</span>
-              <span>AI Чат-Консультант</span>
+              <span data-i18n="nav.ai_chat">AI Чат-Консультант</span>
             </button>
             
             <!-- Floating Auto-Build Popover -->
             <div class="autobuild-popover hidden" id="autobuild-popover">
               <div class="popover-header">
-                <span class="popover-title">✨ Параметры авто-подбора ПК</span>
-                <button id="autobuild-popover-close" class="popover-close-btn app-close-btn" type="button" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                <span class="popover-title" data-i18n="nav.autobuild.title">✨ Параметры авто-подбора ПК</span>
+                <button id="autobuild-popover-close" class="popover-close-btn app-close-btn" type="button" aria-label="Закрыть" data-i18n-aria-label="btn.close" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
               </div>
               <div class="popover-body">
                 <!-- Budget -->
@@ -67,7 +67,7 @@
                 <div class="popover-field">
                   <span class="field-title" data-i18n="autobuild.cpuPlatform">Платформа процессора:</span>
                   <div class="choice-chips" id="cpu-brand-group">
-                    <button type="button" class="choice-chip active" data-cpu-brand="all">Все</button>
+                    <button type="button" class="choice-chip active" data-cpu-brand="all" data-i18n="drawer.filter.all">Все</button>
                     <button type="button" class="choice-chip" data-cpu-brand="AMD">AMD Ryzen</button>
                     <button type="button" class="choice-chip" data-cpu-brand="Intel">Intel Core</button>
                   </div>
@@ -77,7 +77,7 @@
                 <div class="popover-field">
                   <span class="field-title" data-i18n="autobuild.gpuPlatform">Платформа видеокарты:</span>
                   <div class="choice-chips" id="gpu-brand-group">
-                    <button type="button" class="choice-chip active" data-gpu-brand="all">Все</button>
+                    <button type="button" class="choice-chip active" data-gpu-brand="all" data-i18n="drawer.filter.all">Все</button>
                     <button type="button" class="choice-chip" data-gpu-brand="NVIDIA">NVIDIA RTX</button>
                     <button type="button" class="choice-chip" data-gpu-brand="AMD">AMD Radeon</button>
                   </div>
@@ -93,7 +93,7 @@
                   </div>
                 </div>
 
-                <button type="button" id="auto-build-confirm-btn" class="btn btn-primary popover-action-btn">
+                <button type="button" id="auto-build-confirm-btn" class="btn btn-primary popover-action-btn" data-i18n="autobuild.assemble_btn">
                   Собрать конфигурацию ✨
                 </button>
               </div>
@@ -101,9 +101,9 @@
           </div>
 
           <div class="presets-segmented">
-            <button class="preset-btn" data-preset="budget">Бюджетная</button>
-            <button class="preset-btn" data-preset="balanced">Оптимальная</button>
-            <button class="preset-btn" data-preset="ultimate">Топовая</button>
+            <button class="preset-btn" data-preset="budget" data-i18n="preset.budget">Бюджетная</button>
+            <button class="preset-btn" data-preset="balanced" data-i18n="preset.balanced">Оптимальная</button>
+            <button class="preset-btn" data-preset="ultimate" data-i18n="preset.ultimate">Максимальная</button>
           </div>
         </div>
 
@@ -120,9 +120,9 @@
             <button class="lang-btn" data-lang="ua">UA</button>
           </div>
           <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">☀</button>
-          <button id="dev-modal-btn" class="btn-dev-trigger" title="Ценовой парсер: Обновление цен в Польше (Ctrl+Shift+D)">
+          <button id="dev-modal-btn" class="btn-dev-trigger" title="Ценовой парсер: Обновление цен в Польше (Ctrl+Shift+D)" data-i18n-title="dev.btn_title">
             <span class="dev-btn-icon">⚡</span>
-            <span class="dev-btn-text">Обновление цен</span>
+            <span class="dev-btn-text" data-i18n="nav.dev_parser.btn">Обновление цен</span>
           </button>
         </div>
       </div>
@@ -139,7 +139,7 @@
               <circle id="progress-ring-circle" stroke="#3b82f6" stroke-width="2.5" fill="transparent" r="9" cx="12" cy="12" stroke-dasharray="56.5" stroke-dashoffset="56.5"/>
             </svg>
           </div>
-          <span class="progress-text-label"><strong id="progress-text">0 / 8</strong> <span class="progress-sub" id="progress-sub">компонентов</span></span>
+          <span class="progress-text-label"><strong id="progress-text">0 / 8</strong> <span class="progress-sub" id="progress-sub" data-i18n="status.components">компонентов</span></span>
         </div>
 
         <!-- Action Tools -->
@@ -185,7 +185,7 @@
               <span class="slot-category" data-i18n="cat.cpu">Processor</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Вычислительный центр: обрабатывает команды, игровую логику, физику и сетевой код. Отвечает за стабильность 1% Low FPS.">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.cpu.hint">Choose Processor</p><p class="slot-hint-text hidden">Для гейминга отлично подойдут <b>Ryzen 5 9600X</b> или <b>Core i5-14600K</b>.</p>
+            <p class="slot-placeholder" data-i18n="slot.cpu.hint">Choose Processor</p><p class="slot-hint-text hidden" data-i18n-html="hint.cpu">Для гейминга отлично подойдут <b>Ryzen 5 9600X</b> или <b>Core i5-14600K</b>.</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -194,7 +194,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -214,7 +214,7 @@
               <span class="slot-category" data-i18n="cat.motherboard">Motherboard</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Коммутационный хаб: связывает компоненты через шины PCIe/DMI, распределяет электропитание через фазы VRM и задает интерфейсы.">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.motherboard.hint">Choose Motherboard</p><p class="slot-hint-text hidden">Убедитесь, что чипсет подходит под задачи (B650/Z790 — оптимальны).</p>
+            <p class="slot-placeholder" data-i18n="slot.motherboard.hint">Choose Motherboard</p><p class="slot-hint-text hidden" data-i18n-html="hint.mb">Убедитесь, что чипсет подходит под задачи (B650/Z790 — оптимальны).</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -223,7 +223,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -243,7 +243,7 @@
               <span class="slot-category" data-i18n="cat.cooler">Cooling</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Отвод тепла: рассеивает тепло от кристалла CPU через теплотрубки или хладагент СЖО, предотвращая температурный троттлинг.">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.cooler.hint">Choose Cooler</p><p class="slot-hint-text hidden">Воздушный для бюджеток, жидкостный (AIO) для мощных процессоров.</p>
+            <p class="slot-placeholder" data-i18n="slot.cooler.hint">Choose Cooler</p><p class="slot-hint-text hidden" data-i18n-html="hint.cooler">Воздушный для бюджеток, жидкостный (AIO) для мощных процессоров.</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -252,7 +252,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -272,7 +272,7 @@
               <span class="slot-category" data-i18n="cat.ram">Memory</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Оперативная память: хранит исполняемый машинный код и буферы активных сцен. Двухканальный режим (2 планки) удваивает ширину шины.">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.ram.hint">Choose RAM</p><p class="slot-hint-text hidden">Рекомендуется <b>32GB DDR5</b> с частотой 6000MHz.</p>
+            <p class="slot-placeholder" data-i18n="slot.ram.hint">Choose RAM</p><p class="slot-hint-text hidden" data-i18n-html="hint.ram">Рекомендуется <b>32GB DDR5</b> с частотой 6000MHz.</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -281,7 +281,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -301,7 +301,7 @@
               <span class="slot-category" data-i18n="cat.gpu">Graphics Card</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Графический процессор: выполняет шейдерные расчеты, полигональную геометрию, трассировку лучей и аппаратный апскейлинг (DLSS/FSR).">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.gpu.hint">Choose GPU</p><p class="slot-hint-text hidden">Для 1440p отличным выбором станет <b>RTX 4070 SUPER</b>.</p>
+            <p class="slot-placeholder" data-i18n="slot.gpu.hint">Choose GPU</p><p class="slot-hint-text hidden" data-i18n-html="hint.gpu">Для 1440p отличным выбором станет <b>RTX 4070 SUPER</b>.</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -310,7 +310,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -338,7 +338,7 @@
             <div class="power-track">
               <div class="power-bar-fill" id="power-bar" style="width: 0%;"></div>
             </div>
-            <span class="power-sub" id="power-limit-text">БП не выбран</span>
+            <span class="power-sub" id="power-limit-text" data-i18n="dash.psu.none">БП не выбран</span>
           </div>
         </div>
 
@@ -360,32 +360,32 @@
               <span class="schematic-title" data-i18n="dash.visualizer.title">Схема сборки</span>
               <span class="status-badge" id="chassis-status" data-i18n="status.waiting">Waiting</span>
             </div>
-            <div class="schematic-toolbar" role="toolbar" aria-label="Инструменты схемы сборки">
-              <button type="button" class="btn-schematic-tool" id="tool-schematic-airflow" title="Симуляция воздушного потока">
+            <div class="schematic-toolbar" role="toolbar" aria-label="Инструменты схемы сборки" data-i18n-aria-label="schematic.tools_aria">
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-airflow" title="Симуляция воздушного потока" data-i18n-title="schematic.airflow_title">
                 <span class="tool-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
                 </span>
                 <span class="tool-label" data-i18n="schematic.airflow">Обдув</span>
               </button>
-              <button type="button" class="btn-schematic-tool" id="tool-schematic-xray" title="Показать посадочные места и слоты">
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-xray" title="Показать посадочные места и слоты" data-i18n-title="schematic.slots_title">
                 <span class="tool-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
                 </span>
                 <span class="tool-label" data-i18n="schematic.xray">Слоты</span>
               </button>
-              <button type="button" class="btn-schematic-tool" id="tool-schematic-rgb" title="RGB подсветка">
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-rgb" title="RGB подсветка" data-i18n-title="schematic.rgb_title">
                 <span class="tool-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
                 </span>
                 <span class="tool-label" data-i18n="schematic.rgb">RGB</span>
               </button>
-              <button type="button" class="btn-schematic-tool" id="tool-schematic-clearance" title="Проверка габаритов и совместимости в корпусе">
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-clearance" title="Проверка габаритов и совместимости в корпусе" data-i18n-title="schematic.dimensions_title">
                 <span class="tool-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0l12.6 12.6z"/><line x1="14.5" y1="5.5" x2="17.5" y2="8.5"/><line x1="10" y1="10" x2="12" y2="12"/><line x1="7" y1="13" x2="9" y2="15"/></svg>
                 </span>
                 <span class="tool-label" data-i18n="schematic.clearance">Клиренс</span>
               </button>
-              <button type="button" class="btn-schematic-tool" id="tool-schematic-scale" title="Увеличить масштаб схемы">
+              <button type="button" class="btn-schematic-tool" id="tool-schematic-scale" title="Увеличить масштаб схемы" data-i18n-title="schematic.zoom_title">
                 <span class="tool-icon">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                 </span>
@@ -796,17 +796,17 @@
                   <span class="hud-cat-icon" id="hud-cat-icon">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                   </span>
-                  <span class="hud-cat-name" id="hud-cat-name">Компонент</span>
+                  <span class="hud-cat-name" id="hud-cat-name" data-i18n="hud.component">Компонент</span>
                 </div>
-                <span class="hud-status-badge" id="hud-status-badge">Слот свободен</span>
+                <span class="hud-status-badge" id="hud-status-badge" data-i18n="hud.slot_free">Слот свободен</span>
               </div>
               <div class="hud-content">
-                <div class="hud-title" id="hud-title">Наведите на деталь</div>
-                <div class="hud-specs" id="hud-specs">Кликните по компоненту для выбора из каталога</div>
+                <div class="hud-title" id="hud-title" data-i18n="hud.hover_part">Наведите на деталь</div>
+                <div class="hud-specs" id="hud-specs" data-i18n="hud.click_choose">Кликните по компоненту для выбора из каталога</div>
               </div>
               <div class="hud-action-row">
                 <span class="hud-price" id="hud-price"></span>
-                <span class="hud-hint" id="hud-hint">Нажмите для выбора ↗</span>
+                <span class="hud-hint" id="hud-hint" data-i18n="hud.click_select">Нажмите для выбора ↗</span>
               </div>
             </div>
 
@@ -841,7 +841,7 @@
             </div>
 
             <div class="bottleneck-info-box">
-              <span id="bottleneck-text" class="bottleneck-text">Идеальный баланс (Золотой стандарт)</span>
+              <span id="bottleneck-text" class="bottleneck-text" data-i18n="bottleneck.optimal">Идеальный баланс (Золотой стандарт)</span>
               <p id="bottleneck-advice" class="bottleneck-advice"></p>
             </div>
 
@@ -849,7 +849,7 @@
             <div class="bottleneck-ai-action-bar">
               <button type="button" class="btn-check-ai-synergy" id="btn-check-ai-synergy">
                 <span class="btn-ai-icon">✨</span>
-                <span id="btn-check-ai-text">Проверить сборку с AI</span>
+                <span id="btn-check-ai-text" data-i18n="ai.verdict.check_btn">Проверить сборку с AI</span>
               </button>
             </div>
 
@@ -858,9 +858,9 @@
               <div class="ai-verdict-header-row">
                 <div class="ai-badge-group">
                   <span class="ai-brain-icon">🧠</span>
-                  <span class="ai-badge-label">Вердикт Gemini AI</span>
+                  <span class="ai-badge-label" data-i18n="ai.badge.verdict">Вердикт Gemini AI</span>
                 </div>
-                <span class="ai-verdict-status-tag" id="ai-verdict-status-tag">Идеальный баланс</span>
+                <span class="ai-verdict-status-tag" id="ai-verdict-status-tag" data-i18n="ai.verdict.optimal">Идеальный баланс</span>
               </div>
               <p class="ai-verdict-commentary" id="ai-verdict-commentary"></p>
               <div class="ai-verdict-fps-row" id="ai-verdict-fps-row">
@@ -873,7 +873,7 @@
 
         <!-- Scroll down indicator -->
         <a href="#details-section" class="scroll-down-hint">
-          <span>Подробная аналитика (FPS во всех разрешениях, Совместимость) ↓</span>
+          <span data-i18n="ai.verdict.more_details">Подробная аналитика (FPS во всех разрешениях, Совместимость) ↓</span>
         </a>
       </section>
 
@@ -888,7 +888,7 @@
               <span class="slot-category" data-i18n="cat.ssd">SSD Drive</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Скоростной NVMe накопитель: считывает данные до 7500 МБ/с по PCIe 4.0/5.0, исключая микрофризы и долгие загрузки локаций.">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.ssd.hint">Choose SSD</p><p class="slot-hint-text hidden">Под систему берите быстрый NVMe M.2 накопитель от 1TB.</p>
+            <p class="slot-placeholder" data-i18n="slot.ssd.hint">Choose SSD</p><p class="slot-hint-text hidden" data-i18n-html="hint.ssd">Под систему берите быстрый NVMe M.2 накопитель от 1TB.</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -897,7 +897,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -918,7 +918,7 @@
               <span class="slot-info-hint" tabindex="0" data-tooltip="Электромеханический диск: энергонезависимый архив для длительного хранения медиафайлов и бэкапов с низкой ценой за 1 ТБ.">?</span>
               <span class="optional-badge" data-i18n="dash.progress.optional">Optional</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.hdd.hint">Choose HDD (Optional)</p><p class="slot-hint-text hidden">Жесткий диск полезен только для архивов и медиа (файлопомойка).</p>
+            <p class="slot-placeholder" data-i18n="slot.hdd.hint">Choose HDD (Optional)</p><p class="slot-hint-text hidden" data-i18n-html="hint.hdd">Жесткий диск полезен только для архивов и медиа (файлопомойка).</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -927,7 +927,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -947,7 +947,7 @@
               <span class="slot-category" data-i18n="cat.psu">Power Supply</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Импульсный источник питания: преобразует сетевые 220V в стабилизированные линии +12V, +5V и +3.3V. Сертификат 80+ Gold гарантирует надежность.">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.psu.hint">Choose Power Supply</p><p class="slot-hint-text hidden">Берем с запасом 20-30% от мощности системы. <b>ATX 3.0</b> для новых RTX.</p>
+            <p class="slot-placeholder" data-i18n="slot.psu.hint">Choose Power Supply</p><p class="slot-hint-text hidden" data-i18n-html="hint.psu">Берем с запасом 20-30% от мощности системы. <b>ATX 3.0</b> для новых RTX.</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -956,7 +956,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -976,7 +976,7 @@
               <span class="slot-category" data-i18n="cat.case">Case</span>
               <span class="slot-info-hint" tabindex="0" data-tooltip="Шасси и аэродинамический контур: формирует сквозной воздушный поток через Mesh-панели, защищает от пыли и экранирует помехи.">?</span>
             </div>
-            <p class="slot-placeholder" data-i18n="slot.case.hint">Choose Case</p><p class="slot-hint-text hidden">Обращайте внимание на продуваемость (Mesh-панели).</p>
+            <p class="slot-placeholder" data-i18n="slot.case.hint">Choose Case</p><p class="slot-hint-text hidden" data-i18n-html="hint.case">Обращайте внимание на продуваемость (Mesh-панели).</p>
             <div class="slot-selected hidden">
               <span class="slot-selected-name"></span>
               <span class="slot-selected-specs"></span>
@@ -985,7 +985,7 @@
           </div>
           <div class="slot-actions">
             <span class="slot-price hidden"></span>
-            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
+            <button type="button" class="btn-store-hub slot-buy-link hidden" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip"><span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span></button>
             <button class="btn btn-sm btn-select select-btn" data-i18n="slot.select">Select</button>
             <button class="btn-remove remove-btn hidden" title="Remove">×</button>
           </div>
@@ -1052,7 +1052,7 @@
           <div class="panel-header">
             <h3 data-i18n="dash.monitor.title">РЕКОМЕНДУЕМЫЙ МОНИТОР</h3>
             <span class="slot-info-hint" tabindex="0" data-tooltip="Устройство визуализации: частота развертки (Гц) определяет плавность движений, а матрица (IPS/OLED) — контраст и отклик пикселя.">?</span>
-            <span class="monitor-tier-badge" id="monitor-tier-badge">Подбор под GPU</span>
+            <span class="monitor-tier-badge" id="monitor-tier-badge" data-i18n="monitor.tier.waiting">Ожидание видеокарты</span>
           </div>
           <div class="monitor-panel-body">
             <!-- Dynamic Recommendation Box based on GPU -->
@@ -1060,8 +1060,8 @@
               <div class="monitor-rec-header">
                 <span class="monitor-rec-icon" id="monitor-rec-icon">🖥️</span>
                 <div class="monitor-rec-info">
-                  <h4 class="monitor-rec-title" id="monitor-rec-title">Подбор под видеокарту</h4>
-                  <p class="monitor-rec-desc" id="monitor-rec-desc">Выберите видеокарту для расчета оптимального разрешения и частоты обновления.</p>
+                  <h4 class="monitor-rec-title" id="monitor-rec-title" data-i18n="monitor.tier.rec_title">Подбор под видеокарту</h4>
+                  <p class="monitor-rec-desc" id="monitor-rec-desc" data-i18n="monitor.select_gpu_desc">Выберите видеокарту для расчета оптимального разрешения и частоты обновления.</p>
                 </div>
               </div>
             </div>
@@ -1069,31 +1069,31 @@
             <!-- Current Selected Monitor (or Empty State) -->
             <div class="monitor-selection-wrapper" id="monitor-selection-wrapper">
               <div class="monitor-empty-state" id="monitor-empty-state">
-                <p class="monitor-empty-text">Монитор пока не добавлен к сборке (опционально)</p>
-                <button type="button" class="btn btn-sm btn-select" id="btn-select-monitor">Выбрать из каталога</button>
+                <p class="monitor-empty-text" data-i18n="monitor.empty">Монитор пока не добавлен к сборке (опционально)</p>
+                <button type="button" class="btn btn-sm btn-select" id="btn-select-monitor" data-i18n="monitor.select_btn">Выбрать из каталога</button>
               </div>
               
               <div class="monitor-selected-card hidden" id="monitor-selected-card">
                 <div class="monitor-card-header-row">
-                  <span class="monitor-selected-name" id="monitor-selected-name">Монитор</span>
+                  <span class="monitor-selected-name" id="monitor-selected-name" data-i18n="cat.monitor">Монитор</span>
                   <span class="monitor-selected-price" id="monitor-selected-price">0 zł</span>
                 </div>
                 <div class="monitor-selected-specs" id="monitor-selected-specs">
                   <!-- Slack code tags -->
                 </div>
                 <div class="monitor-card-actions">
-                  <button type="button" class="btn-store-hub" id="monitor-store-hub-btn" title="Сравнить цены в магазинах">
+                  <button type="button" class="btn-store-hub" id="monitor-store-hub-btn" title="Сравнить цены в магазинах" data-i18n-title="store.compare_tooltip">
                     <span class="store-hub-icon">🏪</span><span class="store-hub-text" data-i18n="slot.comparePrices">Цены в магазинах</span><span class="store-hub-arrow">↗</span>
                   </button>
                   <button type="button" class="btn btn-sm btn-select" id="btn-change-monitor" data-i18n="slot.select">Изменить</button>
-                  <button type="button" class="btn-remove" id="btn-remove-monitor" title="Убрать монитор">×</button>
+                  <button type="button" class="btn-remove" id="btn-remove-monitor" title="Убрать монитор" data-i18n-title="btn.remove_monitor">×</button>
                 </div>
               </div>
             </div>
 
             <!-- Quick Recommended Picks (One-click equip) -->
             <div class="monitor-quick-picks" id="monitor-quick-picks">
-              <span class="quick-picks-label">Оптимальные модели под вашу сборку:</span>
+              <span class="quick-picks-label" data-i18n="monitor.quick_picks">Оптимальные модели под вашу сборку:</span>
               <div class="quick-picks-list" id="monitor-quick-picks-list">
                 <!-- Dynamically populated chips -->
               </div>
@@ -1117,9 +1117,9 @@
     <section class="faq-section" id="faq-section">
       <div class="faq-inner">
         <div class="faq-header">
-          <span class="faq-badge">СПРАВОЧНИК & БАЗА ЗНАНИЙ</span>
-          <h2 class="faq-title">Часто задаваемые вопросы (FAQ)</h2>
-          <p class="faq-subtitle">Инженерные нюансы подбора комплектующих, баланса фреймтайма и актуальности цен на рынке</p>
+          <span class="faq-badge" data-i18n="faq.badge">СПРАВОЧНИК & БАЗА ЗНАНИЙ</span>
+          <h2 class="faq-title" data-i18n="faq.title">Часто задаваемые вопросы (FAQ)</h2>
+          <p class="faq-subtitle" data-i18n="faq.subtitle">Инженерные нюансы подбора комплектующих, баланса фреймтайма и актуальности цен на рынке</p>
         </div>
 
         <div class="faq-grid">
@@ -1127,82 +1127,60 @@
           <details class="faq-card" open>
             <summary class="faq-summary">
               <span class="faq-icon">⚙️</span>
-              <span class="faq-q-text">Как алгоритм рассчитывает совместимость и запас надежности?</span>
+              <span class="faq-q-text" data-i18n="faq.q1">Как алгоритм рассчитывает совместимость и запас надежности?</span>
               <span class="faq-chevron">▾</span>
             </summary>
-            <div class="faq-content">
-              <p>Алгоритм конфигуратора выполняет комплексную валидацию по трем независимым контурам:</p>
-              <ul>
-                <li><strong>Физический контур:</strong> аппаратная сверка сокетов (AM4, AM5, LGA1700, LGA1851), механических ключей слотов ОЗУ (DDR4 vs DDR5), габаритов башенного кулера относительно ширины корпуса и длины видеокарты.</li>
-                <li><strong>Электрический баланс:</strong> расчет суммарного потребления системы с учетом импульсных пиков видеокарты (Transient Spikes) и калибровкой необходимого запаса мощности БП на 25–35% для работы в зоне максимального КПД кривой 80 PLUS.</li>
-                <li><strong>Логическая синергия:</strong> предупреждения о нерациональных связках — например, установка процессора серии 'K' на бюджетную материнскую плату H610 без радиаторов на фазах питания VRM.</li>
-              </ul>
-            </div>
+            <div class="faq-content" data-i18n-html="faq.a1"></div>
           </details>
 
           <!-- FAQ 2 -->
           <details class="faq-card">
             <summary class="faq-summary">
               <span class="faq-icon">⚖️</span>
-              <span class="faq-q-text">Что такое Bottleneck и почему 1% Low FPS важнее среднего значения?</span>
+              <span class="faq-q-text" data-i18n="faq.q2">Что такое Bottleneck и почему 1% Low FPS важнее среднего значения?</span>
               <span class="faq-chevron">▾</span>
             </summary>
-            <div class="faq-content">
-              <p><strong>Bottleneck (узкое место)</strong> — состояние дисбаланса, при котором один из компонентов ограничивает раскрытие потенциала остальных.</p>
-              <p>Средний FPS часто обманчив, так как отражает производительность видеокарты в спокойных сценах. В моменты интенсивных взрывов, перестрелок или быстрого перемещения на сцену выходит процессор и тайминги ОЗУ: если CPU не успевает рассчитать геометрию и физику кадра, GPU простаивает, вызывая микростаттеры и дропы 1% Low FPS. Кнопка <em>«Проверить сборку с AI»</em> анализирует стабильность именно этого показателя.</p>
-            </div>
+            <div class="faq-content" data-i18n-html="faq.a2"></div>
           </details>
 
           <!-- FAQ 3 -->
           <details class="faq-card">
             <summary class="faq-summary">
               <span class="faq-icon">⚡</span>
-              <span class="faq-q-text">DDR4 против DDR5 в 2026 году: где оправдана экономия, а где нужен переход?</span>
+              <span class="faq-q-text" data-i18n="faq.q3">DDR4 против DDR5 в 2026 году: где оправдана экономия, а где нужен переход?</span>
               <span class="faq-chevron">▾</span>
             </summary>
-            <div class="faq-content">
-              <p><strong>DDR4:</strong> сохраняет экономический смысл только в ультрабюджетном сегменте (сборки до 3000–3500 zł на платформах AMD AM4 или Intel LGA1700 с памятью 3200–3600 МГц), где каждая сэкономленная сотня злотых перенаправляется в видеокарту.</p>
-              <p><strong>DDR5:</strong> безальтернативный стандарт для всех современных платформ (AMD AM5, Intel LGA1851). Благодаря чипам Hynix A-die и комплектам DDR5-6000 CL30 задержки сравнялись с DDR4, а пропускная способность удвоилась, что дает от 15% до 25% прироста минимального фреймрейта в современных играх на движке Unreal Engine 5.</p>
-            </div>
+            <div class="faq-content" data-i18n-html="faq.a3"></div>
           </details>
 
           <!-- FAQ 4 -->
           <details class="faq-card">
             <summary class="faq-summary">
               <span class="faq-icon">🚀</span>
-              <span class="faq-q-text">M.2 NVMe против SATA SSD и HDD: требования современных игровых движков</span>
+              <span class="faq-q-text" data-i18n="faq.q4">M.2 NVMe против SATA SSD и HDD: требования современных игровых движков</span>
               <span class="faq-chevron">▾</span>
             </summary>
-            <div class="faq-content">
-              <p>Современные игры перешли на архитектуру потокового стриминга геометрии и виртуализированных текстур (Microsoft DirectStorage, Unreal Engine Nanite). Скорости SATA SSD (~500 МБ/с) и тем более HDD (~150 МБ/с) физически недостаточно для прокачки 10–15 ГБ данных в секунду.</p>
-              <p>Твердотельные накопители <strong>M.2 NVMe PCIe 4.0</strong> (со скоростью 5000–7400 МБ/с) исключают «заикания» мира при повороте камеры, обеспечивают мгновенный запуск локаций и не создают очереди ожидания для графического процессора.</p>
-            </div>
+            <div class="faq-content" data-i18n-html="faq.a4"></div>
           </details>
 
           <!-- FAQ 5 -->
           <details class="faq-card">
             <summary class="faq-summary">
               <span class="faq-icon">💰</span>
-              <span class="faq-q-text">Как формируются цены в злотых (PLN) и фильтруются аномалии ритейлеров?</span>
+              <span class="faq-q-text" data-i18n="faq.q5">Как формируются цены в злотых (PLN) и фильтруются аномалии ритейлеров?</span>
               <span class="faq-chevron">▾</span>
             </summary>
-            <div class="faq-content">
-              <p>Конфигуратор использует регулярную синхронизацию с крупнейшими польскими торговыми площадками — <strong>Ceneo.pl, Morele.net и x-kom.pl</strong>.</p>
-              <p>Для предотвращения искажений внедрен алгоритм статистического отсева (Sanity Check): любые аномальные выбросы цен (например, когда поиск маркетплейса ошибочно привязывает к карточке процессора готовый ПК за 15000 zł или кулер за 100 zł) автоматически блокируются, защищая точность итоговой стоимости сборки.</p>
-            </div>
+            <div class="faq-content" data-i18n-html="faq.a5"></div>
           </details>
 
           <!-- FAQ 6 -->
           <details class="faq-card">
             <summary class="faq-summary">
               <span class="faq-icon">🧠</span>
-              <span class="faq-q-text">В чем разница между базовым автоподбором и Gemini PRO AI-консультантом?</span>
+              <span class="faq-q-text" data-i18n="faq.q6">В чем разница между базовым автоподбором и Gemini PRO AI-консультантом?</span>
               <span class="faq-chevron">▾</span>
             </summary>
-            <div class="faq-content">
-              <p><strong>Бесплатный автоподбор:</strong> математически оптимизирует конфигурацию по матрице эталонных архетипов, распределяя бюджет с точностью до злотого для максимизации соотношения FPS/Цена.</p>
-              <p><strong>Gemini PRO AI Консультант:</strong> специализированная нейросетевая модель с глубоким пониманием архитектур. Вы можете описать любые специфические задачи («тихая белая сборка без RGB», «ПК для одновременного рендера видео в 4K и стримов на Twitch», «упор на тишину и минимальные децибелы»), и AI не только объяснит логику каждого выбора, но и <em>в один клик применит выбранные комплектующие на интерактивной схеме</em>.</p>
-            </div>
+            <div class="faq-content" data-i18n-html="faq.a6"></div>
           </details>
         </div>
       </div>
@@ -1216,9 +1194,9 @@
           <div class="footer-legal-card">
             <div class="legal-card-header">
               <span class="legal-icon">⚖️</span>
-              <h4>Правовое уведомление (Disclaimer)</h4>
+              <h4 data-i18n="footer.disclaimer.title">Правовое уведомление (Disclaimer)</h4>
             </div>
-            <p>
+            <p data-i18n="footer.disclaimer.desc">
               PC Builder является независимым некоммерческим справочным веб-инструментом. Все оценки совместимости, расчеты энергопотребления и FPS в играх носят информационный характер. Перед покупкой и сборкой ПК всегда сверяйтесь с официальной документацией и спецификациями производителей оборудования.
             </p>
           </div>
@@ -1226,9 +1204,9 @@
           <div class="footer-legal-card">
             <div class="legal-card-header">
               <span class="legal-icon">🏷️</span>
-              <h4>Товарные знаки и бренды</h4>
+              <h4 data-i18n="footer.trademarks.title">Товарные знаки и бренды</h4>
             </div>
-            <p>
+            <p data-i18n="footer.trademarks.desc">
               Все названия брендов, логотипы и товарные знаки (включая Intel®, Core™, AMD®, Ryzen™, Radeon™, NVIDIA®, GeForce®, RTX™, ASUS®, MSI®, Gigabyte®, Deepcool®, Corsair® и др.) принадлежат их законным правообладателям. Их упоминание на сайте служит исключительно для идентификации комплектующих.
             </p>
           </div>
@@ -1236,9 +1214,9 @@
           <div class="footer-legal-card">
             <div class="legal-card-header">
               <span class="legal-icon">🏪</span>
-              <h4>Цены и партнерские ссылки</h4>
+              <h4 data-i18n="footer.prices.title">Цены и партнерские ссылки</h4>
             </div>
-            <p>
+            <p data-i18n="footer.prices.desc">
               Цены в польских злотых (PLN) агрегируются из открытых источников ритейлеров (Ceneo.pl, Morele.net, x-kom.pl). Сайт не является продавцом товаров. Ссылки на внешние магазины могут являться партнерскими, что помогает поддерживать и развивать проект без каких-либо дополнительных затрат для пользователей.
             </p>
           </div>
@@ -1246,9 +1224,9 @@
           <div class="footer-legal-card">
             <div class="legal-card-header">
               <span class="legal-icon">🛡️</span>
-              <h4>Конфиденциальность и данные</h4>
+              <h4 data-i18n="footer.privacy.title">Конфиденциальность и данные</h4>
             </div>
-            <p>
+            <p data-i18n="footer.privacy.desc">
               Сервис не собирает персональные данные и не требует регистрации. Ваши черновики сборок и пользовательские настройки сохраняются исключительно локально на вашем компьютере (технология LocalStorage в браузере) и не передаются третьим лицам.
             </p>
           </div>
@@ -1260,13 +1238,13 @@
             <div class="footer-logo-box">💻</div>
             <div class="footer-meta-texts">
               <span class="footer-copy-brand">PC BUILDER 2026</span>
-              <span class="footer-copy-text">Умный конфигуратор ПК с искусственным интеллектом Gemini Pro</span>
+              <span class="footer-copy-text" data-i18n="footer.copy_text">Умный конфигуратор ПК с искусственным интеллектом Gemini Pro</span>
             </div>
           </div>
           <div class="footer-nav-links">
-            <button type="button" class="footer-link-action" id="footer-btn-guide">💡 Гид по деталям</button>
-            <a href="#faq-section" class="footer-link-action">❓ Частые вопросы (FAQ)</a>
-            <button type="button" class="footer-link-action" id="btn-scroll-top">↑ Наверх к сборке</button>
+            <button type="button" class="footer-link-action" id="footer-btn-guide" data-i18n="footer.guide_btn">💡 Гид по деталям</button>
+            <a href="#faq-section" class="footer-link-action" data-i18n="footer.faq_btn">❓ Частые вопросы (FAQ)</a>
+            <button type="button" class="footer-link-action" id="btn-scroll-top" data-i18n="footer.scroll_top">↑ Наверх к сборке</button>
           </div>
         </div>
       </div>
@@ -1274,11 +1252,11 @@
 
 
     <!-- STICKY BOTTOM SUMMARY BAR (Mobile & Tablet) -->
-    <div id="mobile-summary-bar" class="mobile-summary-bar" aria-label="Итоги сборки">
+    <div id="mobile-summary-bar" class="mobile-summary-bar" aria-label="Итоги сборки" data-i18n-aria-label="summary.build_results">
       <div class="mobile-summary-inner">
         <div class="mobile-summary-info">
           <div class="mobile-summary-price-box">
-            <span class="mobile-summary-label">Итого:</span>
+            <span class="mobile-summary-label" data-i18n="mobile.summary.total">Итого:</span>
             <span class="mobile-summary-price" id="mobile-total-price">0 zł</span>
           </div>
           <div class="mobile-summary-sub">
@@ -1288,9 +1266,9 @@
           </div>
         </div>
         <div class="mobile-summary-actions">
-          <button type="button" id="btn-mobile-view-schematic" class="btn-mobile-action" title="Показать схему сборки">
+          <button type="button" id="btn-mobile-view-schematic" class="btn-mobile-action" title="Показать схему сборки" data-i18n-title="btn.show_schematic">
             <span class="mobile-btn-icon">🖥️</span>
-            <span class="mobile-btn-text">Схема ПК</span>
+            <span class="mobile-btn-text" data-i18n="mobile.summary.schematic">Схема ПК</span>
           </button>
         </div>
       </div>
@@ -1304,16 +1282,16 @@
       <div class="drawer-header">
         <div class="drawer-header-left">
           <h2 id="drawer-title" data-i18n="drawer.title">Select Component</h2>
-          <span class="drawer-count-badge" id="drawer-parts-count">0 доступно</span>
+          <span class="drawer-count-badge" id="drawer-parts-count" data-i18n="drawer.count_badge">0 доступно</span>
         </div>
-        <button id="drawer-close" class="drawer-close-btn app-close-btn" aria-label="Close drawer" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <button id="drawer-close" class="drawer-close-btn app-close-btn" aria-label="Close drawer" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
       <div class="drawer-controls geek-drawer-controls">
         <div class="search-input-wrapper geek-search-wrapper">
           <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="parts-search" placeholder="Поиск по названию, сокету, характеристикам..." data-i18n-placeholder="drawer.search">
           <kbd class="geek-kbd">Ctrl+K</kbd>
-          <button id="search-clear-btn" class="search-clear-btn hidden" title="Очистить">×</button>
+          <button id="search-clear-btn" class="search-clear-btn hidden" title="Очистить" data-i18n-title="btn.clear">×</button>
         </div>
 
         <!-- Dynamic Brand & Platform Filter Chips -->
@@ -1349,15 +1327,15 @@
           <div class="retailer-modal-top">
             <div class="retailer-badge-row">
               <span class="slack-code-tag retailer-modal-badge">[ 🏪 MULTI_STORE_AGGREGATOR_v2026 ]</span>
-              <span class="retailer-status-pill">● 8 МАГАЗИНОВ ОНЛАЙН</span>
+              <span class="retailer-status-pill" data-i18n="retailer.modal.online_badge">● 8 МАГАЗИНОВ ОНЛАЙН</span>
             </div>
-            <h3 id="retailer-modal-part-name" class="retailer-modal-product-title">Где купить деталь</h3>
+            <h3 id="retailer-modal-part-name" class="retailer-modal-product-title" data-i18n="retailer.modal.title">Где купить деталь</h3>
             <div class="retailer-modal-meta">
               <span id="retailer-modal-price" class="retailer-est-price">-- zł</span>
               <div id="retailer-modal-specs"></div>
             </div>
           </div>
-          <button type="button" class="retailer-modal-close-btn app-close-btn" id="retailers-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          <button type="button" class="retailer-modal-close-btn app-close-btn" id="retailers-modal-close" aria-label="Закрыть" data-i18n-aria-label="btn.close" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body retailer-modal-body">
           <p class="retailer-sub-hint" data-i18n="store.modal.hint">Выберите страну и магазин для перехода к актуальным ценам:</p>
@@ -1383,7 +1361,7 @@
       <div class="modal-dialog">
         <div class="modal-header">
           <h3 data-i18n="modal.save.title">Сохранить сборку</h3>
-          <button type="button" class="modal-close app-close-btn" id="save-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          <button type="button" class="modal-close app-close-btn" id="save-modal-close" aria-label="Закрыть" data-i18n-aria-label="btn.close" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body">
           <label for="save-build-name" class="modal-label" data-i18n="modal.save.label">Название конфигурации:</label>
@@ -1401,14 +1379,14 @@
       <div class="modal-dialog">
         <div class="modal-header">
           <h3 data-i18n="modal.export.title">Экспорт конфигурации</h3>
-          <button type="button" class="modal-close app-close-btn" id="export-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          <button type="button" class="modal-close app-close-btn" id="export-modal-close" aria-label="Закрыть" data-i18n-aria-label="btn.close" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body">
           <textarea id="export-text" class="modal-textarea" readonly></textarea>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" id="export-modal-copy" data-i18n="action.copy">Копировать</button>
-          <button class="btn btn-primary" id="export-modal-ok">Закрыть</button>
+          <button class="btn btn-primary" id="export-modal-ok" data-i18n="btn.close">Закрыть</button>
         </div>
       </div>
     </div>
@@ -1418,7 +1396,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-header">
           <h3 data-i18n="modal.compare.title">Сравнение конфигураций</h3>
-          <button type="button" class="modal-close app-close-btn" id="comparison-modal-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          <button type="button" class="modal-close app-close-btn" id="comparison-modal-close" aria-label="Закрыть" data-i18n-aria-label="btn.close" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="modal-body">
           <div id="comparison-content" class="comparison-container"></div>
@@ -1435,18 +1413,18 @@
           <div class="dev-header-left">
             <span class="dev-badge">PRICE ENGINE</span>
             <div>
-              <h2>Ценовой парсер: Актуализация цен (Morele & Ceneo)</h2>
-              <p class="text-secondary" style="font-size: 0.8rem; margin: 2px 0 0 0;">Сравнение цен в польском ритейле и синхронизация всего каталога комплектующих</p>
+              <h2 data-i18n="dev.parser.title">Ценовой парсер: Актуализация цен (Morele & Ceneo)</h2>
+              <p class="text-secondary" style="font-size: 0.8rem; margin: 2px 0 0 0;" data-i18n="dev.parser.subtitle">Сравнение цен в польском ритейле и синхронизация всего каталога комплектующих</p>
             </div>
           </div>
-          <button id="dev-modal-close" class="modal-close-btn app-close-btn" aria-label="Close" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          <button id="dev-modal-close" class="modal-close-btn app-close-btn" aria-label="Close" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
 
         <div class="dev-modal-body">
           <!-- Control Strip -->
           <div class="dev-control-strip">
             <div class="dev-control-field" style="max-width: 280px;">
-              <label for="dev-source-select">Источник (Магазин):</label>
+              <label for="dev-source-select" data-i18n="dev.parser.source_label">Источник (Магазин):</label>
               <select id="dev-source-select" class="dev-select">
                 <option value="hybrid" selected>Morele + Ceneo (Умный гибрид ⭐)</option>
                 <option value="morele">Morele.net (Прямой ритейлер)</option>
@@ -1455,7 +1433,7 @@
               </select>
             </div>
             <div class="dev-control-field">
-              <label for="dev-category-select">Категория комплектующих:</label>
+              <label for="dev-category-select" data-i18n="dev.parser.category_label">Категория комплектующих:</label>
               <select id="dev-category-select" class="dev-select">
                 <option value="all" selected>Вся база (402 шт., все 10 категорий ⭐)</option>
                 <option value="cpu">Процессоры CPU (78 шт.)</option>
@@ -1473,13 +1451,13 @@
 
             <div class="dev-control-actions">
               <button type="button" id="btn-start-sync" class="btn btn-primary btn-dev-start">
-                <span>▶ Запустить парсинг</span>
+                <span data-i18n="dev.parser.start_btn">▶ Запустить парсинг</span>
               </button>
               <button type="button" id="btn-stop-sync" class="btn btn-dev-stop hidden">
-                <span>⏹ Остановить</span>
+                <span data-i18n="dev.parser.stop_btn">⏹ Остановить</span>
               </button>
               <button type="button" id="btn-apply-prices" class="btn btn-dev-apply">
-                <span>💾 Применить к сайту</span>
+                <span data-i18n="dev.parser.apply_btn">💾 Применить к сайту</span>
               </button>
             </div>
           </div>
@@ -1487,52 +1465,46 @@
           <!-- Progress and Stats Bar -->
           <div class="dev-progress-card">
             <div class="dev-progress-header">
-              <span id="dev-progress-status">Готов к запуску</span>
+              <span id="dev-progress-status" data-i18n="dev.parser.status_ready">Готов к запуску</span>
               <span id="dev-progress-count">0 / 0</span>
             </div>
             <div class="dev-progress-bar-track">
               <div id="dev-progress-bar-fill" class="dev-progress-bar-fill" style="width: 0%;"></div>
             </div>
             <div class="dev-stats-row">
-              <span class="dev-stat-pill">Обновлено: <strong id="dev-stat-updated">0</strong></span>
-              <span class="dev-stat-pill">Не найдено: <strong id="dev-stat-notfound">0</strong></span>
-              <span class="dev-stat-pill">В кэше сервера: <strong id="dev-stat-cached">0</strong></span>
-              <span class="dev-stat-pill">Синхронизация: <span id="dev-stat-date">—</span></span>
+              <span class="dev-stat-pill"><span data-i18n="dev.parser.stat_updated">Обновлено:</span> <strong id="dev-stat-updated">0</strong></span>
+              <span class="dev-stat-pill"><span data-i18n="dev.parser.stat_not_found">Не найдено:</span> <strong id="dev-stat-notfound">0</strong></span>
+              <span class="dev-stat-pill"><span data-i18n="dev.parser.stat_cached">В кэше сервера:</span> <strong id="dev-stat-cached">0</strong></span>
+              <span class="dev-stat-pill"><span data-i18n="dev.parser.stat_sync">Синхронизация:</span> <span id="dev-stat-date">—</span></span>
             </div>
           </div>
 
           <!-- Live Terminal Output -->
           <div class="dev-terminal-wrapper">
             <div class="dev-terminal-header">
-              <span>ЖИВОЙ ТЕРМИНАЛ СКРАПЕРА</span>
-              <button type="button" id="btn-clear-logs" class="btn-clear-terminal">Очистить лог</button>
+              <span data-i18n="dev.parser.terminal_title">ЖИВОЙ ТЕРМИНАЛ СКРАПЕРА</span>
+              <button type="button" id="btn-clear-logs" class="btn-clear-terminal" data-i18n="dev.parser.clear_log">Очистить лог</button>
             </div>
             <div id="dev-terminal-logs" class="dev-terminal-logs">
-              <div class="log-line text-muted">[Готов] Выберите категорию и нажмите «Запустить парсинг»...</div>
+              <div class="log-line text-muted" data-i18n="dev.parser.initial_log">[Готов] Выберите категорию и нажмите «Запустить парсинг»...</div>
             </div>
           </div>
 
           <!-- Results Diff Table -->
           <div class="dev-diff-table-wrapper">
             <div class="dev-diff-header">
-              <h3>Сводка изменений цен</h3>
-              <span class="dev-diff-subtitle">Цены сравниваются с текущими значениями в конфигураторе</span>
+              <h3 data-i18n="dev.parser.diff_title">Сводка изменений цен</h3>
+              <span class="dev-diff-subtitle" data-i18n="dev.parser.diff_subtitle">Цены сравниваются с текущими значениями в конфигураторе</span>
             </div>
             <div class="dev-table-container">
               <table class="dev-diff-table">
                 <thead>
                   <tr>
-                    <th>Товар</th>
-                    <th>Категория</th>
-                    <th>Было (PLN)</th>
-                    <th>Актуально</th>
-                    <th>Разница</th>
-                    <th>Источник</th>
-                    <th>Ссылка</th>
+                    <th data-i18n="dev.parser.col_item">Товар</th><th data-i18n="dev.parser.col_cat">Категория</th><th data-i18n="dev.parser.col_old">Было (PLN)</th><th data-i18n="dev.parser.col_new">Актуально</th><th data-i18n="dev.parser.col_diff">Разница</th><th data-i18n="dev.parser.col_source">Источник</th><th data-i18n="dev.parser.col_url">Ссылка</th>
                   </tr>
                 </thead>
                 <tbody id="dev-diff-tbody">
-                  <tr><td colspan="6" class="text-center text-muted" style="padding: 1.5rem;">Пока нет результатов сканирования</td></tr>
+                  <tr><td colspan="7" class="text-center text-muted" style="padding: 1.5rem;" data-i18n="dev.parser.no_results">Пока нет результатов сканирования</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1553,10 +1525,10 @@
               <strong>Gemini Pro Consultant</strong>
               <span class="pro-pill-badge">PRO</span>
             </div>
-            <div class="pro-ai-status" id="pro-ai-status-indicator">● Интерактивный подбор железа</div>
+            <div class="pro-ai-status" id="pro-ai-status-indicator" data-i18n="ai.chat.status">● Интерактивный подбор железа</div>
           </div>
         </div>
-        <button type="button" class="pro-chat-close-btn app-close-btn" id="pro-chat-close" aria-label="Закрыть" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <button type="button" class="pro-chat-close-btn app-close-btn" id="pro-chat-close" aria-label="Закрыть" data-i18n-aria-label="btn.close" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
 
       <!-- Chat Messages Container -->
@@ -1564,30 +1536,30 @@
         <div class="pro-chat-bubble ai">
           <div class="pro-bubble-avatar">🧠</div>
           <div class="pro-bubble-content">
-            <p><strong>Привет! Я ваш персональный AI-архитектор ПК на базе Gemini Pro.</strong></p>
-            <p>Напишите мне свои пожелания простыми словами — для каких игр или работы нужен компьютер, какой бюджет, предпочтения по цвету, шуму или сокету. Я подберу идеальные комплектующие из нашего каталога и сразу установлю их на схему!</p>
+            <p><strong data-i18n="ai.chat.welcome_title">Привет! Я ваш персональный AI-архитектор ПК на базе Gemini Pro.</strong></p>
+            <p data-i18n="ai.chat.welcome_desc">Напишите мне свои пожелания простыми словами — для каких игр или работы нужен компьютер, какой бюджет, предпочтения по цвету, шуму или сокету. Я подберу идеальные комплектующие из нашего каталога и сразу установлю их на схему!</p>
           </div>
         </div>
       </div>
 
       <!-- Quick Prompt Suggestions -->
       <div class="pro-quick-prompts" id="pro-quick-prompts">
-        <button type="button" class="pro-prompt-chip" data-prompt="Собери белый тихий ПК для CS2 и стримов за 5500 zł">⚪ Белый тихий ПК для CS2 (5500 zł)</button>
-        <button type="button" class="pro-prompt-chip" data-prompt="Ультимативный 4K гейминг на максималках за 10000 zł">🎮 4K Гейминг Ultra (10000 zł)</button>
-        <button type="button" class="pro-prompt-chip" data-prompt="Рабочая станция для монтажа в 4K и 3D рендера за 7500 zł">🎬 Монтаж и 3D рендер (7500 zł)</button>
-        <button type="button" class="pro-prompt-chip" data-prompt="Компактный бюджетный ПК для танков и GTA V за 3500 zł">📦 Компактный хит (3500 zł)</button>
+        <button type="button" class="pro-prompt-chip" data-chip="1" data-i18n="ai.chat.chip1" data-prompt="Собери белый тихий ПК для CS2 и стримов за 5500 zł">⚪ Белый тихий ПК для CS2 (5500 zł)</button>
+        <button type="button" class="pro-prompt-chip" data-chip="2" data-i18n="ai.chat.chip2" data-prompt="Ультимативный 4K гейминг на максималках за 10000 zł">🎮 4K Гейминг Ultra (10000 zł)</button>
+        <button type="button" class="pro-prompt-chip" data-chip="3" data-i18n="ai.chat.chip3" data-prompt="Рабочая станция для монтажа в 4K и 3D рендера за 7500 zł">🎬 Монтаж и 3D рендер (7500 zł)</button>
+        <button type="button" class="pro-prompt-chip" data-chip="4" data-i18n="ai.chat.chip4" data-prompt="Компактный бюджетный ПК для танков и GTA V за 3500 zł">📦 Компактный хит (3500 zł)</button>
       </div>
 
       <!-- Chat Input Area -->
       <div class="pro-chat-input-area">
         <div class="pro-input-wrapper">
-          <textarea id="pro-chat-input" rows="1" placeholder="Опишите свои задачи и пожелания к сборке..."></textarea>
-          <button type="button" id="pro-chat-send-btn" class="pro-send-btn" title="Отправить (Enter)">
+          <textarea id="pro-chat-input" rows="1" data-i18n-placeholder="ai.chat.placeholder" placeholder="Опишите свои задачи и пожелания к сборке..."></textarea>
+          <button type="button" id="pro-chat-send-btn" class="pro-send-btn" data-i18n-title="ai.chat.send_title" title="Отправить (Enter)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
         </div>
         <div class="pro-input-footer">
-          <span>Gemini Pro анализирует совместимость и управляет слотами сборки на лету</span>
+          <span data-i18n="ai.chat.disclaimer">Gemini Pro анализирует совместимость и управляет слотами сборки на лету</span>
         </div>
       </div>
     </aside>
@@ -1604,7 +1576,7 @@
             <p class="guide-modal-subtitle" data-i18n="guide.subtitle">Понятное руководство простыми словами для новичков и полезная шпаргалка по выбору идеального баланса</p>
           </div>
         </div>
-        <button id="hardware-guide-close" class="modal-close-btn app-close-btn" aria-label="Close guide" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        <button id="hardware-guide-close" class="modal-close-btn app-close-btn" aria-label="Close guide" title="Закрыть" data-i18n-title="btn.close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
 
       <div class="guide-modal-body">

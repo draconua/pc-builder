@@ -2,12 +2,12 @@
 // app.js — Main Application Controller
 // =============================================================
 
-import { PARTS_DATABASE, PRESETS as _RAW_PRESETS, CATEGORIES, COUNTRIES, RETAILERS_BY_COUNTRY } from './data.js?v=20260903_v6';
-import { checkCompatibility } from './compatibility.js?v=20260903_v6';
-import { t, setLanguage, getCurrentLanguage, initI18n } from './i18n.js?v=20260904_v15';
-import { saveBuild, loadBuilds, deleteBuild } from './storage.js?v=20260903_v6';
-import { estimateAllFPS, estimateFPS, analyzeBottleneck } from './performance.js?v=20260903_v6';
-import { buildFromCurated, CURATED_BASELINES } from './autobuild.js?v=20260903_v7';
+import { PARTS_DATABASE, PRESETS as _RAW_PRESETS, CATEGORIES, COUNTRIES, RETAILERS_BY_COUNTRY } from './data.js';
+import { checkCompatibility } from './compatibility.js';
+import { t, setLanguage, getCurrentLanguage, initI18n } from './i18n.js';
+import { saveBuild, loadBuilds, deleteBuild } from './storage.js';
+import { estimateAllFPS, estimateFPS, analyzeBottleneck } from './performance.js';
+import { buildFromCurated, CURATED_BASELINES } from './autobuild.js';
 
 // Normalize PRESETS: support both Array [{id, name, parts}, ...] and Object {key: {name, parts}, ...}
 const PRESETS = (() => {
@@ -358,8 +358,8 @@ function initElements() {
 
     // Show temporary thinking toast while AI reasons
     const thinkingToast = showToast({
-      title: '✨ Gemini AI подбирает ПК...',
-      message: 'Анализируем 400+ деталей и балансируем связку под ваш бюджет...',
+      title: t('autobuild.toast_picking_title'),
+      message: t('autobuild.toast_picking_desc'),
       type: 'info',
       duration: 12000
     });
@@ -399,8 +399,8 @@ function initElements() {
             updateUI();
 
             showToast({
-              title: `🧠 Gemini AI: ${escapeHtml(aiParts.verdictTitle || 'Оптимальная связка')}`,
-              htmlMessage: `<span style="color: #60a5fa; font-size: 0.8rem;">⚡ Собрано нейросетью под ${budgetPLN} zł:</span><br>${escapeHtml(aiParts.reasoning || '')}`,
+              title: `🧠 Gemini AI: ${escapeHtml(aiParts.verdictTitle || t('autobuild.optimal_bundle'))}`,
+              htmlMessage: `<span style="color: #60a5fa; font-size: 0.8rem;">⚡ ${t('autobuild.assembled_for', { budget: budgetPLN })}</span><br>${escapeHtml(aiParts.reasoning || '')}`,
               type: 'success',
               duration: 8000
             });
@@ -423,11 +423,11 @@ function initElements() {
     updateUI();
 
     const upgradesText = result.upgrades && result.upgrades.length > 0 
-      ? `<br><span style="font-size: 0.75rem; color: #10b981;">Улучшения на остаток: ${result.upgrades.join('; ')}</span>`
+      ? `<br><span style="font-size: 0.75rem; color: #10b981;">${t('autobuild.upgrades_on_remainder')}: ${result.upgrades.join('; ')}</span>`
       : '';
 
     showToast({
-      title: `✨ База: ${result.tier.title}`,
+      title: `✨ ${t('autobuild.base_tier', { title: result.tier.title })}`,
       htmlMessage: `${escapeHtml(result.tier.description)}${upgradesText}`,
       type: 'success',
       duration: 6500
@@ -511,9 +511,10 @@ function openRetailersModal(part) {
       });
     }
 
-    const currentCountryObj = countries.find(c => c.id === countryId) || { name: 'МАГАЗИНЫ' };
+    const currentCountryObj = countries.find(c => c.id === countryId) || { name: t('store.country_all') };
     if (deckTitleEl) {
-      deckTitleEl.textContent = `[ КАТАЛОГ МАГАЗИНОВ: ${currentCountryObj.name.toUpperCase()} ]`;
+      const cName = (t('country.' + countryId) !== 'country.' + countryId) ? t('country.' + countryId) : currentCountryObj.name;
+    deckTitleEl.textContent = t('country.catalog_title', { country: cName.toUpperCase() });
     }
 
     const stores = RETAILERS_BY_COUNTRY[countryId] || [];
@@ -532,7 +533,7 @@ function openRetailersModal(part) {
             <span class="retailer-desc">${store.desc || ''}</span>
           </div>
           <div class="retailer-right">
-            <span class="retailer-badge" style="background: ${store.color}18; color: ${store.color}; border: 1px solid ${store.color}44;">${store.tag || 'Магазин'}</span>
+            <span class="retailer-badge" style="background: ${store.color}18; color: ${store.color}; border: 1px solid ${store.color}44;">${store.tag || t('store.default_tag')}</span>
             <span class="retailer-btn-action">${jumpText}</span>
           </div>
         </a>
@@ -545,7 +546,7 @@ function openRetailersModal(part) {
     countryTabsEl.innerHTML = countries.map(c => `
       <button type="button" class="retailer-country-chip ${c.id === currentStoreCountry ? 'active' : ''}" data-country="${c.id}">
         <span class="country-flag">${c.flag}</span>
-        <span>${c.name}</span>
+        <span>${(t('country.' + c.id) !== 'country.' + c.id) ? t('country.' + c.id) : c.name}</span>
       </button>
     `).join('');
 
@@ -603,8 +604,8 @@ function renderDrawerQuickFilters(category) {
     ],
     cooler: [
       { label: t('drawer.filter.all') || 'Все', key: 'all' },
-      { label: 'Воздушные', key: 'air' },
-      { label: 'СЖО (AIO)', key: 'aio' }
+      { label: t('drawer.filter.air'), key: 'air' },
+      { label: t('drawer.filter.aio'), key: 'aio' }
     ],
     psu: [
       { label: t('drawer.filter.all') || 'Все', key: 'all' },
@@ -740,28 +741,28 @@ function showSchematicHud(category) {
     if (titleEl) titleEl.textContent = item.name;
     if (specsEl) {
       const specsArr = [
-        item.socket ? `Сокет: ${item.socket}` : null,
-        item.chipset ? `Чипсет: ${item.chipset}` : null,
+        item.socket ? `${t('spec.socket')}: ${item.socket}` : null,
+        item.chipset ? `${t('spec.chipset')}: ${item.chipset}` : null,
         item.vram ? `VRAM: ${item.vram}` : null,
-        item.capacity ? `Объем: ${item.capacity}` : null,
-        item.wattage ? `Мощность: ${item.wattage}W` : null,
+        item.capacity ? `${t('spec.capacity')}: ${item.capacity}` : null,
+        item.wattage ? `${t('spec.wattage')}: ${item.wattage}W` : null,
         item.tdp ? `TDP: ${item.tdp}W` : null,
-        item.type ? `Тип: ${item.type}` : null,
-        item.formFactor ? `Форм-фактор: ${item.formFactor}` : null
+        item.type ? `${t('spec.type')}: ${item.type}` : null,
+        item.formFactor ? `${t('spec.form_factor')}: ${item.formFactor}` : null
       ].filter(Boolean);
       specsEl.textContent = specsArr.slice(0, 3).join(' • ') || (item.brand || '');
     }
     if (priceEl) priceEl.textContent = formatPrice(item.price);
-    if (hintEl) hintEl.textContent = 'Кликните, чтобы заменить ↗';
+    if (hintEl) hintEl.textContent = t('schematic.click_to_replace');
   } else {
     if (statusBadge) {
-      statusBadge.textContent = 'Слот свободен';
+      statusBadge.textContent = t('schematic.slot_empty');
       statusBadge.className = 'hud-status-badge';
     }
-    if (titleEl) titleEl.textContent = `Слот: ${catName}`;
-    if (specsEl) specsEl.textContent = t('schematic.emptySlot') || 'Слот свободен — нажмите для выбора';
+    if (titleEl) titleEl.textContent = t('schematic.slot_label', { name: catName });
+    if (specsEl) specsEl.textContent = t('schematic.emptySlot') || t('schematic.slot_empty');
     if (priceEl) priceEl.textContent = '';
-    if (hintEl) hintEl.textContent = 'Выбрать в каталоге ↗';
+    if (hintEl) hintEl.textContent = t('schematic.select_in_catalog');
   }
 
   hud.classList.add('visible');
@@ -1095,7 +1096,7 @@ function setupEventListeners() {
       const isHidden = airflowLayer.classList.toggle('hidden');
       airflowBtn.classList.toggle('active', !isHidden);
       showToast(
-        !isHidden ? '💨 Симуляция воздушных потоков включена' : '💨 Симуляция воздушных потоков выключена',
+        !isHidden ? t('toast.airflow_on') : t('toast.airflow_off'),
         'info'
       );
     });
@@ -1110,7 +1111,7 @@ function setupEventListeners() {
       xrayBtn.classList.toggle('active', isActive);
       updateSvgVisualizer();
       showToast(
-        isActive ? '⚡ Режим слотов (X-Ray): подсветка всех посадочных мест' : '⚡ Режим X-Ray выключен',
+        isActive ? t('toast.xray_on') : t('toast.xray_off'),
         'info'
       );
     });
@@ -1123,7 +1124,7 @@ function setupEventListeners() {
       const isRgb = schematicPanel.classList.toggle('rgb-active');
       rgbBtn.classList.toggle('active', isRgb);
       showToast(
-        isRgb ? '🌈 Анимированная RGB-подсветка активирована' : '🌈 RGB-подсветка выключена',
+        isRgb ? t('toast.rgb_on') : t('toast.rgb_off'),
         'info'
       );
     });
@@ -1140,7 +1141,7 @@ function setupEventListeners() {
       clearanceBtn.classList.toggle('active', !isHidden);
       if (!isHidden) updateClearanceOverlay();
       showToast(
-        !isHidden ? '📏 Режим проверки габаритов и клиренса включен' : '📏 Режим клиренса выключен',
+        !isHidden ? t('toast.clearance_on') : t('toast.clearance_off'),
         'info'
       );
     });
@@ -1153,7 +1154,7 @@ function setupEventListeners() {
       const isExpanded = schematicPanel.classList.toggle('is-expanded');
       scaleBtn.classList.toggle('active', isExpanded);
       showToast(
-        isExpanded ? '🔍 Масштаб схемы увеличен' : '🔍 Стандартный масштаб схемы',
+        isExpanded ? t('toast.zoom_on') : t('toast.zoom_off'),
         'info'
       );
     });
@@ -1387,7 +1388,7 @@ function setupEventListeners() {
       hideIncompatible = !hideIncompatible;
       btnToggleCompat.classList.toggle('active', hideIncompatible);
       if (compatLabel) {
-        compatLabel.textContent = hideIncompatible ? 'Совместимые: ВКЛ' : 'Все детали: ВКЛ';
+        compatLabel.textContent = hideIncompatible ? t('drawer.compat_on') : t('drawer.compat_all');
       }
       renderPartsList();
     });
@@ -1413,15 +1414,57 @@ function updateTranslations() {
     if (key.startsWith('[placeholder]')) {
       const realKey = key.replace('[placeholder]', '');
       el.placeholder = t(realKey);
-    
+    } else {
+      el.textContent = t(key);
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (key) el.innerHTML = t(key);
+  });
+
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
     if (key) el.placeholder = t(key);
   });
-} else {
-      el.textContent = t(key);
+
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (key) el.title = t(key);
+  });
+
+  document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+    const key = el.getAttribute('data-i18n-aria-label');
+    if (key) el.setAttribute('aria-label', t(key));
+  });
+
+  // Update preset buttons text
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    const pKey = btn.dataset.preset;
+    if (pKey) btn.textContent = t(`preset.${pKey}`);
+  });
+
+  // Update AI Chat prompt chips
+  document.querySelectorAll('.pro-prompt-chip').forEach(chip => {
+    const chipId = chip.dataset.chip;
+    if (chipId) {
+      chip.textContent = t(`ai.chat.chip${chipId}`);
+      chip.dataset.prompt = t(`ai.chat.chip${chipId}_prompt`);
     }
   });
+
+  // Update HUD default labels if slot not hovered
+  const hudCat = document.getElementById('hud-cat-name');
+  if (hudCat && !hudCat.dataset.custom) hudCat.textContent = t('hud.component');
+  const hudBadge = document.getElementById('hud-status-badge');
+  if (hudBadge && !hudBadge.dataset.custom) hudBadge.textContent = t('hud.slot_free');
+  const hudTitle = document.getElementById('hud-title');
+  if (hudTitle && !hudTitle.dataset.custom) hudTitle.textContent = t('hud.hover_part');
+  const hudSpecs = document.getElementById('hud-specs');
+  if (hudSpecs && !hudSpecs.dataset.custom) hudSpecs.textContent = t('hud.click_choose');
+  const hudHint = document.getElementById('hud-hint');
+  if (hudHint && !hudHint.dataset.custom) hudHint.textContent = t('hud.click_select');
 
   // Update store hub button texts
   document.querySelectorAll('.store-hub-text').forEach(el => {
@@ -1454,7 +1497,8 @@ function updateTranslations() {
   // Update headers and optional badges
   document.querySelectorAll('.slot-card').forEach(card => {
     const cat = card.dataset.category;
-    card.querySelector('.slot-category').textContent = t(`cat.${cat}`);
+    const catTitle = card.querySelector('.slot-category');
+    if (catTitle) catTitle.textContent = t(`cat.${cat}`);
     
     // Update placeholders dynamically
     const placeholder = card.querySelector('.slot-placeholder');
@@ -1475,22 +1519,33 @@ function updateTranslations() {
   const subEl = document.querySelector('.subtitle');
   if (subEl) subEl.textContent = t('app.subtitle');
 
-  // Tooltips for beginners (English / Russian details)
-  const tooltipMap = {
-    'slot-cpu': 'tip.socket',
-    'slot-motherboard': 'tip.ddr',
-    'slot-cooler': 'tip.tdp',
-    'slot-ram': 'tip.ddr',
-    'slot-gpu': 'tip.bottleneck',
-    'slot-psu': 'tip.psu',
-    'slot-case': 'tip.formfactor',
-    'bottleneck-panel': 'tip.bottleneck'
+  // Tooltips for component hints
+  const slotHintMap = {
+    'cpu': 'tip.cpu',
+    'motherboard': 'tip.motherboard',
+    'cooler': 'tip.cooler',
+    'ram': 'tip.ram',
+    'gpu': 'tip.gpu',
+    'ssd': 'tip.ssd',
+    'hdd': 'tip.hdd',
+    'psu': 'tip.psu',
+    'case': 'tip.case',
+    'monitor': 'tip.monitor'
   };
 
-  Object.entries(tooltipMap).forEach(([id, tipKey]) => {
-    const el = document.getElementById(id);
-    if (el) el.setAttribute('data-tooltip', t(tipKey));
+  document.querySelectorAll('.slot-card').forEach(card => {
+    const cat = card.dataset.category;
+    const hint = card.querySelector('.slot-info-hint');
+    if (hint && slotHintMap[cat]) {
+      hint.setAttribute('data-tooltip', t(slotHintMap[cat]));
+    }
   });
+
+  // Refresh reactive panels
+  updateFpsPanel();
+  updateMonitorPanel();
+  updateBottleneckPanel();
+  if (typeof updateClearanceOverlay === 'function') updateClearanceOverlay();
 }
 
 // Formatting Price
@@ -1663,7 +1718,7 @@ function renderPartsList() {
           const btnToggleCompat = document.getElementById('btn-toggle-compat');
           if (btnToggleCompat) btnToggleCompat.classList.remove('active');
           const compatLabel = document.getElementById('compat-toggle-label');
-          if (compatLabel) compatLabel.textContent = 'Все детали: ВКЛ';
+          if (compatLabel) compatLabel.textContent = t('drawer.compat_all');
           renderPartsList();
         });
       }
@@ -1671,14 +1726,14 @@ function renderPartsList() {
       elements.partsList.innerHTML = `<div class="compat-info-item">${t('drawer.empty')}</div>`;
     }
     // Update count badge
-    const badge = document.getElementById('drawer-count-badge');
-    if (badge) badge.textContent = '0';
+    const badge = document.getElementById('drawer-parts-count') || document.getElementById('drawer-count-badge');
+    if (badge) badge.textContent = t('drawer.count_badge', { count: 0 });
     return;
   }
 
   // Update count badge
-  const badge = document.getElementById('drawer-count-badge');
-  if (badge) badge.textContent = filtered.length;
+  const badge = document.getElementById('drawer-parts-count') || document.getElementById('drawer-count-badge');
+  if (badge) badge.textContent = t('drawer.count_badge', { count: filtered.length });
 
   window.drawerFilteredParts = filtered;
   window.drawerCurrentPage = 1;
@@ -1729,7 +1784,7 @@ function renderPartsPage() {
             ? `<span class="part-tag compatible">${t('drawer.tag.ok')}</span>` 
             : `<span class="part-tag incompatible" title="${errorMsg}">${t('drawer.tag.fail')}</span>`
           }
-          <button type="button" class="part-store-btn" data-part-id="${part.id}" title="Сравнить цены в 8 магазинах">🏪 Цены ↗</button>
+          <button type="button" class="part-store-btn" data-part-id="${part.id}" title="${t('store.compare_tooltip')}">${t('store.prices_btn')}</button>
         </div>
         <button type="button" class="select-part-btn">${isSelected ? t('slot.selected') : t('slot.select')}</button>
       </div>
@@ -1764,7 +1819,7 @@ function renderPartsPage() {
     loadMoreBtn.className = 'btn btn-secondary load-more-btn';
     loadMoreBtn.style.margin = '20px auto';
     loadMoreBtn.style.display = 'block';
-    loadMoreBtn.textContent = 'Показать еще (' + (filtered.length - end) + ')';
+    loadMoreBtn.textContent = t('drawer.load_more', { count: filtered.length - end });
     loadMoreBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       loadMoreBtn.remove();
@@ -1805,7 +1860,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
 
     if (candidates.length > 0) {
       fixes.push({
-        title: `⚡ Заменить на БП достаточной мощности (${targetWattage}W+):`,
+        title: t('quickfix.psu', { wattage: targetWattage }),
         category: 'psu',
         parts: candidates
       });
@@ -1821,7 +1876,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
 
     if (mbOptions.length > 0) {
       fixes.push({
-        title: `⚡ Совместимые материнские платы под ${build.cpu.name} (${build.cpu.socket}):`,
+        title: t('quickfix.mb_for_cpu', { cpu: build.cpu.name, socket: build.cpu.socket }),
         category: 'motherboard',
         parts: mbOptions
       });
@@ -1834,7 +1889,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
 
     if (cpuOptions.length > 0) {
       fixes.push({
-        title: `⚡ Либо процессоры под сокет ${build.motherboard.socket}:`,
+        title: t('quickfix.cpu_for_socket', { socket: build.motherboard.socket }),
         category: 'cpu',
         parts: cpuOptions
       });
@@ -1850,7 +1905,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
 
     if (ramOptions.length > 0) {
       fixes.push({
-        title: `⚡ Подходящая оперативная память (${build.motherboard.ramType}):`,
+        title: t('quickfix.ram_for_mb', { ramType: build.motherboard.ramType }),
         category: 'ram',
         parts: ramOptions
       });
@@ -1866,7 +1921,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
 
     if (caseOptions.length > 0) {
       fixes.push({
-        title: `⚡ Просторные корпуса под видеокарту (${build.gpu.length}мм):`,
+        title: t('quickfix.case_for_gpu', { length: build.gpu.length }),
         category: 'case',
         parts: caseOptions
       });
@@ -1882,7 +1937,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
 
     if (coolerOptions.length > 0) {
       fixes.push({
-        title: `⚡ Эффективное охлаждение под ${build.cpu.name}:`,
+        title: t('quickfix.cooler_for_cpu', { cpu: build.cpu.name }),
         category: 'cooler',
         parts: coolerOptions
       });
@@ -1898,7 +1953,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
       .slice(0, 3);
     if (mbOptions.length > 0) {
       fixes.push({
-        title: `⚡ Надежные материнские платы под ${build.cpu.name}:`,
+        title: t('quickfix.mb_reliable', { cpu: build.cpu.name }),
         category: 'motherboard',
         parts: mbOptions
       });
@@ -1913,7 +1968,7 @@ function getSuggestedFixesForIssue(issueMsg, build) {
       .slice(0, 3);
     if (psuOptions.length > 0) {
       fixes.push({
-        title: `⚡ Блоки питания ATX 3.0 (прямой кабель 12VHPWR):`,
+        title: t('quickfix.psu_atx3'),
         category: 'psu',
         parts: psuOptions
       });
@@ -2039,7 +2094,7 @@ function updateUI() {
       // Multi-Store Buy Popover trigger
       if (buyLink) {
         buyLink.classList.remove('hidden');
-        buyLink.title = "Где купить: E-Katalog, Morele, x-kom, Rozetka, MediaExpert...";
+        buyLink.title = t('store.where_to_buy');
         buyLink.onclick = (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -2284,10 +2339,11 @@ function updateUI() {
           `;
         }
 
+        const displayMessage = s.msgKey ? t(s.msgKey, s.msgArgs) : s.message;
         li.innerHTML = `
           <div class="compat-msg-row">
             <span class="compat-icon">${icon}</span>
-            <span class="compat-text">${s.message}</span>
+            <span class="compat-text">${displayMessage}</span>
           </div>
           ${solutionsHtml}
         `;
@@ -2573,7 +2629,7 @@ function updateClearanceOverlay() {
     const gpuLen = (gpu && gpu.length) ? gpu.length : 304;
     const maxLen = (pcCase && pcCase.maxGpuLength) ? pcCase.maxGpuLength : 360;
     if (gpuLen > maxLen) {
-      summaryEl.textContent = `⚠️ Длина видеокарты (${gpuLen} мм) превышает лимит корпуса (${maxLen} мм)!`;
+      summaryEl.textContent = t('schematic.gpu_exceeds', { gpuLen, maxLen });
       summaryEl.style.color = '#ef4444';
     } else {
       summaryEl.textContent = t('schematic.fit_all') || 'Все комплектующие идеально помещаются в корпус с запасом';
@@ -2653,43 +2709,40 @@ function updateFpsPanel() {
 function getMonitorRecommendation(gpu) {
   if (!gpu) {
     return {
-      badge: 'Ожидание видеокарты',
+      badge: t('monitor.tier.waiting'),
       badgeClass: 'rec-badge-neutral',
-      title: 'Подбор под видеокарту',
-      desc: 'Выберите видеокарту в конфигураторе, чтобы система рассчитала оптимальное разрешение и герцовку для вашей системы.',
+      title: t('monitor.tier.rec_title'),
+      desc: t('monitor.tier.rec_desc'),
       quickIds: ['mon-24g2', 'mon-vg27aq', 'mon-27gp95r']
     };
   }
 
   const gpuScore = gpu.gpuScore || 50;
 
-  // 1. Ultra / 4K Flagship: RTX 4090, 5080, 5090, 4080 Super, RX 7900 XTX (gpuScore >= 80)
   if (gpuScore >= 80) {
     return {
-      badge: '🔥 4K UHD & 240Hz OLED',
+      badge: t('monitor.rec.flagship_badge'),
       badgeClass: 'rec-badge-ultra',
-      title: 'Рекомендация: 4K 144Hz+ или 1440p 240Hz OLED',
-      desc: `С флагманской ${gpu.name} играть в 1080p — пустая трата потенциала. Карта создана для 4K Ultra (60-100+ FPS) либо ультра-скоростного 1440p 240Hz OLED гейминга с мгновенным откликом.`,
+      title: t('monitor.rec.flagship_title'),
+      desc: t('monitor.rec.flagship_desc', { gpu: gpu.name }),
       quickIds: ['mon-27gp95r', 'mon-pg27aqdm', 'mon-m28u', 'mon-neo-g7']
     };
   }
-  // 2. Balanced / Sweet Spot: RTX 4070, 4070S, 4070 Ti, RX 7800 XT, 7900 GRE, RX 9070/9070XT (gpuScore >= 50)
   else if (gpuScore >= 50) {
     return {
-      badge: '⚡ Золотой стандарт: 1440p 2K (165-180Hz)',
+      badge: t('monitor.rec.balanced_badge'),
       badgeClass: 'rec-badge-balanced',
-      title: 'Рекомендация: 27\" 1440p 165Hz+ Fast IPS',
-      desc: `Видеокарта ${gpu.name} — идеальный выбор для 1440p Quad HD. 27-дюймовый Fast IPS 165-180Hz обеспечит высокую плотность пикселей и плавный фреймрейт 100+ FPS.`,
+      title: t('monitor.rec.balanced_title'),
+      desc: t('monitor.rec.balanced_desc', { gpu: gpu.name }),
       quickIds: ['mon-27gp850', 'mon-vg27aq', 'mon-g272qpf', 'mon-g27q']
     };
   }
-  // 3. Budget / eSports: RX 6600, RTX 3060, RTX 4060, Arc A580 (gpuScore < 50)
   else {
     return {
-      badge: '🎯 Киберспорт: 1080p Full HD (165-180Hz)',
+      badge: t('monitor.rec.esports_badge'),
       badgeClass: 'rec-badge-budget',
-      title: 'Рекомендация: 24\" 1080p 165-180Hz Fast IPS',
-      desc: `Для ${gpu.name} оптимальным выбором является Full HD 1080p. Высокая герцовка 165-180Hz на IPS-матрице подарит мгновенный отклик и высокий соревновательный FPS.`,
+      title: t('monitor.rec.esports_title'),
+      desc: t('monitor.rec.esports_desc', { gpu: gpu.name }),
       quickIds: ['mon-24g2', 'mon-g24f2', 'mon-vg27aq']
     };
   }
@@ -2822,7 +2875,7 @@ function updateBottleneckPanel() {
   if (aiCard) aiCard.classList.add('hidden');
   if (btnCheckAi) {
     btnCheckAi.disabled = false;
-    if (btnText) btnText.innerHTML = 'Проверить сборку с AI';
+    if (btnText) btnText.innerHTML = t('ai.btn.check_build');
   }
 }
 
@@ -3039,8 +3092,8 @@ function confirmSaveBuild() {
   const name = elements.saveNameInput ? elements.saveNameInput.value.trim() : '';
   if (!name) {
     showToast({
-      title: 'Сохранение сборки',
-      message: 'Пожалуйста, введите название конфигурации',
+      title: t('modal.save.title'),
+      message: t('toast.save_error_name'),
       type: 'warning'
     });
     return;
@@ -3057,8 +3110,8 @@ function openComparisonModal() {
   if (builds.length === 0) {
     if (elements.comparisonModal) closeModal(elements.comparisonModal);
     showToast({
-      title: 'Сравнение сборок',
-      message: t('dash.saved.empty') || 'Сначала сохраните хотя бы одну сборку для сравнения',
+      title: t('modal.compare.title'),
+      message: t('toast.compare_empty'),
       type: 'warning'
     });
     return;
@@ -3180,7 +3233,7 @@ let devSyncCancelled = false;
 // =============================================================
 
 function showToast(options = {}, maybeType) {
-  let title = 'Уведомление';
+  let title = t('toast.default_title');
   let message = '';
   let htmlMessage = '';
   let type = 'success';
@@ -3191,7 +3244,7 @@ function showToast(options = {}, maybeType) {
     type = maybeType || 'info';
     title = '';
   } else if (typeof options === 'object' && options !== null) {
-    title = options.title !== undefined ? options.title : 'Уведомление';
+    title = options.title !== undefined ? options.title : t('toast.default_title');
     message = options.message || '';
     htmlMessage = options.htmlMessage || '';
     type = options.type || 'success';
@@ -3224,7 +3277,7 @@ function showToast(options = {}, maybeType) {
       ${title ? `<div class="toast-title">${escapeHtml(title)}</div>` : ''}
       <div class="toast-message">${msgContent}</div>
     </div>
-    <button type="button" class="toast-close app-close-btn" aria-label="Close" title="Закрыть"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+    <button type="button" class="toast-close app-close-btn" aria-label="Close" title="${t('btn.close')}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
   `;
 
   container.appendChild(toast);
@@ -3313,17 +3366,17 @@ function updateDevCategoryCounts() {
   const totalCount = CATEGORIES.reduce((acc, cat) => acc + (PARTS_DATABASE[cat] ? PARTS_DATABASE[cat].length : 0), 0);
 
   const labels = {
-    all: `Вся база (${totalCount} шт., все 10 категорий ⭐)`,
-    cpu: `Процессоры CPU (${PARTS_DATABASE.cpu?.length || 0} шт.)`,
-    gpu: `Видеокарты GPU (${PARTS_DATABASE.gpu?.length || 0} шт.)`,
-    motherboard: `Материнские платы (${PARTS_DATABASE.motherboard?.length || 0} шт.)`,
-    cooler: `Охлаждение (${PARTS_DATABASE.cooler?.length || 0} шт.)`,
-    ram: `Оперативная память (${PARTS_DATABASE.ram?.length || 0} шт.)`,
-    ssd: `SSD накопители (${PARTS_DATABASE.ssd?.length || 0} шт.)`,
-    hdd: `Жесткие диски (${PARTS_DATABASE.hdd?.length || 0} шт.)`,
-    psu: `Блоки питания (${PARTS_DATABASE.psu?.length || 0} шт.)`,
-    case: `Корпуса (${PARTS_DATABASE.case?.length || 0} шт.)`,
-    monitor: `Мониторы (${PARTS_DATABASE.monitor?.length || 0} шт.)`
+    all: t('dev.parser.all_db', { count: totalCount }),
+    cpu: t('dev.parser.cat_format', { name: t('cat.cpu'), count: PARTS_DATABASE.cpu?.length || 0 }),
+    gpu: t('dev.parser.cat_format', { name: t('cat.gpu'), count: PARTS_DATABASE.gpu?.length || 0 }),
+    motherboard: t('dev.parser.cat_format', { name: t('cat.motherboard'), count: PARTS_DATABASE.motherboard?.length || 0 }),
+    cooler: t('dev.parser.cat_format', { name: t('cat.cooler'), count: PARTS_DATABASE.cooler?.length || 0 }),
+    ram: t('dev.parser.cat_format', { name: t('cat.ram'), count: PARTS_DATABASE.ram?.length || 0 }),
+    ssd: t('dev.parser.cat_format', { name: t('cat.ssd'), count: PARTS_DATABASE.ssd?.length || 0 }),
+    hdd: t('dev.parser.cat_format', { name: t('cat.hdd'), count: PARTS_DATABASE.hdd?.length || 0 }),
+    psu: t('dev.parser.cat_format', { name: t('cat.psu'), count: PARTS_DATABASE.psu?.length || 0 }),
+    case: t('dev.parser.cat_format', { name: t('cat.case'), count: PARTS_DATABASE.case?.length || 0 }),
+    monitor: t('dev.parser.cat_format', { name: t('cat.monitor'), count: PARTS_DATABASE.monitor?.length || 0 })
   };
 
   Array.from(catSelect.options).forEach(opt => {
@@ -3355,8 +3408,8 @@ function initDevCabinet() {
       if (countEl && (countEl.textContent === '0 / 0' || !countEl.textContent.includes('/'))) {
         countEl.textContent = `0 / ${catTotal}`;
       }
-      if (statusEl && (statusEl.textContent === 'Готов к запуску' || statusEl.textContent.startsWith('Готов к запуску'))) {
-        statusEl.textContent = `Готов к запуску (${catTotal} шт.)`;
+      if (statusEl && (statusEl.textContent === 'Готов к запуску' || statusEl.textContent.startsWith('Готов к запуску') || statusEl.textContent.includes('Готов') || statusEl.textContent.includes('Ready') || statusEl.textContent.includes('Gotowy') || statusEl.textContent.includes('Готовий'))) {
+        statusEl.textContent = t('dev.parser.ready_count', { count: catTotal });
       }
       checkDevSyncStatus();
     }
@@ -3382,7 +3435,7 @@ function initDevCabinet() {
         const statUpdated = document.getElementById('dev-stat-updated');
         const statNotFound = document.getElementById('dev-stat-notfound');
         if (countEl) countEl.textContent = `0 / ${catTotal}`;
-        if (statusEl) statusEl.textContent = `Готов к запуску (${catTotal} шт.)`;
+        if (statusEl) statusEl.textContent = t('dev.parser.ready_count', { count: catTotal });
         if (fillEl) fillEl.style.width = '0%';
         if (statUpdated) statUpdated.textContent = '0';
         if (statNotFound) statNotFound.textContent = '0';
@@ -3413,7 +3466,7 @@ function initDevCabinet() {
   if (btnClearLogs) {
     btnClearLogs.addEventListener('click', () => {
       const term = document.getElementById('dev-terminal-logs');
-      if (term) term.innerHTML = '<div class="log-line text-muted">[Лог очищен]</div>';
+      if (term) term.innerHTML = `<div class="log-line text-muted">${t('dev.parser.log_cleared')}</div>`;
     });
   }
 
@@ -3445,7 +3498,7 @@ function initDevCabinet() {
       const catTotal = getSelectedCategoryTotal();
       if (fillEl) fillEl.style.width = '0%';
       if (countEl) countEl.textContent = `0 / ${catTotal}`;
-      if (statusEl) statusEl.textContent = 'Инициализация парсера цен...';
+      if (statusEl) statusEl.textContent = t('dev.parser.init_parser');
       if (statUpdated) statUpdated.textContent = '0';
       if (statNotFound) statNotFound.textContent = '0';
 
@@ -3453,15 +3506,15 @@ function initDevCabinet() {
       const startT = new Date().toLocaleTimeString('pl-PL');
       if (termLogs) {
         termLogs.innerHTML = `
-          <div class="log-line text-muted">[${startT}] 🚀 Запуск синхронизации (${source.toUpperCase()})...</div>
-          <div class="log-line text-muted">[${startT}] 📡 Подключение к базам Morele.net и Ceneo.pl...</div>
-          <div class="log-line text-muted">[${startT}] ⏳ Загрузка позиций для категории «${category.toUpperCase()}»...</div>
+          <div class="log-line text-muted">${t('dev.parser.sync_started', { time: startT, source: source.toUpperCase() })}</div>
+          <div class="log-line text-muted">${t('dev.parser.connecting_stores', { time: startT })}</div>
+          <div class="log-line text-muted">${t('dev.parser.loading_positions', { time: startT, category: category.toUpperCase() })}</div>
         `;
         termLogs.scrollTop = termLogs.scrollHeight;
       }
 
       if (tbody) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted" style="padding: 1.5rem;">⏳ Синхронизация цен в процессе...</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding: 1.5rem;">${t('dev.parser.sync_in_progress')}</td></tr>`;
       }
 
       try {
@@ -3486,10 +3539,10 @@ function initDevCabinet() {
         if (!data || !data.ok) {
           const errT = new Date().toLocaleTimeString('pl-PL');
           if (termLogs) {
-            termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-danger">[${errT}] ❌ Ошибка запуска: ${escapeHtml((data && data.error) || 'Неизвестная ошибка')}</div>`);
+            termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-danger">${t('dev.parser.sync_error', { time: errT, error: escapeHtml((data && data.error) || 'Error') })}</div>`);
             termLogs.scrollTop = termLogs.scrollHeight;
           }
-          if (statusEl) statusEl.textContent = 'Ошибка синхронизации';
+          if (statusEl) statusEl.textContent = t('dev.parser.status_sync_error');
           btnStart.classList.remove('hidden');
           if (btnStop) btnStop.classList.add('hidden');
           devSyncActive = false;
@@ -3509,17 +3562,17 @@ function initDevCabinet() {
         const ratePLN = EXCHANGE_RATES['PLN'] || 4.05;
 
         const catTitles = {
-          cpu: 'Процессоры (CPU)',
-          cooler: 'Охлаждение',
-          motherboard: 'Материнские платы',
-          ram: 'Оперативная память (RAM)',
-          gpu: 'Видеокарты (GPU)',
-          ssd: 'SSD накопители',
-          hdd: 'Жесткие диски (HDD)',
-          psu: 'Блоки питания (PSU)',
-          case: 'Корпуса',
-          monitor: 'Мониторы',
-          all: 'Полная база (все категории)'
+          cpu: t('cat.cpu'),
+          cooler: t('cat.cooler'),
+          motherboard: t('cat.motherboard'),
+          ram: t('cat.ram'),
+          gpu: t('cat.gpu'),
+          ssd: t('cat.ssd'),
+          hdd: t('cat.hdd'),
+          psu: t('cat.psu'),
+          case: t('cat.case'),
+          monitor: t('cat.monitor'),
+          all: t('drawer.filter.all') || 'All'
         };
 
         let currentCatSection = '';
@@ -3531,7 +3584,7 @@ function initDevCabinet() {
           if (devSyncCancelled) {
             const stopT = new Date().toLocaleTimeString('pl-PL');
             if (termLogs) {
-              termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-muted">[${stopT}] ⏹️ Синхронизация остановлена пользователем.</div>`);
+              termLogs.insertAdjacentHTML('beforeend', `<div class="log-line text-muted">${t('dev.parser.stopped_by_user', { time: stopT })}</div>`);
               termLogs.scrollTop = termLogs.scrollHeight;
             }
             break;
@@ -3542,7 +3595,7 @@ function initDevCabinet() {
           const pct = Math.round(((i + 1) / total) * 100);
           if (fillEl) fillEl.style.width = `${pct}%`;
           if (countEl) countEl.textContent = `${i + 1} / ${total}`;
-          if (statusEl) statusEl.textContent = `Парсинг [${(catTitles[itemCat] || itemCat).split(' ')[0]}]: ${item.name}`;
+          if (statusEl) statusEl.textContent = t('dev.parser.parsing_item', { cat: (catTitles[itemCat] || itemCat).split(' ')[0], name: item.name });
 
           // Section transition banner in terminal
           if (category === 'all' && itemCat !== currentCatSection) {
@@ -3551,7 +3604,7 @@ function initDevCabinet() {
             if (termLogs) {
               termLogs.insertAdjacentHTML('beforeend', `
                 <div class="log-line" style="color: #60a5fa; font-weight: 700; margin: 4px 0 2px; padding: 2px 0; border-top: 1px dashed rgba(96, 165, 250, 0.25);">
-                  📂 [РАЗДЕЛ: ${secName}]
+                  📂 [${t('dev.parser.col_cat')}: ${secName}]
                 </div>
               `);
               termLogs.scrollTop = termLogs.scrollHeight;
@@ -3582,7 +3635,7 @@ function initDevCabinet() {
                 <td><strong>${item.newPrice} zł</strong></td>
                 <td class="${diffClass}">${diffText}</td>
                 <td><span class="slack-code-tag" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">${escapeHtml(item.source || 'Morele')}</span></td>
-                <td><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="dev-table-link">${escapeHtml(item.source || 'Магазин')} ↗</a></td>
+                <td><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="dev-table-link">${escapeHtml(item.source || t('store.store_word'))} ↗</a></td>
               </tr>
             `);
           }
@@ -3612,21 +3665,21 @@ function initDevCabinet() {
         if (!devSyncCancelled) {
           if (termLogs) {
             termLogs.insertAdjacentHTML('beforeend', `
-              <div class="log-line" style="color: #3b82f6; font-weight: 600;">[${endT}] 🏁 Синхронизация успешно завершена! Обновлено позиций: ${updated} из ${total}.</div>
-              <div class="log-line text-muted">[${endT}] 💾 Актуальные польские цены применены к конфигуратору.</div>
+              <div class="log-line" style="color: #3b82f6; font-weight: 600;">${t('dev.parser.sync_done_log', { time: endT, updated, total })}</div>
+              <div class="log-line text-muted">${t('dev.parser.sync_prices_applied', { time: endT })}</div>
             `);
             termLogs.scrollTop = termLogs.scrollHeight;
           }
-          if (statusEl) statusEl.textContent = 'Синхронизация завершена';
+          if (statusEl) statusEl.textContent = t('dev.parser.status_sync_done');
           if (fillEl) fillEl.style.width = '100%';
           showToast({
-            title: '⚡ Цены синхронизированы',
-            message: `Обновлено ${updated} позиций (${catTitles[category] || category.toUpperCase()}).`,
+            title: t('dev.parser.toast_synced_title'),
+            message: t('dev.parser.toast_synced_desc', { updated, cat: catTitles[category] || category.toUpperCase() }),
             type: 'success',
             duration: 5000
           });
         } else {
-          if (statusEl) statusEl.textContent = 'Остановлено пользователем';
+          if (statusEl) statusEl.textContent = t('dev.parser.status_stopped');
         }
 
         updateUI();
@@ -3638,7 +3691,7 @@ function initDevCabinet() {
         devSyncActive = false;
         btnStart.classList.remove('hidden');
         if (btnStop) btnStop.classList.add('hidden');
-        if (statusEl) statusEl.textContent = 'Ошибка сети';
+        if (statusEl) statusEl.textContent = t('dev.parser.status_network_error');
       }
     });
   }
@@ -3652,7 +3705,7 @@ function initDevCabinet() {
       btnStart.classList.remove('hidden');
       btnStop.classList.add('hidden');
       const statusEl = document.getElementById('dev-progress-status');
-      if (statusEl) statusEl.textContent = 'Остановлено пользователем';
+      if (statusEl) statusEl.textContent = t('dev.parser.status_stopped');
     });
   }
 
@@ -3702,7 +3755,7 @@ async function checkDevSyncStatus() {
     if (status.isRunning) {
       if (btnStart) btnStart.classList.add('hidden');
       if (btnStop) btnStop.classList.remove('hidden');
-      if (statusEl) statusEl.textContent = `Парсинг: ${status.currentItem || 'Запрос к Ceneo...'}`;
+      if (statusEl) statusEl.textContent = t('dev.parser.status_parsing', { item: status.currentItem || 'Ceneo...' });
       if (countEl) countEl.textContent = `${status.current} / ${status.total}`;
       if (fillEl) {
         const pct = status.total > 0 ? Math.round((status.current / status.total) * 100) : 0;
@@ -3714,13 +3767,13 @@ async function checkDevSyncStatus() {
       if (btnStart) btnStart.classList.remove('hidden');
       if (btnStop) btnStop.classList.add('hidden');
       if (status.total > 0 && devPollInterval) {
-        if (statusEl) statusEl.textContent = 'Парсинг завершён';
+        if (statusEl) statusEl.textContent = t('dev.parser.status_parsing_done');
         if (countEl) countEl.textContent = `${status.current} / ${status.total}`;
         if (fillEl) fillEl.style.width = '100%';
         if (statUpdated) statUpdated.textContent = status.updatedCount;
         if (statNotFound) statNotFound.textContent = status.notFoundCount;
       } else if (!devPollInterval) {
-        if (statusEl) statusEl.textContent = `Готов к запуску (${catTotal} шт.)`;
+        if (statusEl) statusEl.textContent = t('dev.parser.ready_count', { count: catTotal });
         if (countEl) countEl.textContent = `0 / ${catTotal}`;
         if (fillEl) fillEl.style.width = '0%';
         if (statUpdated) statUpdated.textContent = '0';
@@ -3759,7 +3812,7 @@ async function checkDevSyncStatus() {
             <td><strong>${r.newPrice} zł</strong></td>
             <td class="${diffClass}">${diffText}</td>
             <td><span class="slack-code-tag" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">${r.source || 'Auto'}</span></td>
-            <td><a href="${r.url}" target="_blank" rel="noopener noreferrer" class="dev-table-link">${r.source || 'Магазин'} ↗</a></td>
+            <td><a href="${r.url}" target="_blank" rel="noopener noreferrer" class="dev-table-link">${r.source || t('store.store_word')} ↗</a></td>
           </tr>
         `;
       }).join('');
@@ -3825,12 +3878,12 @@ async function loadAndApplyCachedPrices(showNotification = false) {
     });
 
     if (appliedCount > 0) {
-      console.log(`[Price Engine] Применено ${appliedCount} актуальных цен Morele и Ceneo.`);
+      console.log(`[Price Engine] Applied ${appliedCount} prices.`);
       updateUI();
       if (showNotification) {
         showToast({
-          title: 'Цены обновлены ✨',
-          message: `Успешно актуализировано ${appliedCount} цен с Morele и Ceneo. Конфигуратор и альтернативы пересчитаны.`,
+          title: t('dev.parser.toast_prices_updated_title'),
+          message: t('dev.parser.toast_prices_updated_desc', { count: appliedCount }),
           type: 'success',
           duration: 4500
         });
@@ -3966,12 +4019,12 @@ function initProChat() {
         appendMessage('ai', aiData.reply, appliedSummary);
       } else {
         appendMessage('ai', res.error?.includes('GEMINI_API_KEY') 
-          ? 'Для работы PRO-консультанта настройте переменную окружения `GEMINI_API_KEY` в панели Vercel (Project Settings -> Environment Variables) или в файле `gemini_config.json` локально.'
-          : `Ошибка связи с Gemini Pro: ${res.error || 'Не удалось получить ответ'}`);
+          ? t('ai.error.gemini_key')
+          : t('ai.error.gemini_conn', { error: res.error || '' }));
       }
     } catch (err) {
       removeLoadingBubble(loadingId);
-      appendMessage('ai', 'Ошибка сети при обращении к AI-консультанту.');
+      appendMessage('ai', t('ai.chat.error_network'));
     } finally {
       proSendBtn.disabled = false;
     }
@@ -3994,7 +4047,7 @@ function initProChat() {
     const avatar = role === 'ai' ? '🧠' : '👤';
     let partsBadge = '';
     if (appliedParts && appliedParts.length > 0) {
-      partsBadge = `<div class="pro-build-applied-badge">⚡ Обновлено на схеме: ${appliedParts.length} комплектующих</div>`;
+      partsBadge = `<div class="pro-build-applied-badge">${t('ai.chat.applied_count', { count: appliedParts.length })}</div>`;
     }
 
     // Use our rich structured card formatter
@@ -4022,7 +4075,7 @@ function initProChat() {
     bubble.innerHTML = `
       <div class="pro-bubble-avatar">🧠</div>
       <div class="pro-bubble-content">
-        <p style="color: var(--text-muted); font-style: italic;">Gemini Pro думает и подбирает компоненты...</p>
+        <p style="color: var(--text-muted); font-style: italic;">${t('ai.chat.thinking')}</p>
       </div>
     `;
     proMessages.appendChild(bubble);
@@ -4051,15 +4104,15 @@ function formatProChatMessage(text) {
 
   // 2. Category mapping for component spec cards
   const categoryIcons = [
-    { regex: /^(?:\d+\.\s*)?\*\*(?:Процессор|CPU):?\*\*/i, icon: '💻', cat: 'CPU' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:Материнская плата|Плата|Motherboard):?\*\*/i, icon: '🖲️', cat: 'MB' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:Кулер|Охлаждение|Cooler):?\*\*/i, icon: '❄️', cat: 'COOLER' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:Оперативная память|ОЗУ|RAM):?\*\*/i, icon: '⚡', cat: 'RAM' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:Видеокарта|GPU):?\*\*/i, icon: '🎮', cat: 'GPU' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:SSD|Накопитель|SSD накопитель):?\*\*/i, icon: '🚀', cat: 'SSD' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:HDD|Жесткий диск):?\*\*/i, icon: '💾', cat: 'HDD' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:Блок питания|БП|PSU):?\*\*/i, icon: '🔌', cat: 'PSU' },
-    { regex: /^(?:\d+\.\s*)?\*\*(?:Корпус|Case):?\*\*/i, icon: '📦', cat: 'CASE' }
+    { regex: /^(?:\d+\.\s*)?\*\*(?:Процессор|CPU|Procesor):?\*\*/i, icon: '💻', cat: 'CPU' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:Материнская плата|Плата|Motherboard|Płyta główna|Материнська плата):?\*\*/i, icon: '🖲️', cat: 'MB' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:Кулер|Охлаждение|Cooler|Chłodzenie|Охолодження):?\*\*/i, icon: '❄️', cat: 'COOLER' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:Оперативная память|ОЗУ|RAM|Pamięć RAM|Оперативна пам'ять):?\*\*/i, icon: '⚡', cat: 'RAM' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:Видеокарта|GPU|Karta graficzna|Відеокарта):?\*\*/i, icon: '🎮', cat: 'GPU' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:SSD|Накопитель|SSD накопитель|Dysk SSD|Накопичувач):?\*\*/i, icon: '🚀', cat: 'SSD' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:HDD|Жесткий диск|Dysk HDD|Жорсткий диск):?\*\*/i, icon: '💾', cat: 'HDD' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:Блок питания|БП|PSU|Zasilacz|Блок живлення):?\*\*/i, icon: '🔌', cat: 'PSU' },
+    { regex: /^(?:\d+\.\s*)?\*\*(?:Корпус|Case|Obudowa):?\*\*/i, icon: '📦', cat: 'CASE' }
   ];
 
   function formatInline(str) {
@@ -4148,8 +4201,8 @@ function initAiSynergyCheck() {
   btnCheck.addEventListener('click', async () => {
     if (!buildState.cpu || !buildState.gpu) {
       showToast({
-        title: 'Комплектующие не выбраны',
-        message: 'Для проверки связки выберите процессор и видеокарту.',
+        title: t('ai.check.no_parts_title'),
+        message: t('ai.check.no_parts_desc'),
         type: 'warning'
       });
       return;
@@ -4166,7 +4219,7 @@ function initAiSynergyCheck() {
     const resVal = (typeof selectedTargetRes !== 'undefined') ? selectedTargetRes : '1440p';
 
     btnCheck.disabled = true;
-    if (btnText) btnText.innerHTML = '<span class="ai-spark-icon">⏳</span> Gemini анализирует баланс связки...';
+    if (btnText) btnText.innerHTML = '<span class="ai-spark-icon">⏳</span> ' + t('ai.btn.analyzing');
 
     try {
       const response = await fetch('/api/ai-synergy', {
@@ -4212,29 +4265,29 @@ function initAiSynergyCheck() {
           }
         }
 
-        if (statusTag) statusTag.textContent = ai.status || 'Оптимально';
+        if (statusTag) statusTag.textContent = ai.status || t('ai.verdict.optimal');
         if (commentaryEl) commentaryEl.textContent = ai.commentary || '';
-        if (fpsEl) fpsEl.textContent = ai.fpsPotential || 'Высокая стабильность фреймрейта';
+        if (fpsEl) fpsEl.textContent = ai.fpsPotential || t('ai.verdict.high_fps');
         if (aiCard) aiCard.classList.remove('hidden');
 
-        if (btnText) btnText.innerHTML = '✓ Сборка проверена с AI';
+        if (btnText) btnText.innerHTML = '✓ ' + t('ai.btn.checked');
         btnCheck.disabled = false;
       } else {
         showToast({
-          title: 'Ошибка AI проверки',
-          message: res.error || 'Не удалось получить вердикт от нейросети.',
+          title: t('ai.check.error_title'),
+          message: res.error || t('ai.check.error_desc'),
           type: 'error'
         });
-        if (btnText) btnText.textContent = 'Попробовать снова';
+        if (btnText) btnText.textContent = t('ai.btn.try_again');
         btnCheck.disabled = false;
       }
     } catch (e) {
       showToast({
-        title: 'Сетевая ошибка',
-        message: 'Не удалось связаться с локальным сервером AI.',
+        title: t('toast.network_error_title'),
+        message: t('toast.network_error_desc'),
         type: 'error'
       });
-      if (btnText) btnText.textContent = 'Проверить сборку с AI';
+      if (btnText) btnText.textContent = t('ai.btn.check_build');
       btnCheck.disabled = false;
     }
   });

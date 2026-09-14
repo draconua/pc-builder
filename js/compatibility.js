@@ -19,12 +19,16 @@ export function checkCompatibility(build) {
     if (cpu.socket !== motherboard.socket) {
       status.push({
         type: 'error',
-        message: `Socket Mismatch: CPU uses socket ${cpu.socket}, but motherboard uses ${motherboard.socket}.`
+        message: `Socket Mismatch: CPU uses socket ${cpu.socket}, but motherboard uses ${motherboard.socket}.`,
+        msgKey: 'compat.socket.mismatch',
+        msgArgs: { cpuSocket: cpu.socket, mbSocket: motherboard.socket }
       });
     } else {
       status.push({
         type: 'success',
-        message: `Socket Match: Both use ${cpu.socket}.`
+        message: `Socket Match: Both use ${cpu.socket}.`,
+        msgKey: 'compat.socket.match',
+        msgArgs: { socket: cpu.socket }
       });
     }
 
@@ -38,7 +42,9 @@ export function checkCompatibility(build) {
     if (actualCpuTdp > maxVrmTdp) {
       status.push({
         type: 'warning',
-        message: `VRM Limit Warning: CPU peak power (${actualCpuTdp}W) exceeds the safe limit for budget VRMs (~${maxVrmTdp}W) on this motherboard. It will work, but may throttle under heavy load.`
+        message: `VRM Limit Warning: CPU peak power (${actualCpuTdp}W) exceeds the safe limit for budget VRMs (~${maxVrmTdp}W) on this motherboard. It will work, but may throttle under heavy load.`,
+        msgKey: 'compat.vrm.limit',
+        msgArgs: { cpuTdp: actualCpuTdp, maxVrm: maxVrmTdp }
       });
     }
 
@@ -51,12 +57,16 @@ export function checkCompatibility(build) {
     if (motherboard.ramType !== ram.ramType) {
       status.push({
         type: 'error',
-        message: `Memory Standard Mismatch: Motherboard requires ${motherboard.ramType}, but selected RAM is ${ram.ramType}.`
+        message: `Memory Standard Mismatch: Motherboard requires ${motherboard.ramType}, but selected RAM is ${ram.ramType}.`,
+        msgKey: 'compat.ram.mismatch',
+        msgArgs: { mbType: motherboard.ramType, ramType: ram.ramType }
       });
     } else {
       status.push({
         type: 'success',
-        message: `Memory Standard Match: Both use ${ram.ramType}.`
+        message: `Memory Standard Match: Both use ${ram.ramType}.`,
+        msgKey: 'compat.ram.match',
+        msgArgs: { ramType: ram.ramType }
       });
     }
   }
@@ -67,19 +77,25 @@ export function checkCompatibility(build) {
     if (!cooler.sockets || cooler.sockets.length === 0) {
       status.push({
         type: 'success',
-        message: `Cooler: Universal mount — check bracket compatibility for socket ${cpu.socket}.`
+        message: `Cooler: Universal mount — check bracket compatibility for socket ${cpu.socket}.`,
+        msgKey: 'compat.cooler.universal',
+        msgArgs: { socket: cpu.socket }
       });
     } else {
       const isSocketSupported = cooler.sockets.includes(cpu.socket);
       if (!isSocketSupported) {
         status.push({
           type: 'error',
-          message: `Cooler Bracket Mismatch: Cooler does not support socket ${cpu.socket}.`
+          message: `Cooler Bracket Mismatch: Cooler does not support socket ${cpu.socket}.`,
+          msgKey: 'compat.cooler.mismatch',
+          msgArgs: { socket: cpu.socket }
         });
       } else {
         status.push({
           type: 'success',
-          message: `Cooler Bracket Compatible: Supports socket ${cpu.socket}.`
+          message: `Cooler Bracket Compatible: Supports socket ${cpu.socket}.`,
+          msgKey: 'compat.cooler.match',
+          msgArgs: { socket: cpu.socket }
         });
       }
     }
@@ -94,12 +110,16 @@ export function checkCompatibility(build) {
       if (!isSizeSupported) {
         status.push({
           type: 'error',
-          message: `Chassis Size Limit: Case does not fit motherboard size ${motherboard.formFactor} (supports: ${pcCase.mbSizes.join(', ')}).`
+          message: `Chassis Size Limit: Case does not fit motherboard size ${motherboard.formFactor} (supports: ${pcCase.mbSizes.join(', ')}).`,
+          msgKey: 'compat.mbSize.mismatch',
+          msgArgs: { mbSize: motherboard.formFactor, caseSizes: pcCase.mbSizes.join(', ') }
         });
       } else {
         status.push({
           type: 'success',
-          message: `Chassis Size Compatibility: Case fits motherboard size ${motherboard.formFactor}.`
+          message: `Chassis Size Compatibility: Case fits motherboard size ${motherboard.formFactor}.`,
+          msgKey: 'compat.mbSize.match',
+          msgArgs: { mbSize: motherboard.formFactor }
         });
       }
     }
@@ -111,12 +131,16 @@ export function checkCompatibility(build) {
       if (gpu.length > pcCase.maxGpuLength) {
         status.push({
           type: 'error',
-          message: `GPU Clearance Error: GPU length is ${gpu.length}mm, but case maximum clearance is ${pcCase.maxGpuLength}mm.`
+          message: `GPU Clearance Error: GPU length is ${gpu.length}mm, but case maximum clearance is ${pcCase.maxGpuLength}mm.`,
+          msgKey: 'compat.gpu.clearanceError',
+          msgArgs: { gpuLength: gpu.length, maxLength: pcCase.maxGpuLength }
         });
       } else {
         status.push({
           type: 'success',
-          message: `GPU Clearance OK: GPU fits (length ${gpu.length}mm, case limit ${pcCase.maxGpuLength}mm).`
+          message: `GPU Clearance OK: GPU fits (length ${gpu.length}mm, case limit ${pcCase.maxGpuLength}mm).`,
+          msgKey: 'compat.gpu.clearanceOk',
+          msgArgs: { gpuLength: gpu.length, maxLength: pcCase.maxGpuLength }
         });
       }
     }
@@ -130,29 +154,38 @@ export function checkCompatibility(build) {
       if (caseMaxRad === 0) {
         status.push({
           type: 'error',
-          message: `Liquid Cooler Clearance: Selected case does not support liquid AIO radiators.`
+          message: `Liquid Cooler Clearance: Selected case does not support liquid AIO radiators.`,
+          msgKey: 'compat.cooler.aioUnsupported'
         });
       } else if (coolerRad > caseMaxRad) {
         status.push({
           type: 'error',
-          message: `Radiator Clearance Error: Cooler radiator is ${coolerRad}mm, but case maximum supported radiator is ${caseMaxRad}mm.`
+          message: `Radiator Clearance Error: Cooler radiator is ${coolerRad}mm, but case maximum supported radiator is ${caseMaxRad}mm.`,
+          msgKey: 'compat.cooler.aioClearanceError',
+          msgArgs: { coolerRad: coolerRad, caseMaxRad: caseMaxRad }
         });
       } else {
         status.push({
           type: 'success',
-          message: `Liquid Cooler Fit: Case supports ${coolerRad}mm AIO radiator setup.`
+          message: `Liquid Cooler Fit: Case supports ${coolerRad}mm AIO radiator setup.`,
+          msgKey: 'compat.cooler.aioFit',
+          msgArgs: { coolerRad: coolerRad }
         });
       }
     } else if (cooler.height && pcCase.maxCoolerHeight) {
       if (cooler.height > pcCase.maxCoolerHeight) {
         status.push({
           type: 'error',
-          message: `Cooler Height Clearance Error: Cooler is ${cooler.height}mm tall, but case maximum cooler height is ${pcCase.maxCoolerHeight}mm.`
+          message: `Cooler Height Clearance Error: Cooler is ${cooler.height}mm tall, but case maximum cooler height is ${pcCase.maxCoolerHeight}mm.`,
+          msgKey: 'compat.cooler.heightError',
+          msgArgs: { height: cooler.height, maxHeight: pcCase.maxCoolerHeight }
         });
       } else {
         status.push({
           type: 'success',
-          message: `Cooler Height OK: Fits in case (cooler height ${cooler.height}mm, case limit ${pcCase.maxCoolerHeight}mm).`
+          message: `Cooler Height OK: Fits in case (cooler height ${cooler.height}mm, case limit ${pcCase.maxCoolerHeight}mm).`,
+          msgKey: 'compat.cooler.heightOk',
+          msgArgs: { height: cooler.height, maxHeight: pcCase.maxCoolerHeight }
         });
       }
     }
@@ -167,12 +200,16 @@ export function checkCompatibility(build) {
       if (!isPsuTypeSupported) {
         status.push({
           type: 'error',
-          message: `PSU Form Factor Mismatch: Case requires ${pcCase.psuTypes.join('/')} PSU, but selected PSU is ${psu.formFactor}.`
+          message: `PSU Form Factor Mismatch: Case requires ${pcCase.psuTypes.join('/')} PSU, but selected PSU is ${psu.formFactor}.`,
+          msgKey: 'compat.psu.typeMismatch',
+          msgArgs: { caseTypes: pcCase.psuTypes.join('/'), psuType: psu.formFactor }
         });
       } else {
         status.push({
           type: 'success',
-          message: `PSU Form Factor OK: Selected ${psu.formFactor} PSU fits in the case.`
+          message: `PSU Form Factor OK: Selected ${psu.formFactor} PSU fits in the case.`,
+          msgKey: 'compat.psu.typeMatch',
+          msgArgs: { psuType: psu.formFactor }
         });
       }
     }
@@ -191,39 +228,51 @@ export function checkCompatibility(build) {
     if (psu) {
       if (psu.wattage < estTdp) {
         status.push({
-          type: "error",
-          message: `Insufficient PSU Wattage: System estimated draw is ${estTdp}W, but PSU provides only ${psu.wattage}W.`
+          type: 'error',
+          message: `Insufficient PSU Wattage: System estimated draw is ${estTdp}W, but PSU provides only ${psu.wattage}W.`,
+          msgKey: 'compat.psu.insufficient',
+          msgArgs: { estTdp: estTdp, psuWattage: psu.wattage }
         });
       } else if (psu.wattage < estTdp * 1.25) {
         status.push({
-          type: "warning",
-          message: `Low Power Margin: PSU provides ${psu.wattage}W. Estimated system draw is ${estTdp}W. Recommending at least 25% safety margin.`
+          type: 'warning',
+          message: `Low Power Margin: PSU provides ${psu.wattage}W. Estimated system draw is ${estTdp}W. Recommending at least 25% safety margin.`,
+          msgKey: 'compat.psu.lowMargin',
+          msgArgs: { estTdp: estTdp, psuWattage: psu.wattage }
         });
       } else {
         // Efficiency curve check (50-70% is optimal)
         const loadPercentage = (estTdp / psu.wattage) * 100;
         if (loadPercentage >= 40 && loadPercentage <= 80) {
            status.push({
-             type: "success",
-             message: `PSU Efficiency Optimal: System load (${estTdp}W) is ~${Math.round(loadPercentage)}% of PSU capacity (${psu.wattage}W), hitting the peak efficiency curve.`
+             type: 'success',
+             message: `PSU Efficiency Optimal: System load (${estTdp}W) is ~${Math.round(loadPercentage)}% of PSU capacity (${psu.wattage}W), hitting the peak efficiency curve.`,
+             msgKey: 'compat.psu.optimal',
+             msgArgs: { estTdp: estTdp, percent: Math.round(loadPercentage), psuWattage: psu.wattage }
            });
         } else if (loadPercentage < 40) {
            status.push({
-             type: "success",
-             message: `PSU Capacity Overkill: System load (${estTdp}W) is only ~${Math.round(loadPercentage)}% of PSU capacity (${psu.wattage}W).`
+             type: 'success',
+             message: `PSU Capacity Overkill: System load (${estTdp}W) is only ~${Math.round(loadPercentage)}% of PSU capacity (${psu.wattage}W).`,
+             msgKey: 'compat.psu.overkill',
+             msgArgs: { estTdp: estTdp, percent: Math.round(loadPercentage), psuWattage: psu.wattage }
            });
         } else {
            status.push({
-             type: "success",
-             message: `PSU Capacity OK: System load is ~${Math.round(loadPercentage)}% of PSU capacity.`
+             type: 'success',
+             message: `PSU Capacity OK: System load is ~${Math.round(loadPercentage)}% of PSU capacity.`,
+             msgKey: 'compat.psu.ok',
+             msgArgs: { percent: Math.round(loadPercentage) }
            });
         }
       }
     } else {
       if (gpu && gpu.recommendedPsu) {
         status.push({
-          type: "warning",
-          message: `Power Supply Needed: Recommended power supply capacity for GPU is ${gpu.recommendedPsu}W+ (Estimated draw: ${estTdp}W).`
+          type: 'warning',
+          message: `Power Supply Needed: Recommended power supply capacity for GPU is ${gpu.recommendedPsu}W+ (Estimated draw: ${estTdp}W).`,
+          msgKey: 'compat.psu.needed',
+          msgArgs: { recommended: gpu.recommendedPsu, estTdp: estTdp }
         });
       }
     }
@@ -233,8 +282,10 @@ export function checkCompatibility(build) {
       const heatLoad = (cpu.maxTdp || cpu.tdp) + (gpu ? gpu.tdp : 0);
       if (heatLoad > 400 && cooler.type === "air" && cooler.height < 150) {
          status.push({
-           type: "warning",
-           message: `Thermal Warning: High system heat output (${heatLoad}W). A small air cooler might struggle. Consider a larger dual-tower or AIO liquid cooler.`
+           type: 'warning',
+           message: `Thermal Warning: High system heat output (${heatLoad}W). A small air cooler might struggle. Consider a larger dual-tower or AIO liquid cooler.`,
+           msgKey: 'compat.thermal.warning',
+           msgArgs: { heatLoad: heatLoad }
          });
       }
     }
@@ -246,7 +297,9 @@ export function checkCompatibility(build) {
     if (ssd.nandType === 'QLC' || (ssd.specs && ssd.specs.includes('QLC'))) {
        status.push({
            type: 'warning',
-           message: `QLC Warning: Выбранный SSD (${ssd.name}) использует QLC NAND. Скорость записи может падать при заполнении SLC-кэша. Для ОС и тяжелых задач рекомендуется TLC.`
+           message: `QLC Warning: Selected SSD (${ssd.name}) uses QLC NAND. Write speeds may drop when SLC cache fills up. TLC is recommended for OS and heavy tasks.`,
+           msgKey: 'compat.ssd.qlcWarning',
+           msgArgs: { name: ssd.name }
        });
     }
     if (motherboard && ssd.interface) {
@@ -259,12 +312,14 @@ export function checkCompatibility(build) {
        if (isGen5Ssd && !mbIsGen5) {
            status.push({
                type: 'warning',
-               message: `PCIe Bottleneck: SSD — Gen5, но материнская плата может поддерживать только Gen4. Он будет работать, но на урезанной скорости.`
+               message: `PCIe Bottleneck: SSD is Gen5, but the motherboard only supports Gen4. It will work, but at reduced speeds.`,
+               msgKey: 'compat.ssd.gen5Bottleneck'
            });
        } else if (isGen4Ssd && !mbIsGen4 && (mbName.includes('a520') || mbName.includes('h610') || mbName.includes('h510') || mbName.includes('b450') || mbName.includes('a320') || mbName.includes('z390'))) {
            status.push({
                type: 'warning',
-               message: `PCIe Bottleneck: SSD — Gen4, но плата поддерживает только Gen3. Скорость будет урезана вдвое.`
+               message: `PCIe Bottleneck: SSD is Gen4, but the motherboard only supports Gen3. Speeds will be cut in half.`,
+               msgKey: 'compat.ssd.gen4Bottleneck'
            });
        }
     }
